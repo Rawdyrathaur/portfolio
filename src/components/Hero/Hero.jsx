@@ -11,6 +11,7 @@ function Hero() {
       <div className="hero__image-wrapper">
         <img src={profile} alt="Manish" className="hero__image" />
       </div>
+      <h1 className="hero__name">Manish Rathaur</h1>
     </section>
   )
 }

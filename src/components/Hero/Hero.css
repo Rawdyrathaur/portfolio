@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 4rem;
+  padding-top: 6rem;
 }
 
 .hero__image-wrapper {
@@ -20,4 +20,12 @@
   filter: grayscale(100%);
   -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+.hero__name {
+  font-family: "Inter", sans-serif;
+  font-weight: 800;
+  font-size: 4rem;
+  color: var(--text);
+  margin-top: 1rem;
+  letter-spacing: -3px;
 }
