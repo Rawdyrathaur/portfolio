@@ -11,13 +11,12 @@
   --accent: #222222;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #000000;
-    --text: #ffffff;
-    --text-muted: #aaaaaa;
-    --border: #222222;
-    --surface: #111111;
-    --accent: #dddddd;
-  }
+[data-theme="dark"] {
+  --bg: #000000;
+  --text: #ffffff;
+  --text-muted: #aaaaaa;
+  --border: #222222;
+  --surface: #111111;
+  --accent: #dddddd;
+
 }
