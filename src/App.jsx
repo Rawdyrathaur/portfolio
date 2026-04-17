@@ -1,13 +1,10 @@
-/* ========================
-   APP ENTRY COMPONENT
-======================== */
-
 import './styles/index.css'
+import Hero from './components/Hero/Hero'
 
 function App() {
   return (
     <main>
-      {/* Components will go here */}
+      <Hero />
     </main>
   )
 }
