@@ -6,17 +6,26 @@
   --bg: #ffffff;
   --text: #000000;
   --text-muted: #555555;
+  --text-secondary: #777777;
   --border: #e0e0e0;
   --surface: #f5f5f5;
   --accent: #222222;
+
+  /* TYPOGRAPHY */
+  --font-main: 'DM Sans', sans-serif;
+
+  --text-bio:     clamp(22px, 3.5vw, 36px);
+  --text-heading: 20px;
+  --text-body:    17px;
+  --text-label:   12px;
 }
 
 [data-theme="dark"] {
   --bg: #000000;
   --text: #ffffff;
-  --text-muted: #aaaaaa;
+  --text-muted: #555555;
+  --text-secondary: #aaaaaa;
   --border: #222222;
   --surface: #111111;
   --accent: #dddddd;
-
 }
