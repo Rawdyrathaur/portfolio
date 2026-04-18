@@ -7,6 +7,8 @@
   flex-direction: column;
   align-items: center;
   padding-top: 6rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .hero__image-wrapper {
@@ -21,6 +23,7 @@
   -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
 }
+
 .hero__name {
   font-family: "Inter", sans-serif;
   font-weight: 800;
@@ -28,4 +31,64 @@
   color: var(--text);
   margin-top: 1rem;
   letter-spacing: -3px;
+}
+
+/* ========================
+   RESPONSIVE BREAKPOINTS
+======================== */
+
+/* Large tablets & small laptops (≤1024px) */
+@media (max-width: 1024px) {
+  .hero {
+    padding-top: 4rem;
+  }
+
+  .hero__name {
+    font-size: 3.5rem;
+    letter-spacing: -2.5px;
+  }
+}
+
+/* Tablets (≤768px) */
+@media (max-width: 768px) {
+  .hero {
+    padding-top: 3rem;
+  }
+
+  .hero__image-wrapper {
+    width: 180px;
+  }
+
+  .hero__name {
+    font-size: 2.75rem;
+    letter-spacing: -2px;
+  }
+}
+
+/* Mobile (≤480px) */
+@media (max-width: 480px) {
+  .hero {
+    padding-top: 2rem;
+  }
+
+  .hero__image-wrapper {
+    width: 150px;
+  }
+
+  .hero__name {
+    font-size: 2.25rem;
+    letter-spacing: -1.5px;
+  }
+}
+
+/* Small mobile (≤360px) */
+@media (max-width: 360px) {
+  .hero__image-wrapper {
+    width: 120px;
+  }
+
+  .hero__name {
+    font-size: 1.75rem;
+    letter-spacing: -1px;
+  }
 }
