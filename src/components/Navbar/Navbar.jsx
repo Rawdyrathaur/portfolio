@@ -38,15 +38,33 @@ function Navbar() {
         </svg>
       </a>
 
-      <a className="navbar__icon" title="Contact" href="mailto:mrathaur704@gmail.com">
+      <a
+        className="navbar__icon"
+        title="Contact"
+        href="https://mail.google.com/mail/?view=cm&fs=1&to=mrathaur704@gmail.com&su=Ask%20Anything&body=Hi%20Manish,%0D%0A%0D%0AI%20have%20some%20ideas,%20suggestions,%20or%20need%20help%20with%20something.%0D%0A%0D%0AThanks!"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <polyline points="22,6 12,13 2,6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path
+            d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <polyline
+            points="22,6 12,13 2,6"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       </a>
 
     </nav>
   )
-}
+} 
 
 export default Navbar

@@ -2,11 +2,16 @@
    HERO STYLES
 ======================== */
 
+:root {
+  --navbar-height: 62px;
+  --hero-gap: 2rem; /* consistent gap between navbar and hero on all devices */
+}
+
 .hero {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 6rem;
+  padding-top: calc(var(--navbar-height) + var(--hero-gap));
   padding-left: 1rem;
   padding-right: 1rem;
 }
@@ -39,8 +44,8 @@
 
 /* Large tablets & small laptops (≤1024px) */
 @media (max-width: 1024px) {
-  .hero {
-    padding-top: 4rem;
+  :root {
+    --navbar-height: 62px;
   }
 
   .hero__name {
@@ -51,8 +56,8 @@
 
 /* Tablets (≤768px) */
 @media (max-width: 768px) {
-  .hero {
-    padding-top: 3rem;
+  :root {
+    --navbar-height: 58px;
   }
 
   .hero__image-wrapper {
@@ -67,8 +72,8 @@
 
 /* Mobile (≤480px) */
 @media (max-width: 480px) {
-  .hero {
-    padding-top: 2rem;
+  :root {
+    --navbar-height: 54px;
   }
 
   .hero__image-wrapper {
@@ -83,6 +88,10 @@
 
 /* Small mobile (≤360px) */
 @media (max-width: 360px) {
+  :root {
+    --navbar-height: 48px;
+  }
+
   .hero__image-wrapper {
     width: 120px;
   }
