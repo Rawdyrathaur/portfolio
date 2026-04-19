@@ -2,11 +2,11 @@
    READ MODE COMPONENT
 ======================== */
 
-import { useState } from 'react'
 import './ReadMode.css'
+import { useReadMode } from '../../context/ReadModeContext'
 
 function ReadMode() {
-  const [active, setActive] = useState('short')
+  const { mode: active, setMode: setActive } = useReadMode()
 
   const handleClick = (e, mode) => {
     const btn = e.currentTarget
