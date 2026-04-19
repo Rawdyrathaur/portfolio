@@ -3,7 +3,7 @@
 ======================== */
 
 import './ReadMode.css'
-import { useReadMode } from '../../context/ReadModeContext'
+import { useReadMode } from '../../hooks/useReadMode'
 
 function ReadMode() {
   const { mode: active, setMode: setActive } = useReadMode()

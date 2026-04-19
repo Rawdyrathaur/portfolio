@@ -2,7 +2,7 @@
    READ MODE CONTEXT
 ======================== */
 
-import { createContext, useContext, useState } from 'react'
+import { createContext, useState } from 'react'
 
 const ReadModeContext = createContext()
 
@@ -16,6 +16,4 @@ export function ReadModeProvider({ children }) {
   )
 }
 
-export function useReadMode() {
-  return useContext(ReadModeContext)
-}
+export { ReadModeContext }

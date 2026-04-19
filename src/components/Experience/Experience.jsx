@@ -3,7 +3,7 @@
 ======================== */
 
 import experience from '../../content/experience'
-import { useReadMode } from '../../context/ReadModeContext'
+import { useReadMode } from '../../hooks/useReadMode'
 import './Experience.css'
 
 function Experience() {
