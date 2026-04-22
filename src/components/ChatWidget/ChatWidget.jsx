@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import "./ChatWidget.css";
+import JellyVoiceUI from "./JellyVoiceUI";import "./ChatWidget.css";
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -133,7 +133,7 @@ export default function ChatWidget() {
             )}
             {isRecording && (
               <div className="cw-bubble cw-bubble--assistant cw-recording-hint">
-                🎙️ Listening… pause to send
+                <JellyVoiceUI />🎙️ Listening… pause to send
               </div>
             )}
           </div>
