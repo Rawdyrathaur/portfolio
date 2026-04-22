@@ -9,6 +9,8 @@
   align-items: flex-end;
   gap: 12px;
   font-family: 'Segoe UI', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
 }
 
 /* ── Floating bubble button ── */
@@ -16,28 +18,27 @@
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: #6c63ff;
+  background: var(--accent);
   border: none;
   font-size: 22px;
   cursor: pointer;
-  box-shadow: 0 4px 18px rgba(108, 99, 255, 0.45);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
   transition: transform 0.2s, box-shadow 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .cw-bubble-btn:hover {
-  transform: scale(1.08);
-  box-shadow: 0 6px 24px rgba(108, 99, 255, 0.55);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.55);
 }
 
 /* ── Chat card ── */
 .cw-card {
   width: 320px;
   height: 420px;
-  background: #ffffff;
+  background: var(--surface);
   border-radius: 16px;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -55,8 +56,8 @@
   align-items: center;
   gap: 8px;
   padding: 14px 16px;
-  background: #6c63ff;
-  color: #fff;
+  background: var(--accent);
+  color: var(--text);
 }
 .cw-dot {
   width: 8px;
@@ -90,10 +91,10 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  background: #f7f7fb;
+  background: var(--surface);
 }
 .cw-messages::-webkit-scrollbar { width: 4px; }
-.cw-messages::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
+.cw-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
 /* ── Bubbles ── */
 .cw-bubble {
@@ -105,14 +106,14 @@
 }
 .cw-bubble--user {
   align-self: flex-end;
-  background: #6c63ff;
-  color: #fff;
+  background: var(--accent);
+  color: var(--text);
   border-bottom-right-radius: 4px;
 }
 .cw-bubble--assistant {
   align-self: flex-start;
-  background: #fff;
-  color: #333;
+  background: var(--surface);
+  color: var(--text-secondary);
   border-bottom-left-radius: 4px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }
@@ -145,25 +146,28 @@
   align-items: center;
   padding: 10px 12px;
   border-top: 1px solid #ebebeb;
-  background: #fff;
+  background: var(--surface);
   gap: 8px;
 }
 .cw-input {
   flex: 1;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border);
   border-radius: 20px;
   padding: 8px 14px;
   font-size: 13px;
   outline: none;
-  background: #f7f7fb;
+  background: var(--bg);
+  border-color: var(--border);
   transition: border-color 0.2s;
 }
-.cw-input:focus { border-color: #6c63ff; }
+.cw-input:focus {
+  border-color: var(--accent);
+}
 .cw-send {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: #6c63ff;
+  background: var(--accent);
   border: none;
   color: #fff;
   font-size: 14px;
@@ -174,4 +178,38 @@
   transition: background 0.2s;
   flex-shrink: 0;
 }
-.cw-send:hover { background: #574fd6; }
+.cw-send:hover {
+  background: var(--text-secondary);
+}
+
+/* ── Mic button ── */
+.cw-mic {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #f0f0f5;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.2s;
+  flex-shrink: 0;
+}
+.cw-mic:hover { background: #e0e0ea; }
+.cw-mic--active {
+  background: #ff4d4d;
+  animation: cw-pulse 1s ease-in-out infinite;
+}
+@keyframes cw-pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,77,77,0.4); }
+  50%       { transform: scale(1.08); box-shadow: 0 0 0 6px rgba(255,77,77,0); }
+}
+
+/* ── Recording hint bubble ── */
+.cw-recording-hint {
+  font-style: italic;
+  color: #888;
+  font-size: 12px;
+}
