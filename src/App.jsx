@@ -9,6 +9,7 @@ import Navbar from './components/Navbar/Navbar'
 import ThemeToggle from './components/ThemeToggle/ThemeToggle'
 import ReadMode from './components/ReadMode/ReadMode'
 import Experience from './components/Experience/Experience'
+import ChatWidget from './components/ChatWidget/ChatWidget'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <ThemeToggle />
         <ReadMode />
         <Experience />
+        <ChatWidget />
       </main>
     </ReadModeProvider>
   )
