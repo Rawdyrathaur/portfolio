@@ -26,4 +26,5 @@ jobs:
     - name: Run AI Code Review
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       run: python scripts/ai_code_review.py
