@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import "./ChatWidget.css";
 
+const BACKEND = "http://localhost:8000";
+
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
@@ -23,7 +25,7 @@ export default function ChatWidget() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
 
-  /* ── Focus input when widget opens (DOM side-effect only, no setState) ── */
+  /* ── Focus input when widget opens ── */
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 150);
@@ -34,23 +36,35 @@ export default function ChatWidget() {
   const formatTime = (date) =>
     date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
-  /* ── Send message ── */
+  /* ── Send message to backend ── */
   const handleSend = async (text) => {
     const trimmed = text.trim();
     if (!trimmed || isLoading) return;
 
-    const userMsg = { role: "user", text: trimmed, time: new Date() };
-    setMessages((prev) => [...prev, userMsg]);
+    setMessages((prev) => [...prev, { role: "user", text: trimmed, time: new Date() }]);
     setInput("");
     setIsLoading(true);
 
-    await new Promise((r) => setTimeout(r, 1000));
+    try {
+      const res = await fetch(`${BACKEND}/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: trimmed }),
+      });
 
-    const reply = { role: "assistant", text: "This is a placeholder reply. Backend coming soon!", time: new Date() };
-    setMessages((prev) => [...prev, reply]);
+      if (!res.ok) throw new Error("Server error");
+      const data = await res.json();
+
+      setMessages((prev) => [...prev, { role: "assistant", text: data.reply, time: new Date() }]);
+      if (!isOpen) setHasNewMessage(true);
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", text: "⚠️ Could not reach backend. Is the server running?", time: new Date() },
+      ]);
+    }
+
     setIsLoading(false);
-
-    if (!isOpen) setHasNewMessage(true);
   };
 
   const handleKey = (e) => {
@@ -106,15 +120,31 @@ export default function ChatWidget() {
         if (e.data.size > 0) audioChunksRef.current.push(e.data);
       };
 
-      mediaRecorder.onstop = () => {
+      mediaRecorder.onstop = async () => {
         stream.getTracks().forEach((t) => t.stop());
         audioCtx.close();
-        // TODO: send blob to Whisper endpoint
-        // const blob = new Blob(audioChunksRef.current, { type: "audio/webm" });
-        setMessages((prev) => [
-          ...prev,
-          { role: "assistant", text: "🎤 Voice received! Whisper endpoint not connected yet.", time: new Date() },
-        ]);
+
+        const blob = new Blob(audioChunksRef.current, { type: "audio/webm" });
+        const formData = new FormData();
+        formData.append("audio", blob, "recording.webm");
+
+        setIsLoading(true);
+        try {
+          const res = await fetch(`${BACKEND}/whisper`, {
+            method: "POST",
+            body: formData,
+          });
+          if (!res.ok) throw new Error("Whisper error");
+          const data = await res.json();
+          // treat transcript like a typed message
+          await handleSend(data.transcript);
+        } catch {
+          setMessages((prev) => [
+            ...prev,
+            { role: "assistant", text: "🎤 Voice received but Whisper endpoint not connected yet.", time: new Date() },
+          ]);
+          setIsLoading(false);
+        }
       };
 
       mediaRecorder.start();
