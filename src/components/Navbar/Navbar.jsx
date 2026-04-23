@@ -2,11 +2,34 @@
    NAVBAR COMPONENT
 ======================== */
 
+import { useEffect, useState } from 'react'
 import './Navbar.css'
 
 function Navbar() {
+  const [visible, setVisible] = useState(true)
+  const [lastScrollY, setLastScrollY] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+
+      if (currentScrollY < 10) {
+        setVisible(true)
+      } else if (currentScrollY > lastScrollY) {
+        setVisible(false)
+      } else {
+        setVisible(true)
+      }
+
+      setLastScrollY(currentScrollY)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [lastScrollY])
+
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${visible ? 'navbar--visible' : 'navbar--hidden'}`}>
 
       <a className="navbar__icon" title="GitHub" href="https://github.com/Rawdyrathaur" target="_blank" rel="noopener noreferrer">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -38,13 +61,8 @@ function Navbar() {
         </svg>
       </a>
 
-      <a
-        className="navbar__icon"
-        title="Contact"
-        href="https://mail.google.com/mail/?view=cm&fs=1&to=mrathaur704@gmail.com&su=Ask%20Anything&body=Hi%20Manish,%0D%0A%0D%0AI%20have%20some%20ideas,%20suggestions,%20or%20need%20help%20with%20something.%0D%0A%0D%0AThanks!"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <a className="navbar__icon" title="Contact" href="https://mail.google.com/mail/?view=cm&fs=1&to=mrathaur704@gmail.com&su=Ask%20Anything&body=Hi%20Manish,%0D%0A%0D%0AI%20have%20some%20ideas,%20suggestions,%20or%20need%20help%20with%20something.%0D%0A%0D%0AThanks!" target="_blank" rel="noopener noreferrer">
+      
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
           <path
             d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
@@ -65,6 +83,6 @@ function Navbar() {
 
     </nav>
   )
-} 
+}
 
 export default Navbar

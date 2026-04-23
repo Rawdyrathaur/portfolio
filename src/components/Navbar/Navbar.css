@@ -25,6 +25,20 @@
     inset 0 -1px 0 rgba(255, 255, 255, 0.1),
     inset 0 0 4px 2px rgba(255, 255, 255, 0.2);
   overflow: hidden;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  will-change: transform;
+}
+
+.navbar--visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.navbar--hidden {
+  transform: translateX(-50%) translateY(-120%);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .navbar::before {
@@ -96,7 +110,6 @@
 /* Mobile (≤480px) */
 @media (max-width: 480px) {
   .navbar {
-    /* Switch from center-float to full stretch */
     top: 0.75rem;
     left: 1rem;
     right: 1rem;
@@ -106,6 +119,14 @@
     justify-content: space-around;
     padding: 0.3rem 0.5rem;
     gap: 0;
+  }
+
+  .navbar--visible {
+    transform: translateY(0);
+  }
+
+  .navbar--hidden {
+    transform: translateY(-120%);
   }
 
   .navbar__icon {
