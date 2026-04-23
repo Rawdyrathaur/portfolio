@@ -122,14 +122,14 @@ export default function ChatWidget() {
     } catch {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", text: "⚠️ Microphone access denied. Please allow mic access.", time: new Date() },
+        { role: "assistant", text: " Microphone access denied. Please allow mic access.", time: new Date() },
       ]);
     }
   };
 
   /* ── Clear chat ── */
   const clearChat = () => {
-    setMessages([{ role: "assistant", text: "Hi! Ask me anything about my portfolio 👋", time: new Date() }]);
+    setMessages([{ role: "assistant", text: "Hi! Ask me anything about my portfolio ", time: new Date() }]);
   };
 
   return (
