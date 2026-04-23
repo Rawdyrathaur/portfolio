@@ -2,62 +2,50 @@
    THEME TOGGLE COMPONENT
 ======================== */
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useId } from 'react'
 import './ThemeToggle.css'
 
 function ThemeToggle() {
+  const id = useId()
+
+  // Fix 1: Lazy initializer with SSR guard
   const [isDark, setIsDark] = useState(
-    window.matchMedia('(prefers-color-scheme: dark)').matches
+    typeof window !== 'undefined'
+      ? window.matchMedia('(prefers-color-scheme: dark)').matches
+      : false
   )
 
+  // Fix 4: Add system theme listener
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light')
-  }, [isDark])
+    const mq = window.matchMedia('(prefers-color-scheme: dark)')
+    const handler = (e) => setIsDark(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+
+  const toggleTheme = () => {
+    setIsDark((prev) => {
+      const newTheme = !prev
+      document.documentElement.setAttribute('data-theme', newTheme ? 'dark' : 'light')
+      return newTheme
+    })
+  }
 
   return (
     <button
       className={`theme-toggle ${isDark ? 'theme-toggle--dark' : ''}`}
-      onClick={() => setIsDark(!isDark)}
+      onClick={toggleTheme}
       title="Toggle Theme"
       aria-label="Toggle Theme"
     >
-      <span className="theme-toggle__thumb">
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <defs>
-      <mask id="moon-mask">
-        <rect width="16" height="16" fill="white" />
-        <circle
-          cx={isDark ? 11 : 20}
-          cy={4}
-          r={5}
-          fill="black"
-          style={{ transition: "cx 0.5s cubic-bezier(.34,1.56,.64,1)" }}
-        />
-      </mask>
-    </defs>
-    <circle
-      cx={8} cy={8} r={isDark ? 5 : 4}
-      fill="white"
-      mask="url(#moon-mask)"
-      style={{ transition: "r 0.4s cubic-bezier(.34,1.56,.64,1)" }}
-    />
-    <g
-      stroke="white"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      style={{ opacity: isDark ? 0 : 1, transition: "opacity 0.3s" }}
-    >
-      <line x1={8} y1={1} x2={8} y2={2.5} />
-      <line x1={8} y1={13.5} x2={8} y2={15} />
-      <line x1={1} y1={8} x2={2.5} y2={8} />
-      <line x1={13.5} y1={8} x2={15} y2={8} />
-      <line x1={3} y1={3} x2={4.1} y2={4.1} />
-      <line x1={11.9} y1={3} x2={10.8} y2={4.1} />
-      <line x1={3} y1={13} x2={4.1} y2={11.9} />
-      <line x1={11.9} y1={13} x2={10.8} y2={11.9} />
-    </g>
-  </svg>
-</span>
+      <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        {/* Fix 2: Unique mask ID */}
+        <mask id={`moon-mask-${id}`}>
+          <rect x="0" y="0" width="24" height="24" fill="white" />
+          <circle cx="12" cy="12" r="6" fill="black" />
+        </mask>
+        <circle cx="12" cy="12" r="10" fill="currentColor" mask={`url(#moon-mask-${id})`} />
+      </svg>
     </button>
   )
 }

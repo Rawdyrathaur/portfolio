@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@300;400;500&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #020206;
+  --accent1: #7c3aff;
+  --accent2: #00c8ff;
+  --text-dim: rgba(255, 255, 255, 0.35);
+  --text-glow: rgba(180, 150, 255, 0.9);
+}
+
+/* ── Page wrapper ─────────────────────────────────────────────────────────── */
+.jelly-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  font-family: 'Syne', sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Subtle grain overlay */
+.jelly-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* ── Scene ────────────────────────────────────────────────────────────────── */
+.scene {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 44px;
+}
+
+/* ── Ambient bloom ────────────────────────────────────────────────────────── */
+.glow-bg {
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(100, 50, 255, 0.14) 0%,
+    rgba(0, 180, 255, 0.06) 45%,
+    transparent 70%
+  );
+  filter: blur(60px);
+  pointer-events: none;
+  transition: opacity 0.8s ease, transform 1.2s ease;
+  transform: scale(0.9);
+}
+
+.glow-bg.active {
+  transform: scale(1.1);
+  opacity: 1 !important;
+}
+
+/* ── Blob wrapper ─────────────────────────────────────────────────────────── */
+.blob-wrapper {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blob-wrapper canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* ── Frequency bars ───────────────────────────────────────────────────────── */
+.freq-bars {
+  position: absolute;
+  bottom: -50px;
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+  height: 28px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.freq-bars.visible {
+  opacity: 1;
+}
+
+.freq-bar {
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(to top, rgba(120, 60, 255, 0.9), rgba(0, 200, 255, 0.7));
+  animation: none;
+  height: 4px;
+}
+
+.freq-bars.visible .freq-bar {
+  animation: barDance var(--d, 0.6s) ease-in-out infinite alternate;
+}
+
+@keyframes barDance {
+  from {
+    height: 3px;
+    opacity: 0.4;
+  }
+  to {
+    height: var(--h, 20px);
+    opacity: 1;
+  }
+}
+
+/* ── State label ──────────────────────────────────────────────────────────── */
+.state-label {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  color: var(--text-dim);
+  text-align: center;
+  text-transform: uppercase;
+  min-height: 22px;
+  transition: color 0.5s ease;
+}
+
+.state-label.active {
+  color: var(--text-glow);
+  text-shadow: 0 0 20px rgba(160, 120, 255, 0.5);
+}
+
+/* ── Dot indicator ────────────────────────────────────────────────────────── */
+.dot-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  transition: background 0.4s, transform 0.4s;
+}
+
+.dot.lit {
+  background: rgba(140, 90, 255, 0.85);
+  box-shadow: 0 0 8px rgba(140, 90, 255, 0.7);
+  transform: scale(1.3);
+}
