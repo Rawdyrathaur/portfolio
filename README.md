@@ -38,7 +38,7 @@ src/
 
 ## Workflow Diagram
 
-Below is the workflow diagram for the LLM Router process:
+Below is the enhanced workflow diagram for the LLM Router process, providing a clear and detailed understanding of how user queries are processed:
 
 ```mermaid
 flowchart TD
@@ -49,28 +49,59 @@ flowchart TD
     classDef success fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000
     classDef error fill:#ffcdd2,stroke:#c62828,stroke-width:2px,color:#000
 
-    A[User Query]:::frontend
-    Z[Display Response]:::frontend
+    A[User Query]:::frontend -->|1. Send Query| B[POST /query]:::rag
+    B -->|2. Retrieve Context| C[Retrieve Context\nfrom ChromaDB]:::rag
+    C -->|3. Combine Query + Context| D[Query + Context]:::router
 
-    B[POST /query]:::rag
-    C[Retrieve Context\nChromaDB]:::rag
-
-    D[Query + Context]:::router
-    E{OpenAI}:::router
-    F{Anthropic}:::router
-    G{Cohere}:::router
-    H[Normalise Response]:::success
-    I[Error: All LLMs Failed]:::error
-
-    A --> B --> C --> D --> E
-    E -->|Success| H
-    E -->|Fail| F
+    D -->|4. Route to Primary LLM| E{OpenAI GPT-4}:::llm
+    E -->|Success| H[Normalize Response]:::success
+    E -->|Fail| F{Anthropic Claude}:::llm
     F -->|Success| H
-    F -->|Fail| G
+    F -->|Fail| G{Cohere Command}:::llm
     G -->|Success| H
-    G -->|Fail| I
-    H --> Z
+    G -->|Fail| I[Error: All LLMs Failed]:::error
+
+    H -->|5. Return Response| Z[Display Response]:::frontend
+    I -->|5. Return Error| Z
+
+    %% Additional Notes
+    %% - The process ensures fallback mechanisms for high availability.
+    %% - Normalization guarantees consistent response formatting.
 ```
+
+### Explanation of the Workflow
+
+1. **User Query**:
+   - The user submits a query through the frontend interface.
+   - The query is sent to the backend via a `POST /query` API call.
+
+2. **Retrieve Context**:
+   - The backend retrieves relevant context for the query using ChromaDB.
+   - This ensures that the LLMs have the necessary information to generate accurate responses.
+
+3. **Combine Query + Context**:
+   - The query and retrieved context are combined into a single input for the LLM Router.
+
+4. **LLM Routing**:
+   - The router first sends the input to the primary LLM (OpenAI GPT-4).
+   - If the primary LLM fails (e.g., timeout, rate limit), the router falls back to secondary LLMs (Anthropic Claude, Cohere Command).
+
+5. **Normalize Response**:
+   - The response from the LLM is normalized to ensure consistent formatting.
+
+6. **Display Response**:
+   - The normalized response is sent back to the frontend and displayed to the user.
+   - If all LLMs fail, an error message is returned instead.
+
+### Key Features of the Workflow
+- **Fallback Mechanism**:
+  - Ensures high availability by routing queries to multiple LLMs in case of failures.
+- **Context-Aware Responses**:
+  - Integrates ChromaDB to provide relevant context for more accurate responses.
+- **Error Handling**:
+  - Returns a user-friendly error message if all LLMs fail.
+- **Scalability**:
+  - The architecture can easily accommodate additional LLMs or context sources in the future.
 
 ## Getting Started
 
