@@ -122,14 +122,14 @@ export default function ChatWidget() {
     } catch {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", text: " Microphone access denied. Please allow mic access.", time: new Date() },
+        { role: "assistant", text: "⚠️ Microphone access denied. Please allow mic access.", time: new Date() },
       ]);
     }
   };
 
   /* ── Clear chat ── */
   const clearChat = () => {
-    setMessages([{ role: "assistant", text: "Hi! Ask me anything about my portfolio ", time: new Date() }]);
+    setMessages([{ role: "assistant", text: "Hi! Ask me anything about Aryan's portfolio 👋", time: new Date() }]);
   };
 
   return (
@@ -140,23 +140,18 @@ export default function ChatWidget() {
           {/* Header */}
           <div className="cw-header">
             <div className="cw-header-left">
-              <div className="cw-avatar">A</div>
-              <div className="cw-header-info">
-                <span className="cw-title">Portfolio Assistant</span>
-                <span className="cw-status">
-                  <span className="cw-dot" />
-                  Online
-                </span>
-              </div>
+              <span className="cw-dot" />
+              <span className="cw-title">Portfolio Assistant</span>
+              <span className="cw-status-text">· Online</span>
             </div>
             <div className="cw-header-actions">
               <button className="cw-icon-btn" onClick={clearChat} title="Clear chat" aria-label="Clear chat">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
                 </svg>
               </button>
-              <button className="cw-icon-btn cw-close" onClick={() => setIsOpen(false)} aria-label="Close chat">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              <button className="cw-icon-btn" onClick={() => setIsOpen(false)} aria-label="Close chat">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                   <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
                 </svg>
               </button>
@@ -167,7 +162,6 @@ export default function ChatWidget() {
           <div className="cw-messages" role="log" aria-live="polite">
             {messages.map((m, i) => (
               <div key={i} className={`cw-msg-row cw-msg-row--${m.role}`}>
-                {m.role === "assistant" && <div className="cw-msg-avatar">A</div>}
                 <div className="cw-msg-col">
                   <div className={`cw-bubble cw-bubble--${m.role}`}>{m.text}</div>
                   <span className="cw-time">{formatTime(m.time)}</span>
@@ -177,7 +171,6 @@ export default function ChatWidget() {
 
             {isLoading && (
               <div className="cw-msg-row cw-msg-row--assistant">
-                <div className="cw-msg-avatar">A</div>
                 <div className="cw-msg-col">
                   <div className="cw-bubble cw-bubble--assistant">
                     <span className="cw-typing"><span /><span /><span /></span>

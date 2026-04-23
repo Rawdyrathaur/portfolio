@@ -8,40 +8,76 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 12px;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
-/* ── Floating bubble button ── */
+/* ══════════════════════════════
+   BUBBLE TOGGLE BUTTON
+══════════════════════════════ */
 .cw-bubble-btn {
-  width: 52px;
-  height: 52px;
+  position: relative;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   background: var(--accent);
   border: 1px solid rgba(255, 255, 255, 0.25);
   font-size: 22px;
   cursor: pointer;
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.15),
+    0 8px 32px rgba(0, 0, 0, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.5),
     inset 0 -1px 0 rgba(255, 255, 255, 0.1),
     inset 0 0 4px 2px rgba(255, 255, 255, 0.15);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #fff;
+  overflow: hidden;
 }
 .cw-bubble-btn:hover {
-  transform: scale(1.08);
+  transform: scale(1.1);
   box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.2),
+    0 12px 40px rgba(0, 0, 0, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.55),
     inset 0 -1px 0 rgba(255, 255, 255, 0.12);
 }
 
-/* ── Chat card ── */
+/* Icon swap on open/close */
+.cw-bubble-icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s;
+}
+.cw-bubble-icon--close  { transform: rotate(-90deg) scale(0.5); opacity: 0; }
+.cw-bubble-btn--open .cw-bubble-icon--chat  { transform: rotate(90deg) scale(0.5); opacity: 0; }
+.cw-bubble-btn--open .cw-bubble-icon--close { transform: rotate(0deg) scale(1);   opacity: 1; }
+
+/* Unread badge */
+.cw-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ff4d4d;
+  border: 2px solid #fff;
+  animation: cw-badge-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes cw-badge-pop {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+
+/* ══════════════════════════════
+   CHAT CARD
+══════════════════════════════ */
 .cw-card {
-  width: 320px;
-  height: 420px;
+  width: 340px;
+  height: 460px;
   background: var(--surface);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -56,122 +92,157 @@
   flex-direction: column;
   overflow: hidden;
   position: relative;
-  animation: cw-pop 0.2s ease;
+  animation: cw-pop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: bottom right;
 }
 
-/* Same shimmer edges as your navbar ::before / ::after */
+/* Top edge shimmer — matches navbar ::before */
 .cw-card::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--border), transparent);
   z-index: 2;
   pointer-events: none;
 }
-
+/* Left edge shimmer — matches navbar ::after */
 .cw-card::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 1px;
-  height: 100%;
+  top: 0; left: 0;
+  width: 1px; height: 100%;
   background: linear-gradient(180deg, var(--border), transparent, var(--border));
   z-index: 2;
   pointer-events: none;
 }
 
 @keyframes cw-pop {
-  from { opacity: 0; transform: translateY(12px) scale(0.97); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translateY(16px) scale(0.94); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
 }
 
-/* ── Header ── */
+/* ══════════════════════════════
+   HEADER
+══════════════════════════════ */
 .cw-header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 14px 16px;
+  justify-content: space-between;
+  padding: 10px 14px;
   background: var(--accent);
-  color: var(--text);
   position: relative;
   flex-shrink: 0;
+  z-index: 1;
 }
-
-/* Top shimmer line on header — mirrors navbar ::before */
-.cw-header::before {
+.cw-header::after {
   content: '';
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 0; left: 0; right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
 }
 
-.cw-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #a8f5a2;
-  flex-shrink: 0;
-  box-shadow: 0 0 6px #a8f5a2;
+.cw-header-left {
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }
+.cw-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
 .cw-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  flex: 1;
-}
-.cw-close {
-  background: none;
-  border: none;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 14px;
-  cursor: pointer;
-  padding: 0;
+  color: #fff;
   line-height: 1;
 }
-.cw-close:hover { color: #fff; }
+.cw-status-text {
+  font-size: 12px;
+  color: rgba(255,255,255,0.65);
+  font-weight: 400;
+}
+.cw-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #a8f5a2;
+  box-shadow: 0 0 5px #a8f5a2;
+  flex-shrink: 0;
+}
 
-/* ── Messages ── */
+.cw-icon-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+.cw-icon-btn:hover {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+/* ══════════════════════════════
+   MESSAGES
+══════════════════════════════ */
 .cw-messages {
   flex: 1;
   overflow-y: auto;
-  padding: 14px 12px;
+  padding: 14px 12px 8px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   background: transparent;
+  scroll-behavior: smooth;
 }
-.cw-messages::-webkit-scrollbar { width: 4px; }
+.cw-messages::-webkit-scrollbar { width: 3px; }
 .cw-messages::-webkit-scrollbar-thumb {
   background: var(--border);
   border-radius: 4px;
 }
 
-/* ── Bubbles ── */
-.cw-bubble {
-  max-width: 80%;
-  padding: 9px 13px;
-  border-radius: 14px;
-  font-size: 13px;
-  line-height: 1.5;
+.cw-msg-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  animation: cw-msg-in 0.2s ease;
+}
+.cw-msg-row--user  { flex-direction: row-reverse; }
+.cw-msg-col { display: flex; flex-direction: column; gap: 2px; max-width: 78%; }
+.cw-msg-row--user .cw-msg-col { align-items: flex-end; }
+
+@keyframes cw-msg-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
+
+/* ── Bubbles ── */
+.cw-bubble {
+  padding: 9px 13px;
+  border-radius: 16px;
+  font-size: 13px;
+  line-height: 1.55;
+  word-break: break-word;
+}
 .cw-bubble--user {
-  align-self: flex-end;
   background: var(--accent);
   color: var(--text);
   border-bottom-right-radius: 4px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
-
 .cw-bubble--assistant {
-  align-self: flex-start;
   background: var(--surface);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -179,8 +250,15 @@
   border-bottom-left-radius: 4px;
   border: 1px solid var(--border);
   box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.06),
+    0 1px 6px rgba(0,0,0,0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.cw-time {
+  font-size: 10px;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  padding: 0 4px;
 }
 
 /* ── Typing indicator ── */
@@ -188,7 +266,8 @@
   display: flex;
   gap: 4px;
   align-items: center;
-  height: 18px;
+  height: 16px;
+  padding: 2px 0;
 }
 .cw-typing span {
   width: 6px;
@@ -199,13 +278,33 @@
 }
 .cw-typing span:nth-child(2) { animation-delay: 0.2s; }
 .cw-typing span:nth-child(3) { animation-delay: 0.4s; }
-
 @keyframes cw-bounce {
   0%, 80%, 100% { transform: translateY(0); }
   40%           { transform: translateY(-5px); }
 }
 
-/* ── Input bar ── */
+/* ── Recording hint ── */
+.cw-recording-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text-secondary);
+  padding: 2px 4px;
+  opacity: 0.75;
+}
+.cw-rec-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff4d4d;
+  animation: cw-pulse 1s ease-in-out infinite;
+}
+
+/* ══════════════════════════════
+   INPUT BAR
+══════════════════════════════ */
 .cw-input-bar {
   display: flex;
   align-items: center;
@@ -216,15 +315,13 @@
   gap: 8px;
   position: relative;
   flex-shrink: 0;
+  z-index: 1;
 }
-
-/* Top shimmer line — same as navbar ::before */
+/* Top shimmer — mirrors navbar ::before */
 .cw-input-bar::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--border), transparent);
 }
@@ -235,6 +332,7 @@
   border-radius: 20px;
   padding: 8px 14px;
   font-size: 13px;
+  font-family: inherit;
   outline: none;
   background: rgba(255, 255, 255, 0.45);
   backdrop-filter: blur(4px);
@@ -243,75 +341,79 @@
   transition: border-color 0.2s, box-shadow 0.2s;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
-.cw-input::placeholder { color: var(--text-secondary); opacity: 0.6; }
+.cw-input::placeholder { color: var(--text-secondary); opacity: 0.55; }
 .cw-input:focus {
   border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.55);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    0 0 0 3px rgba(var(--accent-rgb, 99, 102, 241), 0.12);
+    inset 0 1px 0 rgba(255, 255, 255, 0.65),
+    0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
 }
+.cw-input:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* ── Send button ── */
 .cw-send {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: var(--accent);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: #fff;
+  background: var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-secondary);
   font-size: 14px;
-  cursor: pointer;
+  cursor: not-allowed;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s, color 0.2s;
   flex-shrink: 0;
+  opacity: 0.5;
+}
+.cw-send--active {
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  opacity: 1;
   box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.15),
+    0 4px 16px rgba(0, 0, 0, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
-.cw-send:hover {
-  transform: scale(1.08);
+.cw-send--active:hover {
+  transform: scale(1.1);
   box-shadow:
-    0 6px 20px rgba(0, 0, 0, 0.2),
+    0 6px 20px rgba(0, 0, 0, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.45);
 }
 
 /* ── Mic button ── */
 .cw-mic {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.35);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   border: 1px solid var(--border);
+  color: var(--text-secondary);
   font-size: 15px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s, transform 0.2s;
+  transition: background 0.2s, transform 0.2s, color 0.2s;
   flex-shrink: 0;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 .cw-mic:hover {
   background: rgba(255, 255, 255, 0.55);
+  transform: scale(1.06);
 }
 .cw-mic--active {
   background: #ff4d4d;
   border-color: rgba(255, 77, 77, 0.4);
+  color: #fff;
   animation: cw-pulse 1s ease-in-out infinite;
 }
 @keyframes cw-pulse {
   0%, 100% { transform: scale(1);    box-shadow: 0 0 0 0   rgba(255, 77, 77, 0.4); }
-  50%       { transform: scale(1.08); box-shadow: 0 0 0 6px rgba(255, 77, 77, 0);   }
-}
-
-/* ── Recording hint ── */
-.cw-recording-hint {
-  font-style: italic;
-  color: var(--text-secondary);
-  font-size: 12px;
-  opacity: 0.7;
+  50%       { transform: scale(1.07); box-shadow: 0 0 0 6px rgba(255, 77, 77, 0); }
 }

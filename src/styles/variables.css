@@ -18,14 +18,18 @@
   --text-heading: 20px;
   --text-body:    17px;
   --text-label:   12px;
+
+  color-scheme: light;
 }
 
 [data-theme="dark"] {
   --bg: #000000;
   --text: #ffffff;
-  --text-muted: #555555;
+  --text-muted: #999999;        /* ← was #555555, too dark on black bg */
   --text-secondary: #aaaaaa;
   --border: #222222;
   --surface: #111111;
   --accent: #dddddd;
+
+  color-scheme: dark;
 }
