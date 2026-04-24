@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import "./ChatWidget.css";
 
-const BACKEND = "http://localhost:8000";
+const BACKEND = "https://msrathaur-manish-portfolio-api.hf.space";
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
