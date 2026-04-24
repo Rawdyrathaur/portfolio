@@ -64,7 +64,7 @@ export default function ChatWidget() {
       setMessages((prev) => [...prev, { role: "assistant", text: data.reply, time: new Date() }]);
 
       // Auto-speak the reply
-      const audio = new Audio(`http://localhost:8000/speak?text=${encodeURIComponent(data.reply)}`);
+      const audio = new Audio(`${BACKEND}/speak?text=${encodeURIComponent(data.reply)}`);
       audio.play();
 
       if (!isOpen) setHasNewMessage(true);
