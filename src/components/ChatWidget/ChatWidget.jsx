@@ -6,7 +6,7 @@ const BACKEND = "http://localhost:8000";
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: "assistant", text: "Hi! Ask me anything about Aryan's portfolio 👋", time: new Date() }
+    { role: "assistant", text: "Hi! I'm Manish's digital brain. Ask me anything about his work, skills, or projects 👋", time: new Date() }
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -49,13 +49,24 @@ export default function ChatWidget() {
       const res = await fetch(`${BACKEND}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: trimmed }),
+        body: JSON.stringify({
+          message: trimmed,
+          history: messages.map((m) => ({
+            role: m.role,
+            content: m.text,
+          })),
+        }),
       });
 
       if (!res.ok) throw new Error("Server error");
       const data = await res.json();
 
       setMessages((prev) => [...prev, { role: "assistant", text: data.reply, time: new Date() }]);
+
+      // Auto-speak the reply
+      const audio = new Audio(`http://localhost:8000/speak?text=${encodeURIComponent(data.reply)}`);
+      audio.play();
+
       if (!isOpen) setHasNewMessage(true);
     } catch {
       setMessages((prev) => [
@@ -159,7 +170,7 @@ export default function ChatWidget() {
 
   /* ── Clear chat ── */
   const clearChat = () => {
-    setMessages([{ role: "assistant", text: "Hi! Ask me anything about Aryan's portfolio 👋", time: new Date() }]);
+    setMessages([{ role: "assistant", text: "Hi! I'm Manish's digital brain. Ask me anything about his work, skills, or projects 👋", time: new Date() }]);
   };
 
   return (
