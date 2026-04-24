@@ -1,8 +1,4 @@
-# This workflow uses Node.js 24 to address deprecation warnings for Node.js 20.
-# For more information, see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners
-
 name: Main Workflow
-
 on:
   push:
     branches:
@@ -14,8 +10,6 @@ on:
 jobs:
   frontend:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -23,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '22'
 
       - name: Install dependencies
         run: npm install
