@@ -3,18 +3,18 @@
 ======================== */
 
 const profile = {
-  name: "Manish Rathaur",
+  name: "Manish Rathor",
   photo: "mypic.png",
 
   short: [
-    "a full-stack developer and product builder with deep experience across engineering, product strategy, and user-centric design.",
-    "a polymath who bridges technical architecture with business outcomes to create impactful, scalable solutions.",
+    "a Computer Science student and software developer focused on AI/ML, Java, and Android development.",
+    "an open-source contributor and product builder who enjoys turning ideas into practical, real-world applications.",
   ],
 
   detailed: [
-    "a full-stack developer and product builder with deep experience across engineering, product strategy, and user-centric design.",
-    "a polymath who bridges technical architecture with business outcomes to create impactful, scalable solutions.",
-    "someone who thrives at the intersection of code and creativity — having shipped AI-native products, contributed to open source at scale, and written technical content that developers love.",
+    "a Final Year B.Tech student in Computer Science and Technology with strong interest in Artificial Intelligence, Machine Learning, and Java development.",
+    "someone who focuses on practical learning by building real-world projects including AI-powered tools and Chrome extensions.",
+    "an open-source contributor to Organic Maps with hands-on experience in Android development, production-level code, and clean architecture principles.",
   ],
 
   links: {
