@@ -12,7 +12,8 @@ export default function ChatWidget() {
   const [isLoading, setIsLoading] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [hasNewMessage, setHasNewMessage] = useState(false);
-
+const [ setShowNotify] = useState(false);
+const hasShownNotify = useRef(false);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
   const silenceTimerRef = useRef(null);
@@ -31,7 +32,17 @@ export default function ChatWidget() {
       setTimeout(() => inputRef.current?.focus(), 150);
     }
   }, [isOpen]);
-
+useEffect(() => {
+  const handleScroll = () => {
+    if (window.scrollY > 200 && !hasShownNotify.current && !isOpen) {
+      hasShownNotify.current = true;
+      setShowNotify(true);
+      setTimeout(() => setShowNotify(false), 3000);
+    }
+  };
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, [isOpen]);
   /* ── Format timestamp ── */
   const formatTime = (date) =>
     date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
