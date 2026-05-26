@@ -3,22 +3,18 @@ email: "mrathaur704@gmail.com"
 description: "My daily coding learning blog and portfolio documentation."
 baseurl: "/blog"
 url: "https://www.manishrathaur.tech"
-
-author: "Manish Rathaur"
-
-# ✏️ Fill in your social URLs below
-github_username:  Rawdyrathaur
 twitter_username: mrathaur704
-linkedin_username: ""
-instagram_username: ""
-youtube_username: ""
+github_username:  Rawdyrathaur
 
-remote_theme: "zivong/jekyll-theme-hamilton"
+# Social Integrations for Hamilton Left-Sidebar
+author: "Manish Rathaur"
+avatar: "https://manishrathaur.tech"
 
+# Theme Activation Plugins
 plugins:
   - jekyll-remote-theme
   - jekyll-feed
   - jekyll-seo-tag
-  - jekyll-sitemap
-  - jekyll-paginate
-skin: midnight
+
+# Hamilton Dark Theme Source
+remote_theme: "zivong/jekyll-theme-hamilton"

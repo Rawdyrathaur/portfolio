@@ -22,7 +22,7 @@ const profile = {
     linkedin: "https://www.linkedin.com/in/manish-rathaur-80b40b24a/",
     twitter: "https://x.com/mrathaur704",
     kaggle: "https://www.kaggle.com/manishrathaur",
-    medium: "https://medium.com/@manishrathaur10",
+    blog: "/blog",
     email: "mrathaur704@gmail.com",
   },
 }
