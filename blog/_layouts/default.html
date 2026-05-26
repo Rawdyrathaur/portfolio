@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+  {%- include head.html -%}
+  <body>
+    <div class="site-container">
+      <header class="site-header">
+        <div class="wrapper">
+  <script>
+    function clickSidebarButton() {
+      const elem = document.getElementById("site-sidebar")
+      if (elem.style.display == "none" || elem.style.display == "") {
+        elem.style.display = "block";
+      } else {
+        elem.style.display = "none";
+      }
+    }
+  </script>
+  <a class="site-sidebar-button" onclick="clickSidebarButton()"><i class="far fa-user"></i>
+  </a>
+
+  <a class="site-title" rel="author" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
+
+  
+</div>
+
+      </header>
+      
+      <div class="site-body wrapper">
+        <aside class="site-sidebar" id="site-sidebar">
+          
+            
+
+<div class="sidebar-section">
+  <ul class="contact-list">
+    <li>
+        <i class="sidebar-icon fas fa-at"></i>
+        <span class="contact-info p-name">{{ site.author | escape }}</span>
+      </li>
+    {%- if site.email %}
+    <li>
+        <i class="sidebar-icon fas fa-envelope"></i>
+        <a class="contact-info u-email" href="mailto:{{ site.email }}">{{ site.email }}</a>
+      </li>
+    {%- endif %}
+    
+  </ul>
+</div>
+
+<div class="sidebar-section feed-subscribe">
+  <a href="{{ "/feed.xml" | relative_url }}">
+    <i class="sidebar-icon fas fa-rss"></i><span>Subscribe</span>
+  </a>
+</div>
+
+<!-- Social Links Section -->
+<div class="sidebar-section" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(0,177,201,0.2);">
+  <p style="font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: #00b1c9; margin: 0 0 0.8rem 0; padding-left: 0;">Follow</p>
+  <ul class="contact-list" style="gap: 0.5rem;">
+    {%- if site.github_username %}
+    <li>
+      <i class="sidebar-icon fab fa-github"></i>
+      <a class="contact-info" href="https://github.com/{{ site.github_username }}" target="_blank" style="text-decoration: none;">GitHub</a>
+    </li>
+    {%- endif %}
+    {%- if site.twitter_username %}
+    <li>
+      <i class="sidebar-icon fab fa-twitter" style="color: #1da1f2;"></i>
+      <a class="contact-info" href="https://twitter.com/{{ site.twitter_username }}" target="_blank" style="text-decoration: none;">Twitter</a>
+    </li>
+    {%- endif %}
+    {%- if site.linkedin_username %}
+    <li>
+      <i class="sidebar-icon fab fa-linkedin" style="color: #0077b5;"></i>
+      <a class="contact-info" href="https://linkedin.com/in/{{ site.linkedin_username }}" target="_blank" style="text-decoration: none;">LinkedIn</a>
+    </li>
+    {%- endif %}
+    {%- if site.instagram_username %}
+    <li>
+      <i class="sidebar-icon fab fa-instagram" style="color: #e1306c;"></i>
+      <a class="contact-info" href="https://instagram.com/{{ site.instagram_username }}" target="_blank" style="text-decoration: none;">Instagram</a>
+    </li>
+    {%- endif %}
+    {%- if site.youtube_username %}
+    <li>
+      <i class="sidebar-icon fab fa-youtube" style="color: #ff0000;"></i>
+      <a class="contact-info" href="https://youtube.com/{{ site.youtube_username }}" target="_blank" style="text-decoration: none;">YouTube</a>
+    </li>
+    {%- endif %}
+  </ul>
+</div>
+
+        </aside>
+
+        <main class="site-main">
+          {{ content }}
+        </main>
+      </div>
+
+      {%- include footer.html -%}
+    </div>
+
+    {%- if jekyll.environment == 'production' and site.google_analytics -%}
+      {%- include google-analytics.html -%}
+    {%- endif -%}
+  </body>
+
+</html>
