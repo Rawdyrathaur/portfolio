@@ -277,7 +277,8 @@
   animation: cw-msg-in 0.2s ease;
 }
 .cw-msg-row--user  { flex-direction: row-reverse; }
-.cw-msg-col { display: flex; flex-direction: column; gap: 2px; max-width: 78%; }
+.cw-msg-col { display: flex; flex-direction:
+   column; gap: 2px; max-width: 78%; }
 .cw-msg-row--user .cw-msg-col { align-items: flex-end; }
 
 @keyframes cw-msg-in {

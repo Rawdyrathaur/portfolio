@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && npm run build:blog",
-    "build:blog": "cd blog && jekyll build && cp -r _site ../dist/blog",
+    "build": "vite build && cp -r public/blog dist/blog",
     "lint": "eslint .",
     "test": "vitest run",
     "preview": "vite preview"
