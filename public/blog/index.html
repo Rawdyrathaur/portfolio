@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>Manish’s Coding Journey | My daily coding learning blog and portfolio documentation.</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Manish’s Coding Journey" />
+<meta name="author" content="Manish Rathaur" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="My daily coding learning blog and portfolio documentation." />
+<meta name="twitter:description" property="og:description" content="My daily coding learning blog and portfolio documentation." />
+<link rel="canonical" href="https://www.manishrathaur.tech/blog/" />
+<meta property="og:url" content="https://www.manishrathaur.tech/blog/" />
+<meta property="og:site_name" content="Manish’s Coding Journey" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Manish’s Coding Journey" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","author":{"@type":"Person","name":"Manish Rathaur"},"description":"My daily coding learning blog and portfolio documentation.","headline":"Manish’s Coding Journey","name":"Manish’s Coding Journey","url":"https://www.manishrathaur.tech/blog/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<link type="application/atom+xml" rel="alternate" href="https://www.manishrathaur.tech/blog/feed.xml" title="Manish&apos;s Coding Journey" />
+
+
+
+
+
+<!-- Google Fonts -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open%20Sans|Roboto|Roboto%20Slab|Inconsolata|Dancing%20Script|Noto%20Sans%20SC|Noto%20Sans%20TC|Noto%20Serif%20SC|Noto%20Serif%20TC|Ma%20Shan%20Zheng">
+
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="/blog/assets/css/skin.css">
+
+<!-- Begin selecting skin -->
+
+<!-- End selecting skin -->
+
+<script async src="https://use.fontawesome.com/releases/v5.0.12/js/all.js"></script>
+
+
+
+
+  </head>
+
+  <body>
+    <div class="site-container">
+      <header class="site-header">
+        <div class="wrapper">
+  <script>
+    function clickSidebarButton() {
+      const elem = document.getElementById("site-sidebar")
+      if (elem.style.display == "none" || elem.style.display == "") {
+        elem.style.display = "block";
+      } else {
+        elem.style.display = "none";
+      }
+    }
+  </script>
+  <a class="site-sidebar-button" onclick="clickSidebarButton()"><i class="far fa-user"></i>
+  </a>
+
+  <a class="site-title" rel="author" href="/blog/">Manish&#39;s Coding Journey</a>
+
+  
+</div>
+
+      </header>
+      
+      <div class="site-body wrapper">
+        <aside class="site-sidebar" id="site-sidebar">
+          
+            
+
+<div class="sidebar-section">
+  <ul class="contact-list">
+    <li>
+        <i class="sidebar-icon fas fa-at"></i>
+        <span class="contact-info p-name">Manish Rathaur</span>
+      </li>
+    <li>
+        <i class="sidebar-icon fas fa-envelope"></i>
+        <a class="contact-info u-email" href="mailto:mrathaur704@gmail.com">mrathaur704@gmail.com</a>
+      </li>
+    
+  </ul>
+</div>
+
+<div class="sidebar-section feed-subscribe">
+  <a href="/blog/feed.xml">
+    <i class="sidebar-icon fas fa-rss"></i><span>Subscribe</span>
+  </a>
+</div>
+
+
+
+          
+        </aside>
+        <main class="site-main" id="site-main" aria-label="Content" tabindex="1">
+          <style>
+html, body, .site-header, .site-footer, .site-main {
+  background-color: #080808 !important; /* Solid matte black background */
+  background-image: none !important;    /* Removes any default patterns */
+  color: #e0e0e0 !important;             /* Crisp clean readable text */
+}
+/* Back link */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: silver !important;
+  text-decoration: none !important;
+  font-size: 0.82rem;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s;
+  position: relative;
+  z-index: 1;
+}
+.back-link:hover { color: #00b1c9 !important; }
+.back-link i { font-size: 0.72rem; }
+
+/* Hero */
+.home-hero {
+  padding: 1.5rem 0 2.5rem;
+  position: relative;
+  z-index: 1;
+  border-bottom: 1px solid rgba(211,211,211,0.1);
+  margin-bottom: 2.5rem;
+}
+.hero-label {
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #00b1c9;
+  margin-bottom: 0.7rem;
+}
+.hero-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: lightgrey;
+  margin-bottom: 0.6rem;
+  line-height: 1.3;
+}
+.hero-title span {
+  color: #00b1c9;
+}
+.hero-desc {
+  color: silver;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  max-width: 480px;
+  margin-bottom: 1.5rem;
+}
+
+/* Sidebar Social Links Positioning */
+.sidebar-social-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.sidebar-social-item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.82rem;
+  text-decoration: none !important;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+.sidebar-social-item:hover {
+  opacity: 0.85;
+}
+.sidebar-social-item i {
+  font-size: 0.95rem;
+  width: 16px;
+  text-align: center;
+}
+
+
+/* Section heading — matches Hamilton's h3 style */
+.section-heading {
+  font-size: 0.7rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #00b1c9;
+  margin: 0 0 1.1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(0,177,201,0.25);
+  position: relative;
+  z-index: 1;
+}
+
+/* Category grid */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 2.5rem;
+  position: relative;
+  z-index: 1;
+}
+.cat-card {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(211,211,211,0.1);
+  border-radius: 4px;
+  padding: 1.3rem 0.9rem 1rem;
+  text-align: center;
+  text-decoration: none !important;
+  display: block;
+  transition: all 0.25s ease;
+  position: relative;
+}
+.cat-card:hover {
+  border-color: #00b1c9;
+  background: rgba(0,177,201,0.05);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4), 0 0 16px rgba(0,177,201,0.1);
+  text-decoration: none !important;
+}
+.cat-icon {
+  font-size: 1.7rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.cat-name {
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: lightgrey;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.cat-card:hover .cat-name { color: #00b1c9; }
+.cat-count {
+  font-size: 0.67rem;
+  color: silver;
+}
+
+/* Post list */
+.posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 3rem;
+  border: 1px solid rgba(211,211,211,0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.post-card {
+  display: block;
+  padding: 0.85rem 1.1rem;
+  text-decoration: none !important;
+  border-bottom: 1px solid rgba(211,211,211,0.08);
+  transition: background 0.2s ease;
+  background: transparent;
+}
+.post-card:last-child { border-bottom: none; }
+.post-card:hover {
+  background: rgba(0,177,201,0.05);
+  text-decoration: none !important;
+}
+.post-card-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: lightgrey;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+.post-card:hover .post-card-title { color: #00b1c9; }
+.post-card-meta {
+  font-size: 0.7rem;
+  color: silver;
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.post-cat-tag {
+  color: #00b1c9;
+  font-size: 0.67rem;
+}
+.post-cat-tag::before { content: "· "; }
+
+.empty-state {
+  color: silver;
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+  border: 1px solid rgba(211,211,211,0.1);
+  border-radius: 4px;
+  font-size: 0.88rem;
+}
+</style>
+
+<!-- Subtle starfield -->
+
+<script>
+  const sf = document.getElementById('sf');
+  for (let i = 0; i < 120; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const z = Math.random() * 1.8 + 0.3;
+    s.style.cssText = `width:${z}px;height:${z}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-delay:${Math.random()*6}s;animation-duration:${3+Math.random()*4}s`;
+    sf.appendChild(s);
+  }
+  for (let i = 0; i < 4; i++) {
+    const ss = document.createElement('div');
+    ss.className = 'shooting-star';
+    ss.style.cssText = `top:${5+Math.random()*45}%;left:${Math.random()*55}%;animation-delay:${i*2.5}s`;
+    sf.appendChild(ss);
+  }
+</script>
+
+<!-- Back to portfolio -->
+<a class="back-link" href="https://manishrathaur.tech" target="_blank">
+  <i class="fas fa-arrow-left"></i> Back to manishrathaur.tech
+</a>
+
+<!-- Hero -->
+<div class="home-hero">
+  <p class="hero-label">learning in public</p>
+  <h1 class="hero-title">Manish's <span>Coding Journey</span></h1>
+  <p class="hero-desc">
+    Documenting every debug, every breakthrough, and everything in between —
+    one post at a time.
+  </p>
+
+ <!-- Official Brand Colored Sidebar Links — Placed Exactly Below Subscribe -->
+<div class="sidebar-custom-socials" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.7rem; padding-left: 0.2rem;">
+  
+  <a href="https://github.com" target="_blank" style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.82rem; text-decoration: none !important; font-weight: 500; color: #ffffff !important;">
+    <i class="fab fa-github" style="color: #ffffff; font-size: 0.95rem; width: 16px; text-align: center;"></i> GitHub
+  </a>
+
+  <a href="https://linkedin.com" target="_blank" style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.82rem; text-decoration: none !important; font-weight: 500; color: #0077b5 !important;">
+    <i class="fab fa-linkedin" style="color: #0077b5; font-size: 0.95rem; width: 16px; text-align: center;"></i> LinkedIn
+  </a>
+
+  <a href="https://twitter.com" target="_blank" style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.82rem; text-decoration: none !important; font-weight: 500; color: #1da1f2 !important;">
+    <i class="fab fa-twitter" style="color: #1da1f2; font-size: 0.95rem; width: 16px; text-align: center;"></i> Twitter
+  </a>
+
+  <a href="https://instagram.com" target="_blank" style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.82rem; text-decoration: none !important; font-weight: 500; color: #e1306c !important;">
+    <i class="fab fa-instagram" style="color: #e1306c; font-size: 0.95rem; width: 16px; text-align: center;"></i> Instagram
+  </a>
+
+  <a href="https://youtube.com" target="_blank" style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.82rem; text-decoration: none !important; font-weight: 500; color: #ff0000 !important;">
+    <i class="fab fa-youtube" style="color: #ff0000; font-size: 0.95rem; width: 16px; text-align: center;"></i> YouTube
+  </a>
+
+</div>
+
+
+<!-- Topics -->
+<p class="section-heading">Browse by Topic</p>
+<div class="categories-grid">
+
+  <a class="cat-card" href="/blog/categories/#python">
+  <span class="cat-icon" style="color: #3776AB; font-size: 1.6rem;"><i class="fab fa-python"></i></span>
+  <span class="cat-name">Python</span>
+  <span class="cat-count">0 posts</span>
+</a>
+
+
+  <a class="cat-card" href="/blog/categories/#dsa">
+  <span class="cat-icon" style="color: #00b1c9; font-size: 1.6rem;"><i class="fas fa-project-diagram"></i></span>
+  <span class="cat-name">DSA</span>
+  <span class="cat-count">0 posts</span>
+</a>
+
+  <a class="cat-card" href="/blog/categories/#machine-learning">
+  <span class="cat-icon" style="color: #ec4899; font-size: 1.6rem;"><i class="fas fa-brain"></i></span>
+  <span class="cat-name">Machine Learning</span>
+  <span class="cat-count">0 posts</span>
+</a>
+
+
+  <a class="cat-card" href="/blog/categories/#web-development">
+  <span class="cat-icon" style="color: #10b981; font-size: 1.6rem;"><i class="fas fa-code"></i></span>
+  <span class="cat-name">Web Dev</span>
+  <span class="cat-count">0 posts</span>
+</a>
+
+
+ 
+</div>
+
+!-- Recent Publications Section Line Layout -->
+<p class="section-heading" style="margin-top: 2.5rem;">Recent Publications</p>
+<div class="posts-list">
+  
+    <a class="post-card" href="/blog/jekyll/update/2026/05/23/welcome-to-jekyll.html">
+      <span class="post-card-title">Welcome to Jekyll!</span>
+      <div class="post-card-meta">
+        <span>May 23, 2026</span>
+        
+          <span class="post-cat-tag">JEKYLL</span>
+        
+      </div>
+    </a>
+  
+</div>
+          <footer class="site-footer">
+            <div class="footer-col-wrapper">
+
+  <div class="footer-col">
+    <div class="copyright">
+      
+      
+      
+      
+      <p>Copyright © 2026 Manish Rathaur; All rights reserved.</p>
+      
+    </div>
+    <p>
+      Powered by <a href="https://jekyllrb.com/">Jekyll</a> & <a href="https://github.com/ngzhio/jekyll-theme-hamilton">Hamilton</a>
+    </p>
+  </div>
+
+  <div class="footer-col">
+    <p>My daily coding learning blog and portfolio documentation.</p>
+  </div>
+</div>
+
+          </footer>
+        </main>
+      </div>
+    </div>
+  </body>
+
+</html>
