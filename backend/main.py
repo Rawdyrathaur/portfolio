@@ -260,12 +260,15 @@ PROVIDERS = [
 ]
 
 def route_llm(msgs: list[dict]) -> tuple[str, str]:
+    route_start = time.perf_counter()
     for name, fn in PROVIDERS:
         logger.info(f"Trying provider: {name}")
         reply = fn(msgs)
         if reply:
             logger.info(f"✅ Success with: {name}")
+            logger.info("route_llm() finished in %.3fs via %s.", time.perf_counter() - route_start, name)
             return reply, name
+    logger.info("route_llm() finished in %.3fs with no provider success.", time.perf_counter() - route_start)
     raise HTTPException(
         status_code=503,
         detail="All LLM providers failed. Check your .env API keys.",
@@ -283,16 +286,7 @@ def ping():
 
 @app.get("/health")
 def health():
-    configured = [
-        name for name, _ in PROVIDERS
-        if os.getenv(f"{name.upper()}_API_KEY")
-    ]
-    return {
-        "status":          "ok" if configured else "degraded",
-        "providers_ready": configured,
-        "providers_total": len(PROVIDERS),
-        "rag":             "ready",
-    }
+    return {"ok": True}
 
 
 @app.get("/providers")

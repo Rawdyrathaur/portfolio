@@ -12,6 +12,7 @@ export default function ChatWidget() {
   const [isLoading, setIsLoading] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [hasNewMessage, setHasNewMessage] = useState(false);
+  const [hasShownWakeup, setHasShownWakeup] = useState(false);
 const [ setShowNotify] = useState(false);
 const hasShownNotify = useRef(false);
   const mediaRecorderRef = useRef(null);
@@ -32,6 +33,14 @@ const hasShownNotify = useRef(false);
       setTimeout(() => inputRef.current?.focus(), 150);
     }
   }, [isOpen]);
+  useEffect(() => {
+    fetch(`${BACKEND}/health`).catch(() => {});
+  }, []);
+  useEffect(() => {
+    if (isOpen && !hasShownWakeup && isLoading) {
+      setHasShownWakeup(true);
+    }
+  }, [isOpen, isLoading, hasShownWakeup]);
 useEffect(() => {
   const handleScroll = () => {
     if (window.scrollY > 200 && !hasShownNotify.current && !isOpen) {
@@ -73,10 +82,6 @@ useEffect(() => {
       const data = await res.json();
 
       setMessages((prev) => [...prev, { role: "assistant", text: data.reply, time: new Date() }]);
-
-      // Auto-speak the reply
-      const audio = new Audio(`${BACKEND}/speak?text=${encodeURIComponent(data.reply)}`);
-      audio.play();
 
       if (!isOpen) setHasNewMessage(true);
     } catch {
@@ -227,6 +232,9 @@ useEffect(() => {
                   <div className="cw-bubble cw-bubble--assistant">
                     <span className="cw-typing"><span /><span /><span /></span>
                   </div>
+                  {hasShownWakeup && (
+                    <span className="cw-time">AI is waking up. First message may take a few seconds.</span>
+                  )}
                 </div>
               </div>
             )}
@@ -278,6 +286,23 @@ useEffect(() => {
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+
+            <button
+              className="cw-icon-btn"
+              onClick={() => {
+                const lastAssistant = [...messages].reverse().find((m) => m.role === "assistant" && m.text);
+                if (!lastAssistant) return;
+                const audio = new Audio(`${BACKEND}/speak?text=${encodeURIComponent(lastAssistant.text)}`);
+                audio.play();
+              }}
+              title="Play audio for latest answer"
+              aria-label="Play audio for latest answer"
+              type="button"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3" />
               </svg>
             </button>
           </div>
