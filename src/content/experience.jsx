@@ -35,18 +35,19 @@ Key contributions include:
 This experience helped me understand how real open-source mobile applications are built, reviewed, maintained, and improved for actual users.`,
   },
   {
-    id: 2,
-    company: "KubeStellar Console",
-    badge: "QA & Issue Reporting",
-    link: "https://github.com/kubestellar/console",
-    logo: kubeStellarLogo,
-    logoAlt: "KubeStellar logo",
-    fallbackIcon: "☸️",
-    role: "Open Source QA Contributor",
-    location: "Remote",
-    short:
-      "Participated in KubeStellar Console by testing the Kubernetes dashboard, hunting bugs, and raising useful issues.",
-    detailed: `Participated in the KubeStellar Console open-source project with a focus on QA, bug hunting, and issue reporting.
+  id: 2,
+  company: "KubeStellar Console",
+  badge: "QA & Issue Reporting",
+  link: "https://github.com/kubestellar/console",
+  logo: kubeStellarLogo,
+  logoAlt: "KubeStellar logo",
+  fallbackIcon: "☸️",
+  logoMode: "icon-left",
+  role: "Open Source QA Contributor",
+  location: "Remote",
+  short:
+    "Participated in KubeStellar Console by testing the Kubernetes dashboard, hunting bugs, and raising useful issues.",
+  detailed: `Participated in the KubeStellar Console open-source project with a focus on QA, bug hunting, and issue reporting.
 
 Key contributions include:
 • Explored the Kubernetes console interface to understand feature behavior
@@ -56,7 +57,7 @@ Key contributions include:
 • Built familiarity with Kubernetes dashboard tooling and open-source collaboration
 
 This experience strengthened my ability to test real-world developer tools, communicate technical problems clearly, and contribute beyond code through quality-focused open-source participation.`,
-  },
+},
 ]
 
 export default experience

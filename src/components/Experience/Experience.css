@@ -38,50 +38,61 @@
   flex-wrap: wrap;
 }
 
-.experience__companyRow {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.experience__logo {
+.experience-logo {
   position: relative;
-  width: 2rem;
-  height: 2rem;
-  flex: 0 0 2rem;
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 999px;
-  background: var(--surface-alt, transparent);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.06);
   overflow: hidden;
 }
 
-.experience__logoFallback,
-.experience__logoImage {
+.experience-logo-img,
+.experience-logo-fallback {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 }
 
-.experience__logoFallback {
+.experience-logo-img {
+  object-fit: contain;
+  padding: 3px;
+  position: relative;
+  z-index: 2;
+}
+
+.experience-logo-img--icon-left {
+  width: 220%;
+  height: 220%;
+  max-width: none;
+  object-fit: cover;
+  object-position: left center;
+  padding: 0;
+  transform: translateX(2px);
+}
+
+.experience-logo-fallback {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 18px;
   line-height: 1;
+  z-index: 1;
 }
 
-.experience__logoImage {
-  object-fit: contain;
-  padding: 0.2rem;
-  opacity: 0;
-  transition: opacity 300ms ease;
+.experience-logo img + .experience-logo-fallback {
+  display: none;
 }
 
-.experience__logoImage--loaded {
-  opacity: 1;
+.experience-logo--fallback .experience-logo-fallback {
+  display: inline-flex;
 }
 
 .experience__company {
