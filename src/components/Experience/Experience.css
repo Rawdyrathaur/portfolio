@@ -51,7 +51,7 @@
   overflow: hidden;
 }
 
-.experience-logo-img,
+.experience-logo img,
 .experience-logo-fallback {
   position: absolute;
   inset: 0;
@@ -59,11 +59,10 @@
   height: 100%;
 }
 
-.experience-logo-img {
+.experience-logo img {
   object-fit: contain;
-  padding: 3px;
-  position: relative;
-  z-index: 2;
+  padding: 4px;
+  display: block;
 }
 
 .experience-logo-img--icon-left {
