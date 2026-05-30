@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useCallback, useState, useRef, useEffect } from "react";
 import "./ChatWidget.css";
 
 const BACKEND = "https://msrathaur-manish-portfolio-api.hf.space";
@@ -13,8 +13,9 @@ export default function ChatWidget() {
   const [isRecording, setIsRecording] = useState(false);
   const [hasNewMessage, setHasNewMessage] = useState(false);
   const [hasShownWakeup, setHasShownWakeup] = useState(false);
-const [ setShowNotify] = useState(false);
-const hasShownNotify = useRef(false);
+  const [showNotify, setShowNotify] = useState(false);
+  const hasShownNotify = useRef(false);
+  const notifyTimeoutRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
   const silenceTimerRef = useRef(null);
@@ -36,22 +37,39 @@ const hasShownNotify = useRef(false);
   useEffect(() => {
     fetch(`${BACKEND}/health`).catch(() => {});
   }, []);
+  const handleScrollNotify = useCallback(() => {
+    if (window.scrollY <= 200 || isOpen || hasShownNotify.current) {
+      return;
+    }
+
+    hasShownNotify.current = true;
+    setShowNotify(true);
+
+    if (notifyTimeoutRef.current) {
+      clearTimeout(notifyTimeoutRef.current);
+    }
+
+    notifyTimeoutRef.current = setTimeout(() => {
+      setShowNotify(false);
+      notifyTimeoutRef.current = null;
+    }, 3000);
+  }, [isOpen, setShowNotify]);
+
   useEffect(() => {
-    if (isOpen && !hasShownWakeup && isLoading) {
-      setHasShownWakeup(true);
-    }
-  }, [isOpen, isLoading, hasShownWakeup]);
-useEffect(() => {
-  const handleScroll = () => {
-    if (window.scrollY > 200 && !hasShownNotify.current && !isOpen) {
-      hasShownNotify.current = true;
-      setShowNotify(true);
-      setTimeout(() => setShowNotify(false), 3000);
-    }
-  };
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
-}, [isOpen]);
+    window.addEventListener("scroll", handleScrollNotify, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScrollNotify);
+    };
+  }, [handleScrollNotify]);
+
+  useEffect(() => {
+    return () => {
+      if (notifyTimeoutRef.current) {
+        clearTimeout(notifyTimeoutRef.current);
+      }
+    };
+  }, []);
   /* ── Format timestamp ── */
   const formatTime = (date) =>
     date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -64,6 +82,7 @@ useEffect(() => {
     setMessages((prev) => [...prev, { role: "user", text: trimmed, time: new Date() }]);
     setInput("");
     setIsLoading(true);
+    setHasShownWakeup(true);
 
     try {
       const res = await fetch(`${BACKEND}/chat`, {
@@ -191,6 +210,10 @@ useEffect(() => {
 
   return (
     <div className="cw-root">
+      {showNotify && !isOpen && (
+        <div className="cw-notify">I’m here if you need help.</div>
+      )}
+
       {isOpen && (
         <div className="cw-card" role="dialog" aria-label="Portfolio chat assistant">
 
