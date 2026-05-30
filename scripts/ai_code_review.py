@@ -1,15 +1,15 @@
 import os
-import openai
+from openai import OpenAI
 
 def get_changed_files():
     # Simulate fetching changed files (replace with actual implementation)
     return ["src/App.jsx", "src/components/Navbar/Navbar.jsx"]
 
-def review_code(file_path):
+def review_code(file_path, client):
     with open(file_path, 'r') as file:
         code = file.read()
 
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-4",
         messages=[
             {"role": "system", "content": "You are a code reviewer. Provide constructive feedback."},
@@ -17,15 +17,19 @@ def review_code(file_path):
         ]
     )
 
-    return response['choices'][0]['message']['content']
+    return response.choices[0].message.content
 
 def main():
-    openai.api_key = os.getenv("OPENAI_API_KEY")
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise SystemExit("OPENAI_API_KEY is required to run the code review script.")
+
+    client = OpenAI(api_key=api_key)
 
     changed_files = get_changed_files()
     for file_path in changed_files:
         print(f"Reviewing {file_path}...")
-        feedback = review_code(file_path)
+        feedback = review_code(file_path, client)
         print(f"Feedback for {file_path}:\n{feedback}\n")
 
 if __name__ == "__main__":
