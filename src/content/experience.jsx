@@ -2,10 +2,13 @@
    OPEN SOURCE EXPERIENCE CONTENT
 ======================== */
 
+import organicMapsLogo from "../assets/organic-maps.svg"
+import kubeStellarLogo from "../assets/KubeStellar.png"
+
 export const sectionTitle = "Open Source Experience"
 
 export const sectionSubtitle =
-    "Hands-on contributions to real-world open-source projects through Android development, QA testing, bug hunting, and issue reporting."
+  "Hands-on contributions to real-world open-source projects through Android development, QA testing, bug hunting, and issue reporting."
 
 const experience = [
   {
@@ -13,11 +16,13 @@ const experience = [
     company: "Organic Maps",
     badge: "Open Source Android",
     link: "https://organicmaps.app",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/5/54/Organic-map.png",
+    logo: organicMapsLogo,
+    logoAlt: "Organic Maps logo",
+    fallbackIcon: "🗺️",
     role: "Open Source Android Contributor",
     location: "Remote",
     short:
-        "Contributed to Organic Maps, a privacy-focused open-source maps application, by working on Android development, feature improvements, and bug fixes.",
+      "Contributed to Organic Maps, a privacy-focused open-source maps application, by working on Android development, feature improvements, and bug fixes.",
     detailed: `Contributed part-time to the Organic Maps open-source project, mainly focusing on Android development using Java 18.
 
 Key contributions include:
@@ -34,11 +39,13 @@ This experience helped me understand how real open-source mobile applications ar
     company: "KubeStellar Console",
     badge: "QA & Issue Reporting",
     link: "https://github.com/kubestellar/console",
-    logo: "https://kubestellar.io/KubeStellar-with-Logo-transparent.png",
+    logo: kubeStellarLogo,
+    logoAlt: "KubeStellar logo",
+    fallbackIcon: "☸️",
     role: "Open Source QA Contributor",
     location: "Remote",
     short:
-        "Participated in KubeStellar Console by exploring the Kubernetes dashboard, testing features, hunting bugs, and raising useful issues.",
+      "Participated in KubeStellar Console by testing the Kubernetes dashboard, hunting bugs, and raising useful issues.",
     detailed: `Participated in the KubeStellar Console open-source project with a focus on QA, bug hunting, and issue reporting.
 
 Key contributions include:
