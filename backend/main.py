@@ -9,7 +9,7 @@ from collections import defaultdict
 from contextlib import asynccontextmanager
 from typing import List, Optional
 
-from fastapi import FastAPI, HTTPException, Request, UploadFile, File
+from fastapi import FastAPI, HTTPException, Request, UploadFile, File, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
@@ -286,7 +286,21 @@ def ping():
 
 @app.get("/health")
 def health():
-    return {"ok": True}
+    configured = [
+        name for name, _ in PROVIDERS
+        if os.getenv(f"{name.upper()}_API_KEY")
+    ]
+    return {
+        "status": "ok" if configured else "degraded",
+        "providers_ready": configured,
+        "providers_total": len(PROVIDERS),
+        "rag": "ready",
+    }
+
+
+@app.head("/health")
+def health_head():
+    return Response(status_code=200)
 
 
 @app.get("/providers")

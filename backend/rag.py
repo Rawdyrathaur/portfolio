@@ -10,14 +10,13 @@ from sentence_transformers import SentenceTransformer
 
 logger = logging.getLogger(__name__)
 
-BASE_DIR        = Path(__file__).resolve().parent
-
 # ── Config ────────────────────────────────────────────────
+BASE_DIR        = Path(__file__).resolve().parent
 KNOWLEDGE_DIR   = BASE_DIR / "knowledge"  # folder with all .md files
 EMBED_MODEL     = "all-MiniLM-L6-v2"      # small, fast, local — no API needed
 TOP_K           = 3                       # how many chunks to retrieve per query
 COLLECTION_NAME = "manish_portfolio"
-CACHE_DIR       = BASE_DIR / ".cache" / "rag"
+CACHE_DIR       = Path(os.getenv("RAG_CACHE_DIR", "backend/.cache/rag"))
 PERSIST_DIR     = CACHE_DIR / "chroma"
 MANIFEST_PATH   = CACHE_DIR / "manifest.json"
 
@@ -117,13 +116,11 @@ def load_knowledge() -> int:
     saved_manifest = _load_saved_manifest()
 
     if saved_manifest == manifest:
-        count = _collection.count()
-        if count > 0:
+        existing_count = _collection.count()
+        if existing_count > 0:
             logger.info("[RAG] Cache HIT - using existing Chroma collection")
-            logger.info("load_knowledge() finished in %.3fs with %d chunks.", time.perf_counter() - load_start, count)
-            return count
-
-    logger.info("[RAG] Cache MISS - rebuilding embeddings")
+            logger.info("load_knowledge() finished in %.3fs with %d chunks.", time.perf_counter() - load_start, existing_count)
+            return existing_count
 
     md_files = sorted(str(path) for path in KNOWLEDGE_DIR.glob("*.md"))
 
@@ -159,6 +156,7 @@ def load_knowledge() -> int:
     sources   = [c["source"] for c in all_chunks]
     metadatas = [{"source": s} for s in sources]
 
+    logger.info("[RAG] Cache MISS - rebuilding embeddings")
     logger.info(f"Embedding {len(texts)} chunks...")
     embeddings = _embedder.encode(texts, show_progress_bar=False).tolist()
 

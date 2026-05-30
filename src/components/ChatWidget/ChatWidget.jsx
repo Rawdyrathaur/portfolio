@@ -288,23 +288,6 @@ useEffect(() => {
                 <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
               </svg>
             </button>
-
-            <button
-              className="cw-icon-btn"
-              onClick={() => {
-                const lastAssistant = [...messages].reverse().find((m) => m.role === "assistant" && m.text);
-                if (!lastAssistant) return;
-                const audio = new Audio(`${BACKEND}/speak?text=${encodeURIComponent(lastAssistant.text)}`);
-                audio.play();
-              }}
-              title="Play audio for latest answer"
-              aria-label="Play audio for latest answer"
-              type="button"
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="5 3 19 12 5 21 5 3" />
-              </svg>
-            </button>
           </div>
 
         </div>
