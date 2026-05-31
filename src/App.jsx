@@ -5,7 +5,6 @@
 import './styles/index.css'
 import { ReadModeProvider } from './context/ReadModeContext'
 import Hero from './components/Hero/Hero'
-import UnderConstruction from './components/UnderConstruction/UnderConstruction'
 import Navbar from './components/Navbar/Navbar'
 import ThemeToggle from './components/ThemeToggle/ThemeToggle'
 import ReadMode from './components/ReadMode/ReadMode'
@@ -17,7 +16,6 @@ function App() {
     <ReadModeProvider>
       <main>
         <Hero />
-        <UnderConstruction />
         <Navbar />
         <ThemeToggle />
         <ReadMode />
