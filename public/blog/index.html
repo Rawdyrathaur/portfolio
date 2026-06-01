@@ -42,355 +42,312 @@
 
 
 
-<body>
+<style>
+.site-body {
+  display: grid !important;
+  grid-template-columns: 160px minmax(0, 1fr) !important;
+  max-width: 1100px !important;
+  margin: 0 auto !important;
+  padding: 0 1.2rem !important;
+  gap: 0 !important;
+}
+
+.site-sidebar {
+  width: 160px !important;
+  min-width: 160px !important;
+  max-width: 160px !important;
+  padding: 1.5rem 0.8rem 1.5rem 0 !important;
+  font-size: 0.8rem !important;
+}
+
+.site-main {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  padding: 1.5rem 0 2rem 1.5rem !important;
+}
+
+/* Kill all default sidebar floats/flexbox the Hamilton theme uses */
+.site-sidebar,
+.site-body,
+.site-main {
+  float: none !important;
+  flex: unset !important;
+}
+
+@media (max-width: 768px) {
+  .site-body {
+    grid-template-columns: 1fr !important;
+  }
+  .site-sidebar {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 1rem 0 !important;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+  }
+  .site-main {
+    padding: 1.2rem 0 !important;
+  }
+}
+</style>
+</body>
+</html>
+  <body>
+    <div id="sf" style="position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;"></div>
     <div class="site-container">
+
       <header class="site-header">
         <div class="wrapper">
-  <script>
-    function clickSidebarButton() {
-      const elem = document.getElementById("site-sidebar")
-      if (elem.style.display == "none" || elem.style.display == "") {
-        elem.style.display = "block";
-      } else {
-        elem.style.display = "none";
-      }
-    }
-  </script>
-  <a class="site-sidebar-button" onclick="clickSidebarButton()"><i class="far fa-user"></i>
-  </a>
-
-  <a class="site-title" rel="author" href="/blog/">Manish&#39;s Coding Journey</a>
-
-  
-</div>
-
+          <script>
+            function clickSidebarButton() {
+              const elem = document.getElementById("site-sidebar");
+              elem.classList.toggle("sidebar-open");
+            }
+          </script>
+          <a class="site-sidebar-button" onclick="clickSidebarButton()">
+            <i class="far fa-user"></i>
+          </a>
+          <a class="site-title" rel="author" href="/blog/">Manish&#39;s Coding Journey</a>
+        </div>
       </header>
-      
+
       <div class="site-body wrapper">
         <aside class="site-sidebar" id="site-sidebar">
-          
-            
+          <div class="sidebar-inner">
 
-<div class="sidebar-section">
-  <ul class="contact-list">
-    <li>
-        <i class="sidebar-icon fas fa-at"></i>
-        <span class="contact-info p-name">Manish Rathaur</span>
-      </li>
-    <li>
-        <i class="sidebar-icon fas fa-envelope"></i>
-        <a class="contact-info u-email" href="mailto:mrathaur704@gmail.com">mrathaur704@gmail.com</a>
-      </li>
-    
-  </ul>
-</div>
+            <div class="sb-block">
+              <div class="sb-author">
+                <div class="sb-avatar">M</div>
+                <div>
+                  <div class="sb-name">Manish Rathaur</div>
+                  <a class="sb-email" href="mailto:mrathaur704@gmail.com">mrathaur704@gmail.com</a>
+                </div>
+              </div>
+            </div>
 
-<div class="sidebar-section feed-subscribe">
-  <a href="/blog/feed.xml">
-    <i class="sidebar-icon fas fa-rss"></i><span>Subscribe</span>
-  </a>
-</div>
+            <div class="sb-block">
+              <a class="sb-subscribe" href="/blog/feed.xml">
+                <i class="fas fa-rss"></i> Subscribe
+              </a>
+            </div>
 
-<!-- Social Links Section -->
-<div class="sidebar-section" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(0,177,201,0.2);">
-  <p style="font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: #00b1c9; margin: 0 0 0.8rem 0; padding-left: 0;">Follow</p>
-  <ul class="contact-list" style="gap: 0.5rem;">
-    <li>
-      <i class="sidebar-icon fab fa-github"></i>
-      <a class="contact-info" href="https://github.com/Rawdyrathaur" target="_blank" style="text-decoration: none;">GitHub</a>
-    </li>
-    <li>
-      <i class="sidebar-icon fab fa-twitter" style="color: #1da1f2;"></i>
-      <a class="contact-info" href="https://twitter.com/mrathaur704" target="_blank" style="text-decoration: none;">Twitter</a>
-    </li>
-    <li>
-      <i class="sidebar-icon fab fa-linkedin" style="color: #0077b5;"></i>
-      <a class="contact-info" href="https://linkedin.com/in/manish-rathaur" target="_blank" style="text-decoration: none;">LinkedIn</a>
-    </li>
-    <li>
-      <i class="sidebar-icon fab fa-instagram" style="color: #e1306c;"></i>
-      <a class="contact-info" href="https://instagram.com/mrathaur704" target="_blank" style="text-decoration: none;">Instagram</a>
-    </li>
-    <li>
-      <i class="sidebar-icon fab fa-youtube" style="color: #ff0000;"></i>
-      <a class="contact-info" href="https://youtube.com/@manishcoding" target="_blank" style="text-decoration: none;">YouTube</a>
-    </li>
-  </ul>
-</div>
+            <div class="sb-block">
+              <p class="sb-label">Follow</p>
+              <ul class="sb-links">
+                <li><i class="fab fa-github"></i><a href="https://github.com/Rawdyrathaur" target="_blank">GitHub</a></li>
+                <li><i class="fab fa-twitter" style="color:#1da1f2"></i><a href="https://twitter.com/mrathaur704" target="_blank">Twitter</a></li>
+                <li><i class="fab fa-linkedin" style="color:#0077b5"></i><a href="https://linkedin.com/in/manish-rathaur" target="_blank">LinkedIn</a></li>
+                <li><i class="fab fa-instagram" style="color:#e1306c"></i><a href="https://instagram.com/mrathaur704" target="_blank">Instagram</a></li>
+                <li><i class="fab fa-youtube" style="color:#ff0000"></i><a href="https://youtube.com/@manishcoding" target="_blank">YouTube</a></li>
+              </ul>
+            </div>
 
+          </div>
         </aside>
 
         <main class="site-main">
           <style>
-html, body, .site-header, .site-footer, .site-main {
-  background-color: #080808 !important; /* Solid matte black background */
-  background-image: none !important;    /* Removes any default patterns */
-  color: #e0e0e0 !important;             /* Crisp clean readable text */
-}
-/* Back link */
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  color: silver !important;
-  text-decoration: none !important;
-  font-size: 0.82rem;
-  margin-bottom: 1.5rem;
-  transition: color 0.2s;
-  position: relative;
-  z-index: 1;
-}
-.back-link:hover { color: #00b1c9 !important; }
-.back-link i { font-size: 0.72rem; }
+*,*::before,*::after{box-sizing:border-box}
 
-/* Hero */
-.home-hero {
-  padding: 1.5rem 0 2.5rem;
-  position: relative;
-  z-index: 1;
-  border-bottom: 1px solid rgba(211,211,211,0.1);
-  margin-bottom: 2.5rem;
-}
-.hero-label {
-  font-size: 0.72rem;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: #00b1c9;
-  margin-bottom: 0.7rem;
-}
-.hero-title {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: lightgrey;
-  margin-bottom: 0.6rem;
-  line-height: 1.3;
-}
-.hero-title span {
-  color: #00b1c9;
-}
-.hero-desc {
-  color: silver;
-  font-size: 0.92rem;
-  line-height: 1.65;
-  max-width: 480px;
-  margin-bottom: 1.5rem;
+html,body{background:#080808!important;color:#e0e0e0!important}
+.site-header,.site-footer,.site-main{background:#080808!important;background-image:none!important}
+
+/* ── Page layout ── */
+.site-body{
+  display:grid;
+grid-template-columns:150px minmax(0,1fr);
+  gap:0;
+  min-height:calc(100vh - 60px);
+  max-width:1100px;
+  margin:0 auto;
+  padding:0 1.2rem;
 }
 
-/* Sidebar Social Links Positioning */
-.sidebar-social-list {
-  list-style: none;
-  padding: 0;
-  margin: 1.5rem 0 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
+/* ── Sidebar ── */
+.site-sidebar{
+  position:sticky;
+  top:0;
+  height:100vh;
+  padding:2rem 0.6rem 2rem 0;
+  border-right:1px solid rgba(255,255,255,0.07);
+  overflow-y:auto;
 }
-.sidebar-social-item {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  font-size: 0.82rem;
-  text-decoration: none !important;
-  font-weight: 500;
-  transition: opacity 0.2s;
+.sidebar-inner{display:flex;flex-direction:column;gap:1.6rem}
+
+.sb-block{padding:0}
+
+.sb-author{display:flex;align-items:center;gap:0.7rem}
+.sb-avatar{
+  width:30px;height:30px;border-radius:50%;
+  background:linear-gradient(135deg,#00b1c9,#0077a8);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.85rem;font-weight:700;color:#fff;flex-shrink:0;
 }
-.sidebar-social-item:hover {
-  opacity: 0.85;
+.sb-name{font-size:0.82rem;font-weight:600;color:#e0e0e0;line-height:1.3}
+.sb-email{font-size:0.7rem;color:#00b1c9;text-decoration:none;display:block;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+.sb-email:hover{color:#fff}
+
+.sb-subscribe{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  font-size:0.75rem;color:#e05252;text-decoration:none;
+  padding:0.35rem 0.75rem;border:1px solid rgba(224,82,82,0.3);
+  border-radius:20px;transition:all 0.2s;
 }
-.sidebar-social-item i {
-  font-size: 0.95rem;
-  width: 16px;
-  text-align: center;
+.sb-subscribe:hover{background:rgba(224,82,82,0.1);border-color:#e05252}
+
+.sb-label{
+  font-size:0.6rem;letter-spacing:2.5px;text-transform:uppercase;
+  color:#00b1c9;margin:0 0 0.6rem;
+}
+.sb-links{list-style:none!important;padding:0;margin:0;display:flex;flex-direction:column;gap:0.45rem}
+.sb-links li{
+  display:flex!important;align-items:center;gap:0.5rem;
+  list-style:none!important;list-style-type:none!important;
+}
+.sb-links li::before,.sb-links li::marker{content:none!important;display:none!important}
+.sb-links i{width:15px;font-size:0.78rem;text-align:center;color:#888;flex-shrink:0}
+.sb-links a{font-size:0.78rem;color:#bbb;text-decoration:none;transition:color 0.18s}
+.sb-links a:hover{color:#00b1c9}
+
+/* ── Main ── */
+.site-main{padding:2rem 0 3rem 1.2rem}
+
+/* ── Back link ── */
+.back-link{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  color:#888!important;text-decoration:none!important;
+  font-size:0.78rem;margin-bottom:2rem;
+  transition:color 0.2s;
+}
+.back-link:hover{color:#00b1c9!important}
+.back-link i{font-size:0.7rem}
+
+/* ── Hero ── */
+.home-hero{
+  padding:0 0 2.5rem;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+  margin-bottom:2.5rem;
+}
+.hero-label{
+  font-size:0.65rem;letter-spacing:3.5px;text-transform:uppercase;
+  color:#00b1c9;margin:0 0 0.8rem;
+}
+.hero-title{
+  font-size:2rem;font-weight:700;color:#f0f0f0;
+  margin:0 0 0.7rem;line-height:1.25;
+}
+.hero-title span{color:#00b1c9}
+.hero-desc{
+  color:#999;font-size:0.88rem;line-height:1.7;
+  max-width:480px;margin:0;
 }
 
-
-/* Section heading — matches Hamilton's h3 style */
-.section-heading {
-  font-size: 0.7rem;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: #00b1c9;
-  margin: 0 0 1.1rem;
-  padding-bottom: 0.6rem;
-  border-bottom: 1px solid rgba(0,177,201,0.25);
-  position: relative;
-  z-index: 1;
+/* ── Section heading ── */
+.section-heading{
+  font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;
+  color:#00b1c9;margin:0 0 1.1rem;
+  padding-bottom:0.6rem;
+  border-bottom:1px solid rgba(0,177,201,0.2);
 }
 
-/* Category grid */
-.categories-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
-  gap: 0.8rem;
-  margin-bottom: 2.5rem;
-  position: relative;
-  z-index: 1;
+/* Category grid removed */
+
+/* ── Posts list ── */
+.posts-list{
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:8px;overflow:hidden;
+  margin-bottom:3rem;
 }
-.cat-card {
-  background: rgba(255,255,255,0.025);
-  border: 1px solid rgba(211,211,211,0.1);
-  border-radius: 4px;
-  padding: 1.3rem 0.9rem 1rem;
-  text-align: center;
-  text-decoration: none !important;
-  display: block;
-  transition: all 0.25s ease;
-  position: relative;
+.post-card{
+  display:block;padding:0.9rem 1.1rem;
+  text-decoration:none!important;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  transition:background 0.18s;
 }
-.cat-card:hover {
-  border-color: #00b1c9;
-  background: rgba(0,177,201,0.05);
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.4), 0 0 16px rgba(0,177,201,0.1);
-  text-decoration: none !important;
-}
-.cat-icon {
-  font-size: 1.7rem;
-  display: block;
-  margin-bottom: 0.5rem;
-}
-.cat-name {
-  font-size: 0.83rem;
-  font-weight: 600;
-  color: lightgrey;
-  display: block;
-  margin-bottom: 0.25rem;
-}
-.cat-card:hover .cat-name { color: #00b1c9; }
-.cat-count {
-  font-size: 0.67rem;
-  color: silver;
+.post-card:last-child{border-bottom:none}
+.post-card:hover{background:rgba(0,177,201,0.04)}
+.post-card-title{font-size:0.88rem;font-weight:600;color:#ccc;display:block;margin-bottom:0.25rem}
+.post-card:hover .post-card-title{color:#00b1c9}
+.post-card-meta{font-size:0.68rem;color:#666;display:flex;gap:0.5rem;align-items:center}
+.post-cat-tag{color:#00b1c9}
+.post-cat-tag::before{content:"· "}
+
+.empty-state{
+  color:#555;font-style:italic;text-align:center;
+  padding:2.5rem;font-size:0.83rem;
 }
 
-/* Post list */
-.posts-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  position: relative;
-  z-index: 1;
-  margin-bottom: 3rem;
-  border: 1px solid rgba(211,211,211,0.1);
-  border-radius: 4px;
-  overflow: hidden;
+/* ── Footer ── */
+.blog-footer{
+  margin-top:2rem;
+  padding-top:1.2rem;
+  border-top:1px solid rgba(255,255,255,0.07);
 }
-.post-card {
-  display: block;
-  padding: 0.85rem 1.1rem;
-  text-decoration: none !important;
-  border-bottom: 1px solid rgba(211,211,211,0.08);
-  transition: background 0.2s ease;
-  background: transparent;
-}
-.post-card:last-child { border-bottom: none; }
-.post-card:hover {
-  background: rgba(0,177,201,0.05);
-  text-decoration: none !important;
-}
-.post-card-title {
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: lightgrey;
-  margin-bottom: 0.3rem;
-  display: block;
-}
-.post-card:hover .post-card-title { color: #00b1c9; }
-.post-card-meta {
-  font-size: 0.7rem;
-  color: silver;
-  display: flex;
-  gap: 0.6rem;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.post-cat-tag {
-  color: #00b1c9;
-  font-size: 0.67rem;
-}
-.post-cat-tag::before { content: "· "; }
+.blog-footer p{margin:0 0 0.2rem;font-size:0.75rem;color:#555;line-height:1.6}
 
-.empty-state {
-  color: silver;
-  font-style: italic;
-  text-align: center;
-  padding: 2rem;
-  border: 1px solid rgba(211,211,211,0.1);
-  border-radius: 4px;
-  font-size: 0.88rem;
+/* ── Mobile ── */
+@media(max-width:768px){
+  .site-body{
+    grid-template-columns:1fr;
+    padding:0 1rem;
+  }
+  .site-sidebar{
+    position:static;
+    height:auto;
+    border-right:none;
+    border-bottom:1px solid rgba(255,255,255,0.07);
+    padding:1.5rem 0 1.2rem;
+    margin-bottom:0;
+    overflow:visible;
+  }
+  .sidebar-inner{
+    flex-direction:row;
+    flex-wrap:wrap;
+    gap:1.2rem;
+    align-items:flex-start;
+  }
+  .sb-block{min-width:fit-content}
+  .sb-links{flex-direction:row;flex-wrap:wrap;gap:0.4rem 1rem}
+  .site-main{padding:1.5rem 0 2rem}
+  .hero-title{font-size:1.6rem}
+  .categories-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:420px){
+  .hero-title{font-size:1.35rem}
+  .sidebar-inner{flex-direction:column;gap:1rem}
+  .sb-links{flex-direction:column}
 }
 </style>
 
-<!-- Subtle starfield -->
-
 <script>
-  const sf = document.getElementById('sf');
-  for (let i = 0; i < 120; i++) {
-    const s = document.createElement('div');
-    s.className = 'star';
-    const z = Math.random() * 1.8 + 0.3;
-    s.style.cssText = `width:${z}px;height:${z}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-delay:${Math.random()*6}s;animation-duration:${3+Math.random()*4}s`;
-    sf.appendChild(s);
-  }
-  for (let i = 0; i < 4; i++) {
-    const ss = document.createElement('div');
-    ss.className = 'shooting-star';
-    ss.style.cssText = `top:${5+Math.random()*45}%;left:${Math.random()*55}%;animation-delay:${i*2.5}s`;
-    sf.appendChild(ss);
+  const sf=document.getElementById('sf');
+  if(sf){
+    for(let i=0;i<100;i++){
+      const s=document.createElement('div');
+      s.className='star';
+      const z=Math.random()*1.6+0.3;
+      s.style.cssText=`width:${z}px;height:${z}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-delay:${Math.random()*6}s;animation-duration:${3+Math.random()*4}s`;
+      sf.appendChild(s);
+    }
   }
 </script>
 
-<!-- Back to portfolio -->
-<a class="back-link" href="https://manishrathaur.tech" target="_blank">
+<a class="back-link" href="https://manishrathaur.tech">
   <i class="fas fa-arrow-left"></i> Back to manishrathaur.tech
 </a>
 
-<!-- Hero -->
 <div class="home-hero">
-  <p class="hero-label">learning in public</p>
+  <p class="hero-label">Learning in public</p>
   <h1 class="hero-title">Manish's <span>Coding Journey</span></h1>
-  <p class="hero-desc">
-    Documenting every debug, every breakthrough, and everything in between —
-    one post at a time.
-  </p>
-
-
-
-<!-- Topics -->
-<p class="section-heading">Browse by Topic</p>
-<div class="categories-grid">
-
-  <a class="cat-card" href="/blog/categories/#python">
-  <span class="cat-icon" style="color: #3776AB; font-size: 1.6rem;"><i class="fab fa-python"></i></span>
-  <span class="cat-name">Python</span>
-  <span class="cat-count">0 posts</span>
-</a>
-
-
-  <a class="cat-card" href="/blog/categories/#dsa">
-  <span class="cat-icon" style="color: #00b1c9; font-size: 1.6rem;"><i class="fas fa-project-diagram"></i></span>
-  <span class="cat-name">DSA</span>
-  <span class="cat-count">0 posts</span>
-</a>
-
-  <a class="cat-card" href="/blog/categories/#machine-learning">
-  <span class="cat-icon" style="color: #ec4899; font-size: 1.6rem;"><i class="fas fa-brain"></i></span>
-  <span class="cat-name">Machine Learning</span>
-  <span class="cat-count">0 posts</span>
-</a>
-
-
-  <a class="cat-card" href="/blog/categories/#web-development">
-  <span class="cat-icon" style="color: #10b981; font-size: 1.6rem;"><i class="fas fa-code"></i></span>
-  <span class="cat-name">Web Dev</span>
-  <span class="cat-count">0 posts</span>
-</a>
-
-
- 
+  <p class="hero-desc">Documenting every debug, every breakthrough, and everything in between — one post at a time.</p>
 </div>
 
-!-- Recent Publications Section Line Layout -->
-<p class="section-heading" style="margin-top: 2.5rem;">Recent Publications</p>
+<!-- Browse by Topic removed -->
+
+<p class="section-heading">Recent Publications</p>
 <div class="posts-list">
   
     <a class="post-card" href="/blog/jekyll/update/2026/05/23/welcome-to-jekyll.html">
@@ -404,27 +361,10 @@ html, body, .site-header, .site-footer, .site-main {
     </a>
   
 </div>
+
+<!-- footer removed -->
         </main>
-      </div><div class="footer-col-wrapper">
+      </div>
 
-  <div class="footer-col">
-    <div class="copyright">
-      
-      
-      
-      
-      <p>Copyright © 2026 Manish Rathaur; All rights reserved.</p>
-      
-    </div>
-    <p>
-      Powered by <a href="https://jekyllrb.com/">Jekyll</a> & <a href="https://github.com/ngzhio/jekyll-theme-hamilton">Hamilton</a>
-    </p>
-  </div>
-
-  <div class="footer-col">
-    <p>My daily coding learning blog and portfolio documentation.</p>
-  </div>
-</div>
-</div></body>
-
+    </div></body>
 </html>

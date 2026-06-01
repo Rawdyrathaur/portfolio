@@ -107,32 +107,7 @@ grid-template-columns:150px minmax(0,1fr);
   border-bottom:1px solid rgba(0,177,201,0.2);
 }
 
-/* ── Category grid ── */
-.categories-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
-  gap:0.7rem;
-  margin-bottom:3rem;
-}
-.cat-card{
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:8px;
-  padding:1.2rem 0.7rem 1rem;
-  text-align:center;
-  text-decoration:none!important;
-  display:block;
-  transition:all 0.2s ease;
-}
-.cat-card:hover{
-  border-color:rgba(0,177,201,0.5);
-  background:rgba(0,177,201,0.05);
-  transform:translateY(-2px);
-}
-.cat-icon{font-size:1.5rem;display:block;margin-bottom:0.5rem}
-.cat-name{font-size:0.78rem;font-weight:600;color:#ccc;display:block;margin-bottom:0.2rem}
-.cat-card:hover .cat-name{color:#00b1c9}
-.cat-count{font-size:0.62rem;color:#666}
+/* Category grid removed */
 
 /* ── Posts list ── */
 .posts-list{
@@ -225,29 +200,7 @@ grid-template-columns:150px minmax(0,1fr);
   <p class="hero-desc">Documenting every debug, every breakthrough, and everything in between — one post at a time.</p>
 </div>
 
-<p class="section-heading">Browse by Topic</p>
-<div class="categories-grid">
-  <a class="cat-card" href="{{ '/categories/#python' | relative_url }}">
-    <span class="cat-icon" style="color:#3776AB"><i class="fab fa-python"></i></span>
-    <span class="cat-name">Python</span>
-    <span class="cat-count">{{ site.categories['python'].size | default: 0 }} posts</span>
-  </a>
-  <a class="cat-card" href="{{ '/categories/#dsa' | relative_url }}">
-    <span class="cat-icon" style="color:#00b1c9"><i class="fas fa-project-diagram"></i></span>
-    <span class="cat-name">DSA</span>
-    <span class="cat-count">{{ site.categories['dsa'].size | default: 0 }} posts</span>
-  </a>
-  <a class="cat-card" href="{{ '/categories/#machine-learning' | relative_url }}">
-    <span class="cat-icon" style="color:#ec4899"><i class="fas fa-brain"></i></span>
-    <span class="cat-name">Machine Learning</span>
-    <span class="cat-count">{{ site.categories['machine-learning'].size | default: 0 }} posts</span>
-  </a>
-  <a class="cat-card" href="{{ '/categories/#web-development' | relative_url }}">
-    <span class="cat-icon" style="color:#10b981"><i class="fas fa-code"></i></span>
-    <span class="cat-name">Web Dev</span>
-    <span class="cat-count">{{ site.categories['web-development'].size | default: 0 }} posts</span>
-  </a>
-</div>
+<!-- Browse by Topic removed -->
 
 <p class="section-heading">Recent Publications</p>
 <div class="posts-list">

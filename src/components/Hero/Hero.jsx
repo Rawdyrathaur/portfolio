@@ -9,7 +9,7 @@ function Hero() {
   return (
     <section className="hero">
       <div className="hero__image-wrapper">
-        <img src={profile} alt="Manish" className="hero__image" />
+        <img src={profile} alt="Manish" className="hero__image" loading="lazy" />
       </div>
       <h1 className="hero__name">Manish Rathaur</h1>
     </section>

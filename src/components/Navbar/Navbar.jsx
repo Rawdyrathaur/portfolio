@@ -55,15 +55,23 @@ function Navbar() {
         </svg>
       </a>
 
-      <a className="navbar__icon" title="Blog" href="/blog" rel="noopener noreferrer">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-          <line x1="8" y1="7" x2="16" y2="7"></line>
-          <line x1="8" y1="11" x2="16" y2="11"></line>
-          <line x1="8" y1="15" x2="12" y2="15"></line>
-        </svg>
-      </a>
+      {
+        (() => {
+          const blogHref = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.MODE === 'development') ? '/blog/index.html' : '/blog'
+          return (
+            <a className="navbar__icon" title="Blog" href={blogHref} rel="noopener noreferrer">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                <line x1="8" y1="7" x2="16" y2="7"></line>
+                <line x1="8" y1="11" x2="16" y2="11"></line>
+                <line x1="8" y1="15" x2="12" y2="15"></line>
+              </svg>
+            </a>
+          )
+        })()
+      }
+      
 
       <a className="navbar__icon" title="Contact" href="https://mail.google.com/mail/?view=cm&fs=1&to=mrathaur704@gmail.com&su=Ask%20Anything&body=Hi%20Manish,%0D%0A%0D%0AI%20have%20some%20ideas,%20suggestions,%20or%20need%20help%20with%20something.%0D%0A%0D%0AThanks!" target="_blank" rel="noopener noreferrer">
       
