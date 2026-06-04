@@ -3,10 +3,22 @@ import "./ChatWidget.css";
 
 const BACKEND = "https://msrathaur-manish-portfolio-api.hf.space";
 
-export default function ChatWidget() {
+export default function ChatWidget({ currentPath = window.location.pathname }) {
   const [isOpen, setIsOpen] = useState(false);
+  const getInitialWelcome = () => {
+    if (currentPath.startsWith("/blog/")) {
+      return "Hi! I’m your article assistant. Ask me to summarize, simplify, explain code, or extract key ideas from this article.";
+    }
+
+    if (currentPath === "/blog") {
+      return "Hi! I’m your blog assistant. I can help you explore articles, topics, and technical notes from this blog.";
+    }
+
+    return "Hi! I'm Manish's digital brain. Ask me anything about his work, skills, or projects 👋";
+  };
+
   const [messages, setMessages] = useState([
-    { role: "assistant", text: "Hi! I'm Manish's digital brain. Ask me anything about his work, skills, or projects 👋", time: new Date() }
+    { role: "assistant", text: getInitialWelcome(), time: new Date() }
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -15,6 +27,39 @@ export default function ChatWidget() {
   const [hasShownWakeup, setHasShownWakeup] = useState(false);
   const [showNotify, setShowNotify] = useState(false);
   const [articleContext, setArticleContext] = useState(null);
+
+  const isBlogRoute = currentPath.startsWith("/blog");
+  const assistantMode = articleContext
+    ? "article"
+    : isBlogRoute
+      ? "blog"
+      : "portfolio";
+
+  const assistantTitle =
+    assistantMode === "article"
+      ? "Article Assistant"
+      : assistantMode === "blog"
+        ? "Blog Assistant"
+        : "Portfolio Assistant";
+
+  const assistantStatus =
+    assistantMode === "article"
+      ? "· Article mode"
+      : assistantMode === "blog"
+        ? "· Blog mode"
+        : "· Online";
+
+  const getWelcomeMessage = useCallback(() => {
+    if (assistantMode === "article") {
+      return `Hi! I’m your article assistant for "${articleContext?.title}". Ask me to summarize, simplify, explain code, or extract key ideas from this article.`;
+    }
+
+    if (assistantMode === "blog") {
+      return "Hi! I’m your blog assistant. I can help you explore articles, topics, and technical notes from this blog.";
+    }
+
+    return "Hi! I'm Manish's digital brain. Ask me anything about his work, skills, or projects 👋";
+  }, [assistantMode, articleContext]);
   const hasShownNotify = useRef(false);
   const notifyTimeoutRef = useRef(null);
   const mediaRecorderRef = useRef(null);
@@ -83,14 +128,16 @@ export default function ChatWidget() {
       }
     };
   }, []);
+
+
+
   /* ── Format timestamp ── */
   const formatTime = (date) =>
     date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
   const buildArticleAwareMessage = (question) => {
-    if (!articleContext) return question;
-
-    return `You are Manish's portfolio assistant. The user is reading a blog article and is asking about it.
+    if (articleContext) {
+      return `You are Manish's article assistant. The user is reading a blog article and is asking about it.
 
 Article title:
 ${articleContext.title}
@@ -104,7 +151,17 @@ ${articleContext.body}
 User question:
 ${question}
 
-Answer using the article context first. If the question is not related to the article, answer normally as Manish's portfolio assistant.`;
+Answer using the article context first. Be clear, practical, and technical when needed. If the question is outside the article, briefly say that and answer as Manish's blog assistant.`;
+    }
+
+    if (isBlogRoute) {
+      return `You are Manish's blog assistant. Help the user explore blog topics, article ideas, technical writing, AI notes, code explanations, and learning paths.
+
+User question:
+${question}`;
+    }
+
+    return question;
   };
 
   /* ── Send message to backend ── */
@@ -243,7 +300,13 @@ Answer using the article context first. If the question is not related to the ar
 
   /* ── Clear chat ── */
   const clearChat = () => {
-    setMessages([{ role: "assistant", text: "Hi! I'm Manish's digital brain. Ask me anything about his work, skills, or projects 👋", time: new Date() }]);
+    setMessages([
+      {
+        role: "assistant",
+        text: getWelcomeMessage(),
+        time: new Date(),
+      },
+    ]);
   };
 
   return (
@@ -259,8 +322,8 @@ Answer using the article context first. If the question is not related to the ar
           <div className="cw-header">
             <div className="cw-header-left">
               <span className="cw-dot" />
-              <span className="cw-title">Portfolio Assistant</span>
-              <span className="cw-status-text">· Online</span>
+              <span className="cw-title">{assistantTitle}</span>
+              <span className="cw-status-text">{assistantStatus}</span>
             </div>
             <div className="cw-header-actions">
               <button className="cw-icon-btn" onClick={clearChat} title="Clear chat" aria-label="Clear chat">

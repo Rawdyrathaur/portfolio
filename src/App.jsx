@@ -88,7 +88,16 @@ function App() {
         )}
       </Suspense>
 
-      <ChatWidget />
+      <ChatWidget
+        key={
+          currentPath.startsWith('/blog/')
+            ? 'article-assistant'
+            : currentPath === '/blog'
+              ? 'blog-assistant'
+              : 'portfolio-assistant'
+        }
+        currentPath={currentPath}
+      />
     </ReadModeProvider>
   )
 }
