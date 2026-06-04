@@ -34,3 +34,63 @@ img {
   max-width: 100%;
   display: block;
 }
+/* Global softer dark-theme text colors */
+html,
+body,
+#root {
+  color: #b9b9b9;
+}
+
+body,
+.app,
+.portfolio,
+.blog-page {
+  color: #b9b9b9;
+}
+
+/* Dim pure-white headings/buttons/text slightly */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+a,
+button,
+li {
+  color: inherit;
+}
+
+/* Main headings: still visible, but not harsh white */
+.hero__title,
+.section-title,
+.experience__title,
+.blog-hero h1,
+.blog-card h2,
+.blog-article__header h1,
+.blog-article__content h2,
+.blog-sidebar__title,
+.blog-sidebar__panel h3 {
+  color: #d6d6d6;
+}
+
+/* Paragraph/readable content */
+.hero__description,
+.experience__description,
+.blog-hero p,
+.blog-card p,
+.blog-article__content,
+.blog-article__header p:last-child,
+.blog-sidebar__panel p {
+  color: #a9a9a9;
+}
+
+/* Muted/meta text */
+.blog-card__date,
+.blog-article__meta,
+.blog-section-label,
+.blog-sidebar__eyebrow {
+  color: #8fbbc2;
+}
