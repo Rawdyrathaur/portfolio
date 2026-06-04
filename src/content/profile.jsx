@@ -4,7 +4,7 @@
 
 const profile = {
   name: "Manish Rathor",
-  photo: "mypic.png",
+  photo: "mypic.webp",
 
   short: [
     "a Computer Science student and software developer focused on AI/ML, Java, and Android development.",

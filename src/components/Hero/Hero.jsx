@@ -3,7 +3,7 @@
 ======================== */
 
 import './Hero.css'
-import profile from '../../assets/mypic.png'
+import profile from '../../assets/mypic.webp'
 
 function Hero() {
   return (
