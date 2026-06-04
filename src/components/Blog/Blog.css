@@ -2159,3 +2159,55 @@ html[data-theme="light"] .blog-post-footer__back {
     text-align: left;
   }
 }
+
+/* Production empty blog state */
+.blog-empty-state--production {
+  display: grid;
+  justify-items: start;
+  gap: 0.9rem;
+  margin-top: 2rem;
+  padding: clamp(1.4rem, 4vw, 2.4rem);
+}
+
+.blog-empty-state--production .blog-section-label {
+  margin: 0;
+}
+
+.blog-empty-state__topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+}
+
+.blog-empty-state__topics span {
+  border: 1px solid rgba(143, 214, 221, 0.18);
+  border-radius: 999px;
+  padding: 0.36rem 0.62rem;
+  background: rgba(143, 214, 221, 0.055);
+  color: #9fcfd6;
+  font-family: "Inconsolata", monospace;
+  font-size: 0.78rem;
+}
+
+.blog-empty-state__link {
+  display: inline-flex;
+  margin-top: 0.3rem;
+  color: #9fcfd6;
+  font-family: "Inconsolata", monospace;
+  text-decoration: none;
+}
+
+.blog-empty-state__link:hover {
+  color: #d8f7fa;
+}
+
+html[data-theme="light"] .blog-empty-state__topics span {
+  background: rgba(0, 107, 117, 0.07);
+  border-color: rgba(0, 107, 117, 0.18);
+  color: #006b75;
+}
+
+html[data-theme="light"] .blog-empty-state__link {
+  color: #006b75;
+}
