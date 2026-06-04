@@ -566,3 +566,27 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* Empty blog state */
+.blog-empty-state {
+  margin-top: 1rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.blog-empty-state h2 {
+  margin: 0 0 0.65rem;
+  font-family: "Roboto", sans-serif;
+  color: #d2d2d2;
+  font-size: 1.35rem;
+}
+
+.blog-empty-state p {
+  margin: 0;
+  max-width: 620px;
+  font-family: "Roboto Slab", serif;
+  color: #9f9f9f;
+  line-height: 1.75;
+}

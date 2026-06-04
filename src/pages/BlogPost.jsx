@@ -1,5 +1,5 @@
 import BlogSidebar from '../components/Blog/BlogSidebar'
-import { getBlogPostBySlug } from '../content/blogPosts'
+import { getBlogPostBySlug } from '../content/blog/posts'
 import '../components/Blog/Blog.css'
 
 function BlogPost() {
