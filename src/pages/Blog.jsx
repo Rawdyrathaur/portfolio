@@ -33,9 +33,20 @@ function Blog() {
 
         <section className="blog-list">
           <p className="blog-section-label">Recent Posts</p>
-          {regularPosts.map((post) => (
-            <BlogCard key={post.slug} post={post} />
-          ))}
+
+          {posts.length === 0 ? (
+            <div className="blog-empty-state">
+              <h2>No articles published yet.</h2>
+              <p>
+                This blog is being prepared carefully. Real posts will be added only
+                after the content is verified and ready to publish.
+              </p>
+            </div>
+          ) : (
+            regularPosts.map((post) => (
+              <BlogCard key={post.slug} post={post} />
+            ))
+          )}
         </section>
       </section>
     </main>
