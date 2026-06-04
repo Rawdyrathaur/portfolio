@@ -1,4 +1,7 @@
-import BlogSidebar from '../components/Blog/BlogSidebar'
+import BlogArticleLayout from '../components/Blog/BlogArticleLayout'
+import BlogMarkdown from '../components/Blog/BlogMarkdown'
+import BlogPostFooter from '../components/Blog/BlogPostFooter'
+import BlogPostHeader from '../components/Blog/BlogPostHeader'
 import { getBlogPostBySlug } from '../content/blog/posts'
 import '../components/Blog/Blog.css'
 
@@ -8,48 +11,23 @@ function BlogPost() {
 
   if (!post) {
     return (
-      <main className="blog-page">
-        <BlogSidebar />
-        <article className="blog-article">
-          <a className="blog-back" href="/blog">← Back to Blog</a>
+      <BlogArticleLayout>
+        <div className="blog-empty-state">
           <h1>Post not found</h1>
-          <p>The article you are looking for does not exist yet.</p>
-        </article>
-      </main>
+          <p>
+            This article is not published yet, or the URL is incorrect.
+          </p>
+        </div>
+      </BlogArticleLayout>
     )
   }
 
   return (
-    <main className="blog-page">
-      <BlogSidebar />
-
-      <article className="blog-article">
-        <a className="blog-back" href="/blog">← Back to Blog</a>
-
-        <header className="blog-article__header">
-          <p className="blog-article__meta">
-            {post.category} · {post.readTime} ·{' '}
-            {new Date(post.date).toLocaleDateString('en', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
-          </p>
-
-          <h1>{post.title}</h1>
-          <p>{post.summary}</p>
-        </header>
-
-        <div className="blog-article__content">
-          {post.content.map((section) => (
-            <section key={section.heading}>
-              <h2>{section.heading}</h2>
-              <p>{section.body}</p>
-            </section>
-          ))}
-        </div>
-      </article>
-    </main>
+    <BlogArticleLayout>
+      <BlogPostHeader post={post} />
+      <BlogMarkdown content={post.body} />
+      <BlogPostFooter post={post} />
+    </BlogArticleLayout>
   )
 }
 

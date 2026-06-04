@@ -15,25 +15,26 @@ import BlogPost from './pages/BlogPost'
 
 function App() {
   const currentPath = window.location.pathname
-
-  if (currentPath === '/blog') {
-    return <Blog />
-  }
-
-  if (currentPath.startsWith('/blog/')) {
-    return <BlogPost />
-  }
+  const isBlogPage = currentPath === '/blog'
+  const isBlogPostPage = currentPath.startsWith('/blog/')
 
   return (
     <ReadModeProvider>
-      <main>
-        <Hero />
-        <Navbar />
-        <ThemeToggle />
-        <ReadMode />
-        <Experience />
-        <ChatWidget />
-      </main>
+      <Navbar />
+      <ThemeToggle />
+
+      {isBlogPage && <Blog />}
+
+      {isBlogPostPage && <BlogPost />}
+
+      {!isBlogPage && !isBlogPostPage && (
+        <main>
+          <Hero />
+          <ReadMode />
+          <Experience />
+          <ChatWidget />
+        </main>
+      )}
     </ReadModeProvider>
   )
 }
