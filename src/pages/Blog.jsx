@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 import Fuse from 'fuse.js'
-import BlogSidebar from '../components/Blog/BlogSidebar'
 import BlogCard from '../components/Blog/BlogCard'
 import BlogSearch from '../components/Blog/BlogSearch'
 import SEO from '../components/SEO/SEO'
@@ -50,13 +49,12 @@ function Blog() {
   const regularPosts = visiblePosts.filter((post) => !post.featured)
 
   return (
-    <main className="blog-page">
+    <main className="blog-page blog-page--index">
       <SEO
         title="Blog"
         description="Technical articles, project breakdowns, open-source lessons, and AI engineering notes by Manish Rathaur."
         path="/blog"
       />
-      <BlogSidebar />
 
       <section className="blog-main">
         <a className="blog-back" href="/">← Back to Portfolio</a>
