@@ -8,7 +8,9 @@
     "build": "vite build",
     "lint": "eslint .",
     "test": "vitest run",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "validate:blog": "node scripts/validate-blog-content.mjs",
+    "check": "npm run lint && npm run validate:blog && npm run build"
   },
   "dependencies": {
     "@floating-ui/dom": "^1.7.6",
