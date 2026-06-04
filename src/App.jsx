@@ -84,10 +84,11 @@ function App() {
             <Hero />
             <ReadMode />
             <Experience />
-            <ChatWidget />
           </main>
         )}
       </Suspense>
+
+      <ChatWidget />
     </ReadModeProvider>
   )
 }

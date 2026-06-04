@@ -14,6 +14,7 @@ export default function ChatWidget() {
   const [hasNewMessage, setHasNewMessage] = useState(false);
   const [hasShownWakeup, setHasShownWakeup] = useState(false);
   const [showNotify, setShowNotify] = useState(false);
+  const [articleContext, setArticleContext] = useState(null);
   const hasShownNotify = useRef(false);
   const notifyTimeoutRef = useRef(null);
   const mediaRecorderRef = useRef(null);
@@ -36,6 +37,18 @@ export default function ChatWidget() {
   }, [isOpen]);
   useEffect(() => {
     fetch(`${BACKEND}/health`).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const handleArticleContext = (event) => {
+      setArticleContext(event.detail || null);
+    };
+
+    window.addEventListener("portfolio:article-context", handleArticleContext);
+
+    return () => {
+      window.removeEventListener("portfolio:article-context", handleArticleContext);
+    };
   }, []);
   const handleScrollNotify = useCallback(() => {
     if (window.scrollY <= 200 || isOpen || hasShownNotify.current) {
@@ -74,6 +87,26 @@ export default function ChatWidget() {
   const formatTime = (date) =>
     date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
+  const buildArticleAwareMessage = (question) => {
+    if (!articleContext) return question;
+
+    return `You are Manish's portfolio assistant. The user is reading a blog article and is asking about it.
+
+Article title:
+${articleContext.title}
+
+Article summary:
+${articleContext.summary}
+
+Article content:
+${articleContext.body}
+
+User question:
+${question}
+
+Answer using the article context first. If the question is not related to the article, answer normally as Manish's portfolio assistant.`;
+  };
+
   /* ── Send message to backend ── */
   const handleSend = async (text) => {
     const trimmed = text.trim();
@@ -89,7 +122,7 @@ export default function ChatWidget() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          message: trimmed,
+          message: buildArticleAwareMessage(trimmed),
           history: messages.map((m) => ({
             role: m.role,
             content: m.text,
@@ -111,6 +144,11 @@ export default function ChatWidget() {
     }
 
     setIsLoading(false);
+  };
+
+  const handleArticleQuickPrompt = (prompt) => {
+    setIsOpen(true);
+    handleSend(prompt);
   };
 
   const handleKey = (e) => {
@@ -237,6 +275,24 @@ export default function ChatWidget() {
               </button>
             </div>
           </div>
+
+          {articleContext && (
+            <div className="cw-article-mode">
+              <div className="cw-article-mode__label">Article mode</div>
+              <div className="cw-article-mode__title">{articleContext.title}</div>
+              <div className="cw-article-mode__actions">
+                <button type="button" onClick={() => handleArticleQuickPrompt("Summarize this article in simple words.")}>
+                  Summarize
+                </button>
+                <button type="button" onClick={() => handleArticleQuickPrompt("Give me the key takeaways from this article.")}>
+                  Key points
+                </button>
+                <button type="button" onClick={() => handleArticleQuickPrompt("Explain the technical parts of this article like I am a beginner.")}>
+                  Explain simply
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Messages */}
           <div className="cw-messages" role="log" aria-live="polite">

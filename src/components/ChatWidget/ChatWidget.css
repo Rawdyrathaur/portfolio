@@ -477,3 +477,68 @@
   0%, 100% { transform: scale(1);    box-shadow: 0 0 0 0   rgba(255, 77, 77, 0.4); }
   50%       { transform: scale(1.07); box-shadow: 0 0 0 6px rgba(255, 77, 77, 0); }
 }
+/* Article-aware mode inside existing chatbot */
+.cw-article-mode {
+  margin: 0.7rem;
+  padding: 0.7rem;
+  border: 1px solid rgba(143, 214, 221, 0.18);
+  border-radius: 14px;
+  background: rgba(143, 214, 221, 0.055);
+}
+
+.cw-article-mode__label {
+  margin-bottom: 0.25rem;
+  color: #8fd6dd;
+  font-family: "Inconsolata", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cw-article-mode__title {
+  color: #d4d4d4;
+  font-size: 0.86rem;
+  line-height: 1.35;
+}
+
+.cw-article-mode__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.65rem;
+}
+
+.cw-article-mode__actions button {
+  border: 1px solid rgba(143, 214, 221, 0.22);
+  border-radius: 999px;
+  padding: 0.35rem 0.55rem;
+  background: rgba(255, 255, 255, 0.035);
+  color: #bfeaf0;
+  font-family: "Inconsolata", monospace;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.cw-article-mode__actions button:hover {
+  background: rgba(143, 214, 221, 0.12);
+  border-color: rgba(143, 214, 221, 0.45);
+}
+
+html[data-theme="light"] .cw-article-mode {
+  background: rgba(0, 107, 117, 0.07);
+  border-color: rgba(0, 107, 117, 0.18);
+}
+
+html[data-theme="light"] .cw-article-mode__label,
+html[data-theme="light"] .cw-article-mode__actions button {
+  color: #006b75;
+}
+
+html[data-theme="light"] .cw-article-mode__title {
+  color: #1f2933;
+}
+
+html[data-theme="light"] .cw-article-mode__actions button {
+  background: rgba(255, 255, 255, 0.68);
+  border-color: rgba(0, 107, 117, 0.22);
+}
