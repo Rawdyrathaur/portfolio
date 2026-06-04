@@ -47,6 +47,7 @@ function Blog() {
 
   const featuredPost = visiblePosts.find((post) => post.featured)
   const regularPosts = visiblePosts.filter((post) => !post.featured)
+  const hasPublishedPosts = posts.length > 0
 
   return (
     <main className="blog-page blog-page--index">
@@ -68,16 +69,39 @@ function Blog() {
           </p>
         </div>
 
-        <BlogSearch
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          selectedTag={selectedTag}
-          onTagChange={setSelectedTag}
-          tags={tags}
-          resultCount={visiblePosts.length}
-        />
+        {hasPublishedPosts && (
+          <BlogSearch
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            selectedTag={selectedTag}
+            onTagChange={setSelectedTag}
+            tags={tags}
+            resultCount={visiblePosts.length}
+          />
+        )}
 
-        {visiblePosts.length === 0 ? (
+        {!hasPublishedPosts ? (
+          <div className="blog-empty-state blog-empty-state--production">
+            <p className="blog-section-label">Coming Soon</p>
+            <h2>Articles are being prepared.</h2>
+            <p>
+              I’m preparing real engineering notes on AI, open source, Android,
+              production bugs, and project-building lessons. The blog system is
+              ready, but I’m keeping dummy content hidden from production.
+            </p>
+
+            <div className="blog-empty-state__topics" aria-label="Upcoming topics">
+              <span>AI Engineering</span>
+              <span>Open Source</span>
+              <span>Android</span>
+              <span>Production Notes</span>
+            </div>
+
+            <a className="blog-empty-state__link" href="/">
+              ← Back to Portfolio
+            </a>
+          </div>
+        ) : visiblePosts.length === 0 ? (
           <div className="blog-empty-state">
             <h2>No articles found.</h2>
             <p>

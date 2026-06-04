@@ -3,7 +3,7 @@
 ======================== */
 
 import organicMapsLogo from "../assets/organic-maps.svg"
-import kubeStellarLogo from "../assets/kubestellar-icon.png"
+import kubeStellarLogo from "../assets/kubestellar-icon.webp"
 
 export const sectionTitle = "Open Source Experience"
 
