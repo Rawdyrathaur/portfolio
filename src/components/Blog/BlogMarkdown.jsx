@@ -2,7 +2,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import rehypeHighlight from 'rehype-highlight'
+import BlogCodeBlock from './BlogCodeBlock'
 import './Blog.css'
 
 const markdownComponents = {
@@ -38,11 +38,27 @@ const markdownComponents = {
     )
   },
 
-  pre({ children, ...props }) {
+  pre({ children }) {
+    return children
+  },
+
+  code({ className = '', children, ...props }) {
+    const languageMatch = /language-(\w+)/.exec(className)
+    const code = String(children).replace(/\n$/, '')
+
+    if (!languageMatch) {
+      return (
+        <code className={className} {...props}>
+          {children}
+        </code>
+      )
+    }
+
     return (
-      <pre className="blog-markdown__pre" {...props}>
-        {children}
-      </pre>
+      <BlogCodeBlock
+        language={languageMatch[1]}
+        code={code}
+      />
     )
   },
 }
@@ -67,7 +83,6 @@ function BlogMarkdown({ content = '' }) {
         rehypePlugins={[
           rehypeSlug,
           [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-          rehypeHighlight,
         ]}
         components={markdownComponents}
       >

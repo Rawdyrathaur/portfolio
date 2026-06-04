@@ -1,0 +1,509 @@
+===== THEME TOGGLE FILES =====
+/* ========================
+   THEME TOGGLE COMPONENT
+======================== */
+
+import { useState, useEffect } from 'react'
+import './ThemeToggle.css'
+
+function ThemeToggle() {
+  const [isDark, setIsDark] = useState(
+    window.matchMedia('(prefers-color-scheme: dark)').matches
+  )
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light')
+  }, [isDark])
+
+  return (
+    <button
+      className={`theme-toggle ${isDark ? 'theme-toggle--dark' : ''}`}
+      onClick={() => setIsDark(!isDark)}
+      title="Toggle Theme"
+      aria-label="Toggle Theme"
+    >
+      <span className="theme-toggle__thumb">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+    <defs>
+      <mask id="moon-mask">
+        <rect width="16" height="16" fill="white" />
+        <circle
+          cx={isDark ? 11 : 20}
+          cy={4}
+          r={5}
+          fill="black"
+          style={{ transition: "cx 0.5s cubic-bezier(.34,1.56,.64,1)" }}
+        />
+      </mask>
+    </defs>
+    <circle
+      cx={8} cy={8} r={isDark ? 5 : 4}
+      fill="white"
+      mask="url(#moon-mask)"
+      style={{ transition: "r 0.4s cubic-bezier(.34,1.56,.64,1)" }}
+    />
+    <g
+      stroke="white"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      style={{ opacity: isDark ? 0 : 1, transition: "opacity 0.3s" }}
+    >
+      <line x1={8} y1={1} x2={8} y2={2.5} />
+      <line x1={8} y1={13.5} x2={8} y2={15} />
+      <line x1={1} y1={8} x2={2.5} y2={8} />
+      <line x1={13.5} y1={8} x2={15} y2={8} />
+      <line x1={3} y1={3} x2={4.1} y2={4.1} />
+      <line x1={11.9} y1={3} x2={10.8} y2={4.1} />
+      <line x1={3} y1={13} x2={4.1} y2={11.9} />
+      <line x1={11.9} y1={13} x2={10.8} y2={11.9} />
+    </g>
+  </svg>
+</span>
+    </button>
+  )
+}
+
+export default ThemeToggle/* ========================
+   THEME TOGGLE STYLES
+======================== */
+
+.theme-toggle {
+  position: fixed;
+  top: 1.2rem;
+  right: 1.5rem;
+  z-index: 1001;
+  width: 56px;
+  height: 28px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 4px 2px rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  transition: background 0.3s ease;
+  overflow: hidden;
+}
+
+.theme-toggle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+.theme-toggle::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--border), transparent, var(--border));
+}
+
+.theme-toggle__thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: transform 0.3s ease;
+  transform: translateX(0);
+  z-index: 1;
+}
+
+.theme-toggle--dark .theme-toggle__thumb {
+  transform: translateX(28px);
+}===== THEME VARIABLES =====
+/* ========================
+   THEME VARIABLES
+======================== */
+
+:root {
+  --bg: #f7f7f4;
+  --bg-elevated: #ffffff;
+  --surface: #ffffff;
+  --surface-soft: #f0f0ec;
+  --text: #1f2328;
+  --text-muted: #6b7280;
+  --text-secondary: #4b5563;
+  --border: rgba(31, 35, 40, 0.12);
+  --accent: #007c89;
+  --accent-soft: rgba(0, 124, 137, 0.08);
+
+  /* TYPOGRAPHY */
+  --font-main: 'DM Sans', sans-serif;
+
+  --text-bio:     clamp(22px, 3.5vw, 36px);
+  --text-heading: 20px;
+  --text-body:    17px;
+  --text-label:   12px;
+
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg: #000000;
+  --bg-elevated: #111111;
+  --text: #ffffff;
+  --text-muted: #999999;        /* ← was #555555, too dark on black bg */
+  --text-secondary: #aaaaaa;
+  --border: #222222;
+  --surface: #111111;
+  --surface-soft: #1a1a1a;
+  --accent: #dddddd;
+  --accent-soft: rgba(221, 221, 221, 0.08);
+
+  color-scheme: dark;
+}===== GLOBAL CSS THEME REFERENCES =====
+src/styles/index.css:20:  background-color: var(--bg);
+src/styles/index.css:21:  color: var(--text);
+src/styles/index.css:29:  color: inherit;
+src/styles/index.css:42:  background: var(--bg);
+src/styles/index.css:43:  color: var(--text);
+src/styles/index.css:53:  color: var(--text);
+src/styles/index.css:67:  color: inherit;
+src/styles/index.css:85:  color: var(--text);
+src/styles/index.css:98:  color: var(--text-muted);
+src/styles/index.css:113:  color: var(--accent);
+src/styles/index.css:121:  color: var(--text);
+src/styles/variables.css:7:  --bg-elevated: #ffffff;
+src/styles/variables.css:8:  --surface: #ffffff;
+src/styles/variables.css:25:  color-scheme: light;
+src/styles/variables.css:28:[data-theme="dark"] {
+src/styles/variables.css:30:  --bg-elevated: #111111;
+src/styles/variables.css:31:  --text: #ffffff;
+src/styles/variables.css:32:  --text-muted: #999999;        /* ← was #555555, too dark on black bg */
+src/styles/variables.css:35:  --surface: #111111;
+src/styles/variables.css:40:  color-scheme: dark;
+src/components/Navbar/Navbar.css:13:  background: var(--surface);
+src/components/Navbar/Navbar.css:51:  background: linear-gradient(90deg, transparent, var(--border), transparent);
+src/components/Navbar/Navbar.css:61:  background: linear-gradient(180deg, var(--border), transparent, var(--border));
+src/components/Navbar/Navbar.css:72:  background: transparent;
+src/components/Navbar/Navbar.css:73:  color: var(--text);
+src/components/Navbar/Navbar.css:80:  background: var(--accent);
+src/components/Navbar/Navbar.css:81:  color: var(--bg);
+src/components/Blog/Blog.css:7:  background: #070707;
+src/components/Blog/Blog.css:10:html[data-theme='light'],
+src/components/Blog/Blog.css:11:html[data-theme='light'] body,
+src/components/Blog/Blog.css:12:html[data-theme='light'] #root {
+src/components/Blog/Blog.css:13:  background: var(--bg);
+src/components/Blog/Blog.css:33:  color: #b8b8b8;
+src/components/Blog/Blog.css:35:  background:
+src/components/Blog/Blog.css:38:    #070707;
+src/components/Blog/Blog.css:41:html[data-theme='light'] .blog-page {
+src/components/Blog/Blog.css:42:  color: var(--text);
+src/components/Blog/Blog.css:43:  background:
+src/components/Blog/Blog.css:49:html[data-theme='light'] .blog-sidebar {
+src/components/Blog/Blog.css:51:  background: linear-gradient(180deg, var(--surface), var(--surface-soft));
+src/components/Blog/Blog.css:55:html[data-theme='light'] .blog-sidebar__eyebrow,
+src/components/Blog/Blog.css:56:html[data-theme='light'] .blog-hero__eyebrow,
+src/components/Blog/Blog.css:57:html[data-theme='light'] .blog-section-label {
+src/components/Blog/Blog.css:58:  color: var(--accent);
+src/components/Blog/Blog.css:61:html[data-theme='light'] .blog-sidebar__title,
+src/components/Blog/Blog.css:62:html[data-theme='light'] .blog-sidebar__panel h3,
+src/components/Blog/Blog.css:63:html[data-theme='light'] .blog-hero h1,
+src/components/Blog/Blog.css:64:html[data-theme='light'] .blog-card h2,
+src/components/Blog/Blog.css:65:html[data-theme='light'] .blog-article__header h1,
+src/components/Blog/Blog.css:66:html[data-theme='light'] .blog-article__content h2,
+src/components/Blog/Blog.css:67:html[data-theme='light'] .blog-post-header h1,
+src/components/Blog/Blog.css:68:html[data-theme='light'] .blog-markdown h1,
+src/components/Blog/Blog.css:69:html[data-theme='light'] .blog-markdown h2,
+src/components/Blog/Blog.css:70:html[data-theme='light'] .blog-markdown h3,
+src/components/Blog/Blog.css:71:html[data-theme='light'] .blog-markdown h4,
+src/components/Blog/Blog.css:72:html[data-theme='light'] .blog-empty-state h2 {
+src/components/Blog/Blog.css:73:  color: var(--text);
+src/components/Blog/Blog.css:76:html[data-theme='light'] .blog-sidebar__panel p,
+src/components/Blog/Blog.css:77:html[data-theme='light'] .blog-hero p,
+src/components/Blog/Blog.css:78:html[data-theme='light'] .blog-card p,
+src/components/Blog/Blog.css:79:html[data-theme='light'] .blog-article__content,
+src/components/Blog/Blog.css:80:html[data-theme='light'] .blog-article__header p:last-child,
+src/components/Blog/Blog.css:81:html[data-theme='light'] .blog-post-header__subtitle,
+src/components/Blog/Blog.css:82:html[data-theme='light'] .blog-markdown,
+src/components/Blog/Blog.css:83:html[data-theme='light'] .blog-empty-state p,
+src/components/Blog/Blog.css:84:html[data-theme='light'] .blog-markdown blockquote,
+src/components/Blog/Blog.css:85:html[data-theme='light'] .blog-markdown figcaption {
+src/components/Blog/Blog.css:86:  color: var(--text-muted);
+src/components/Blog/Blog.css:89:html[data-theme='light'] .blog-sidebar__panel a,
+src/components/Blog/Blog.css:90:html[data-theme='light'] .blog-back,
+src/components/Blog/Blog.css:91:html[data-theme='light'] .blog-card__meta,
+src/components/Blog/Blog.css:92:html[data-theme='light'] .blog-card__date,
+src/components/Blog/Blog.css:93:html[data-theme='light'] .blog-article__meta,
+src/components/Blog/Blog.css:94:html[data-theme='light'] .blog-section-label,
+src/components/Blog/Blog.css:95:html[data-theme='light'] .blog-sidebar__eyebrow,
+src/components/Blog/Blog.css:96:html[data-theme='light'] .blog-post-header__meta,
+src/components/Blog/Blog.css:97:html[data-theme='light'] .blog-post-header__updated,
+src/components/Blog/Blog.css:98:html[data-theme='light'] .blog-post-footer a,
+src/components/Blog/Blog.css:99:html[data-theme='light'] .blog-markdown a,
+src/components/Blog/Blog.css:100:html[data-theme='light'] .blog-card__readtime {
+src/components/Blog/Blog.css:101:  color: var(--accent);
+src/components/Blog/Blog.css:104:html[data-theme='light'] .blog-mini-button {
+src/components/Blog/Blog.css:106:  background: var(--accent-soft);
+src/components/Blog/Blog.css:107:  color: var(--text);
+src/components/Blog/Blog.css:110:html[data-theme='light'] .blog-mini-button:hover,
+src/components/Blog/Blog.css:111:html[data-theme='light'] .blog-mini-button[aria-expanded='true'] {
+src/components/Blog/Blog.css:112:  border-color: rgba(0, 124, 137, 0.35);
+src/components/Blog/Blog.css:113:  background: rgba(0, 124, 137, 0.12);
+src/components/Blog/Blog.css:116:html[data-theme='light'] .blog-sidebar__panel,
+src/components/Blog/Blog.css:117:html[data-theme='light'] .blog-hero,
+src/components/Blog/Blog.css:118:html[data-theme='light'] .blog-article__header,
+src/components/Blog/Blog.css:119:html[data-theme='light'] .blog-post-header {
+src/components/Blog/Blog.css:120:  border-color: var(--border);
+src/components/Blog/Blog.css:123:html[data-theme='light'] .blog-card,
+src/components/Blog/Blog.css:124:html[data-theme='light'] .blog-empty-state {
+src/components/Blog/Blog.css:126:  background: linear-gradient(180deg, var(--surface), var(--surface-soft));
+src/components/Blog/Blog.css:130:html[data-theme='light'] .blog-card:hover {
+src/components/Blog/Blog.css:131:  border-color: rgba(0, 124, 137, 0.3);
+src/components/Blog/Blog.css:132:  background: linear-gradient(180deg, rgba(0, 124, 137, 0.07), var(--surface));
+src/components/Blog/Blog.css:135:html[data-theme='light'] .blog-card__category,
+src/components/Blog/Blog.css:136:html[data-theme='light'] .blog-post-header__tags span,
+src/components/Blog/Blog.css:137:html[data-theme='light'] .blog-post-footer__tags span {
+src/components/Blog/Blog.css:138:  border-color: rgba(0, 124, 137, 0.18);
+src/components/Blog/Blog.css:139:  background: var(--accent-soft);
+src/components/Blog/Blog.css:140:  color: var(--accent);
+src/components/Blog/Blog.css:143:html[data-theme='light'] .blog-markdown blockquote {
+src/components/Blog/Blog.css:144:  border-left-color: rgba(0, 124, 137, 0.35);
+src/components/Blog/Blog.css:145:  background: var(--surface-soft);
+src/components/Blog/Blog.css:148:html[data-theme='light'] .blog-markdown :not(pre) > code {
+src/components/Blog/Blog.css:149:  background: rgba(0, 124, 137, 0.08);
+src/components/Blog/Blog.css:150:  color: var(--text);
+src/components/Blog/Blog.css:153:html[data-theme='light'] .blog-markdown__pre,
+src/components/Blog/Blog.css:154:html[data-theme='light'] .blog-code-block,
+src/components/Blog/Blog.css:155:html[data-theme='light'] .blog-code-block__header,
+src/components/Blog/Blog.css:156:html[data-theme='light'] .blog-code-block__copy {
+src/components/Blog/Blog.css:157:  background: var(--surface);
+src/components/Blog/Blog.css:158:  border-color: var(--border);
+src/components/Blog/Blog.css:161:html[data-theme='light'] .blog-markdown__pre,
+src/components/Blog/Blog.css:162:html[data-theme='light'] .blog-code-block {
+src/components/Blog/Blog.css:166:html[data-theme='light'] .blog-markdown th,
+src/components/Blog/Blog.css:167:html[data-theme='light'] .blog-markdown td,
+src/components/Blog/Blog.css:168:html[data-theme='light'] .blog-markdown__figure img {
+src/components/Blog/Blog.css:169:  border-color: var(--border);
+src/components/Blog/Blog.css:172:html[data-theme='light'] .blog-markdown th {
+src/components/Blog/Blog.css:173:  background: var(--surface-soft);
+src/components/Blog/Blog.css:174:  color: var(--text);
+src/components/Blog/Blog.css:177:html[data-theme='light'] .blog-code-block__language,
+src/components/Blog/Blog.css:178:html[data-theme='light'] .blog-code-block__copy,
+src/components/Blog/Blog.css:179:html[data-theme='light'] .blog-markdown__figure figcaption,
+src/components/Blog/Blog.css:180:html[data-theme='light'] .blog-post-header__updated,
+src/components/Blog/Blog.css:181:html[data-theme='light'] .blog-card__readtime,
+src/components/Blog/Blog.css:182:html[data-theme='light'] .blog-card__date {
+src/components/Blog/Blog.css:183:  color: var(--text-muted);
+src/components/Blog/Blog.css:186:html[data-theme='light'] .blog-code-block__copy:hover {
+src/components/Blog/Blog.css:187:  background: var(--accent-soft);
+src/components/Blog/Blog.css:188:  color: var(--accent);
+src/components/Blog/Blog.css:189:  border-color: rgba(0, 124, 137, 0.35);
+src/components/Blog/Blog.css:192:html[data-theme='light'] .blog-post-footer {
+src/components/Blog/Blog.css:193:  border-top-color: var(--border);
+src/components/Blog/Blog.css:196:html[data-theme='light'] .blog-post-header {
+src/components/Blog/Blog.css:197:  border-bottom-color: var(--border);
+src/components/Blog/Blog.css:200:html[data-theme='light'] .blog-card:hover h2 {
+src/components/Blog/Blog.css:201:  color: var(--text);
+src/components/Blog/Blog.css:204:html[data-theme='light'] .blog-markdown h1,
+src/components/Blog/Blog.css:205:html[data-theme='light'] .blog-markdown h2,
+src/components/Blog/Blog.css:206:html[data-theme='light'] .blog-markdown h3,
+src/components/Blog/Blog.css:207:html[data-theme='light'] .blog-markdown h4 {
+src/components/Blog/Blog.css:208:  color: var(--text);
+src/components/Blog/Blog.css:211:html[data-theme='light'] .blog-markdown a:hover,
+src/components/Blog/Blog.css:212:html[data-theme='light'] .blog-post-footer a:hover,
+src/components/Blog/Blog.css:213:html[data-theme='light'] .blog-sidebar__panel a:hover,
+src/components/Blog/Blog.css:214:html[data-theme='light'] .blog-back:hover {
+src/components/Blog/Blog.css:225:  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+src/components/Blog/Blog.css:235:  color: #78cbd4;
+src/components/Blog/Blog.css:246:  color: #d8d8d8;
+src/components/Blog/Blog.css:259:  background: rgba(120, 203, 212, 0.075);
+src/components/Blog/Blog.css:260:  color: #cfcfcf;
+src/components/Blog/Blog.css:269:  border-color: rgba(120, 203, 212, 0.7);
+src/components/Blog/Blog.css:270:  background: rgba(120, 203, 212, 0.14);
+src/components/Blog/Blog.css:284:  color: #dcdcdc;
+src/components/Blog/Blog.css:292:  color: #9d9d9d;
+src/components/Blog/Blog.css:298:  color: #78cbd4;
+src/components/Blog/Blog.css:316:  color: #78cbd4;
+src/components/Blog/Blog.css:339:  color: #dddddd;
+src/components/Blog/Blog.css:348:  color: #a8a8a8;
+src/components/Blog/Blog.css:365:  color: inherit;
+src/components/Blog/Blog.css:367:  background: linear-gradient(180deg, rgba(255, 255, 255, 0.043), rgba(255, 255, 255, 0.018));
+src/components/Blog/Blog.css:374:  border-color: rgba(120, 203, 212, 0.5);
+src/components/Blog/Blog.css:375:  background: linear-gradient(180deg, rgba(120, 203, 212, 0.075), rgba(255, 255, 255, 0.025));
+src/components/Blog/Blog.css:382:  color: #78cbd4;
+src/components/Blog/Blog.css:390:  color: #dcdcdc;
+src/components/Blog/Blog.css:399:  color: #a8a8a8;
+src/components/Blog/Blog.css:406:  color: #858585;
+src/components/Blog/Blog.css:422:  color: #78cbd4;
+src/components/Blog/Blog.css:429:  color: #dddddd;
+src/components/Blog/Blog.css:439:  color: #a8a8a8;
+src/components/Blog/Blog.css:448:  color: #b4b4b4;
+src/components/Blog/Blog.css:457:  color: #d8d8d8;
+src/components/Blog/Blog.css:595:  background: transparent;
+src/components/Blog/Blog.css:597:  color: inherit;
+src/components/Blog/Blog.css:604:  background: transparent;
+src/components/Blog/Blog.css:605:  border-color: rgba(120, 203, 212, 0.38);
+src/components/Blog/Blog.css:613:  background: rgba(255, 255, 255, 0.025);
+src/components/Blog/Blog.css:617:  background: rgba(120, 203, 212, 0.035);
+src/components/Blog/Blog.css:618:  border-color: rgba(120, 203, 212, 0.35);
+src/components/Blog/Blog.css:636:  background: rgba(120, 203, 212, 0.06);
+src/components/Blog/Blog.css:637:  color: #8fd6dd;
+src/components/Blog/Blog.css:643:  color: #7f7f7f;
+src/components/Blog/Blog.css:651:  color: #d2d2d2;
+src/components/Blog/Blog.css:658:  color: #e0e0e0;
+src/components/Blog/Blog.css:664:  color: #9f9f9f;
+src/components/Blog/Blog.css:675:  color: #7f7f7f;
+src/components/Blog/Blog.css:681:  color: #8fd6dd;
+src/components/Blog/Blog.css:759:  background: rgba(255, 255, 255, 0.025);
+src/components/Blog/Blog.css:765:  color: #d2d2d2;
+src/components/Blog/Blog.css:773:  color: #9f9f9f;
+src/components/Blog/Blog.css:800:  color: #82cbd3;
+src/components/Blog/Blog.css:808:  color: #d7d7d7;
+src/components/Blog/Blog.css:818:  color: #a6a6a6;
+src/components/Blog/Blog.css:838:  background: rgba(130, 203, 211, 0.055);
+src/components/Blog/Blog.css:839:  color: #9fd9df;
+src/components/Blog/Blog.css:846:  color: #777;
+src/components/Blog/Blog.css:852:  color: #b0b0b0;
+src/components/Blog/Blog.css:866:  color: #d4d4d4;
+src/components/Blog/Blog.css:906:  color: #8fd6dd;
+src/components/Blog/Blog.css:912:  border-color: rgba(143, 214, 221, 0.85);
+src/components/Blog/Blog.css:920:  background: rgba(255, 255, 255, 0.035);
+src/components/Blog/Blog.css:921:  color: #a9a9a9;
+src/components/Blog/Blog.css:932:  background: rgba(255, 255, 255, 0.075);
+src/components/Blog/Blog.css:933:  color: #d6d6d6;
+src/components/Blog/Blog.css:940:  background: #111;
+src/components/Blog/Blog.css:945:  background: transparent;
+src/components/Blog/Blog.css:961:  color: #7d7d7d;
+src/components/Blog/Blog.css:986:  color: #d8d8d8;
+src/components/Blog/Blog.css:987:  background: rgba(255, 255, 255, 0.045);
+src/components/Blog/Blog.css:1000:  color: #8fd6dd;
+src/components/Blog/Blog.css:1062:  background: #1e1e1e;
+src/components/Blog/Blog.css:1074:  background: #252526;
+src/components/Blog/Blog.css:1078:  color: #a6a6a6;
+src/components/Blog/Blog.css:1089:  background: #2d2d2d;
+src/components/Blog/Blog.css:1090:  color: #d0d0d0;
+src/components/Blog/Blog.css:1098:  border-color: rgba(143, 214, 221, 0.55);
+src/components/Blog/Blog.css:1099:  background: #343434;
+src/components/Blog/Blog.css:1100:  color: #ffffff;
+src/components/Blog/BlogCodeBlock.jsx:2:import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+src/components/Blog/BlogCodeBlock.jsx:3:import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+src/components/Blog/BlogCodeBlock.jsx:57:      <SyntaxHighlighter
+src/components/Blog/BlogCodeBlock.jsx:65:          background: '#1e1e1e',
+src/components/Blog/BlogCodeBlock.jsx:78:      </SyntaxHighlighter>
+src/components/ThemeToggle/ThemeToggle.css:5:.theme-toggle {
+src/components/ThemeToggle/ThemeToggle.css:14:  background: var(--surface);
+src/components/ThemeToggle/ThemeToggle.css:30:.theme-toggle::before {
+src/components/ThemeToggle/ThemeToggle.css:37:  background: linear-gradient(90deg, transparent, var(--border), transparent);
+src/components/ThemeToggle/ThemeToggle.css:40:.theme-toggle::after {
+src/components/ThemeToggle/ThemeToggle.css:47:  background: linear-gradient(180deg, var(--border), transparent, var(--border));
+src/components/ThemeToggle/ThemeToggle.css:50:.theme-toggle__thumb {
+src/components/ThemeToggle/ThemeToggle.css:54:  background: var(--accent);
+src/components/ThemeToggle/ThemeToggle.css:64:.theme-toggle--dark .theme-toggle__thumb {
+src/components/ThemeToggle/ThemeToggle.jsx:10:    window.matchMedia('(prefers-color-scheme: dark)').matches
+src/components/ThemeToggle/ThemeToggle.jsx:14:    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light')
+src/components/ThemeToggle/ThemeToggle.jsx:19:      className={`theme-toggle ${isDark ? 'theme-toggle--dark' : ''}`}
+src/components/ThemeToggle/ThemeToggle.jsx:24:      <span className="theme-toggle__thumb">
+src/components/ThemeToggle/ThemeToggle.jsx:28:        <rect width="16" height="16" fill="white" />
+src/components/ThemeToggle/ThemeToggle.jsx:40:      fill="white"
+src/components/ThemeToggle/ThemeToggle.jsx:45:      stroke="white"
+src/components/ChatWidget/ChatWidget.css:24:  background: rgba(255, 255, 255, 0.2);
+src/components/ChatWidget/ChatWidget.css:40:  color: #0d0d0d;
+src/components/ChatWidget/ChatWidget.css:46:  background: rgba(255, 255, 255, 0.3);
+src/components/ChatWidget/ChatWidget.css:61:  background: rgba(255, 255, 255, 0.2);
+src/components/ChatWidget/ChatWidget.css:69:  color: var(--text, #1a1a1a);
+src/components/ChatWidget/ChatWidget.css:70:  white-space: nowrap;
+src/components/ChatWidget/ChatWidget.css:125:  background: #ff4d4d;
+src/components/ChatWidget/ChatWidget.css:126:  border: 2px solid #fff;
+src/components/ChatWidget/ChatWidget.css:140:  background: var(--surface);
+src/components/ChatWidget/ChatWidget.css:164:  background: linear-gradient(90deg, transparent, var(--border), transparent);
+src/components/ChatWidget/ChatWidget.css:174:  background: linear-gradient(180deg, var(--border), transparent, var(--border));
+src/components/ChatWidget/ChatWidget.css:192:  background: var(--accent);
+src/components/ChatWidget/ChatWidget.css:202:  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+src/components/ChatWidget/ChatWidget.css:219:  color: #fff;
+src/components/ChatWidget/ChatWidget.css:224:  color: rgba(255,255,255,0.65);
+src/components/ChatWidget/ChatWidget.css:231:  background: #a8f5a2;
+src/components/ChatWidget/ChatWidget.css:240:  background: transparent;
+src/components/ChatWidget/ChatWidget.css:242:  color: rgba(255,255,255,0.7);
+src/components/ChatWidget/ChatWidget.css:250:  background: rgba(255,255,255,0.15);
+src/components/ChatWidget/ChatWidget.css:251:  color: #fff;
+src/components/ChatWidget/ChatWidget.css:264:  background: transparent;
+src/components/ChatWidget/ChatWidget.css:269:  background: var(--border);
+src/components/ChatWidget/ChatWidget.css:299:  background: var(--accent);
+src/components/ChatWidget/ChatWidget.css:300:  color: #938b8b;
+src/components/ChatWidget/ChatWidget.css:306:  background: var(--surface);
+src/components/ChatWidget/ChatWidget.css:309:  color: var(--text);
+src/components/ChatWidget/ChatWidget.css:319:  color: var(--text-secondary);
+src/components/ChatWidget/ChatWidget.css:336:  background: var(--border);
+src/components/ChatWidget/ChatWidget.css:353:  color: var(--text-secondary);
+src/components/ChatWidget/ChatWidget.css:361:  background: #ff4d4d;
+src/components/ChatWidget/ChatWidget.css:372:  background: var(--surface);
+src/components/ChatWidget/ChatWidget.css:386:  background: linear-gradient(90deg, transparent, var(--border), transparent);
+src/components/ChatWidget/ChatWidget.css:397:  background: rgba(255, 255, 255, 0.45);
+src/components/ChatWidget/ChatWidget.css:400:  color: var(--text);
+src/components/ChatWidget/ChatWidget.css:404:.cw-input::placeholder { color: var(--text-secondary); opacity: 0.55; }
+src/components/ChatWidget/ChatWidget.css:406:  border-color: var(--accent);
+src/components/ChatWidget/ChatWidget.css:407:  background: rgba(255, 255, 255, 0.55);
+src/components/ChatWidget/ChatWidget.css:419:  background: var(--border);
+src/components/ChatWidget/ChatWidget.css:421:  color: var(--text-secondary);
+src/components/ChatWidget/ChatWidget.css:432:  background: var(--accent);
+src/components/ChatWidget/ChatWidget.css:433:  color: #fff;
+src/components/ChatWidget/ChatWidget.css:452:  background: rgba(255, 255, 255, 0.35);
+src/components/ChatWidget/ChatWidget.css:456:  color: var(--text-secondary);
+src/components/ChatWidget/ChatWidget.css:467:  background: rgba(255, 255, 255, 0.55);
+src/components/ChatWidget/ChatWidget.css:471:  background: #ff4d4d;
+src/components/ChatWidget/ChatWidget.css:472:  border-color: rgba(255, 77, 77, 0.4);
+src/components/ChatWidget/ChatWidget.css:473:  color: #fff;
+src/components/Hero/Hero.css:36:  color: var(--text);
+src/components/ReadMode/ReadMode.css:10:  background: var(--surface);
+src/components/ReadMode/ReadMode.css:35:  background: linear-gradient(90deg, transparent, var(--border), transparent);
+src/components/ReadMode/ReadMode.css:42:  background: transparent;
+src/components/ReadMode/ReadMode.css:43:  color: var(--text-muted);
+src/components/ReadMode/ReadMode.css:53:  background: var(--accent);
+src/components/ReadMode/ReadMode.css:54:  color: var(--bg);
+src/components/ReadMode/ReadMode.css:60:  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+src/components/Experience/Experience.css:16:  color: var(--text-muted);
+src/components/Experience/Experience.css:50:  background: rgba(255, 255, 255, 0.06);
+src/components/Experience/Experience.css:101:  color: var(--text);
+src/components/Experience/Experience.css:108:  color: var(--text-muted);
+src/components/Experience/Experience.css:117:  color: var(--text-muted);
+src/components/Experience/Experience.css:125:  color: var(--text-muted);
+src/components/Experience/Experience.css:135:  color: var(--text);
+src/components/Experience/Experience.css:137:  white-space: pre-line;
+===== BLOG HARD-CODED DARK COLORS =====
+src/components/Blog/Blog.css:7:  background: #070707;
+src/components/Blog/Blog.css:38:    #070707;
+src/components/Blog/Blog.css:246:  color: #d8d8d8;
+src/components/Blog/Blog.css:284:  color: #dcdcdc;
+src/components/Blog/Blog.css:339:  color: #dddddd;
+src/components/Blog/Blog.css:390:  color: #dcdcdc;
+src/components/Blog/Blog.css:429:  color: #dddddd;
+src/components/Blog/Blog.css:457:  color: #d8d8d8;
+src/components/Blog/Blog.css:651:  color: #d2d2d2;
+src/components/Blog/Blog.css:765:  color: #d2d2d2;
+src/components/Blog/Blog.css:808:  color: #d7d7d7;
+src/components/Blog/Blog.css:866:  color: #d4d4d4;
+src/components/Blog/Blog.css:933:  color: #d6d6d6;
+src/components/Blog/Blog.css:940:  background: #111;
+src/components/Blog/Blog.css:986:  color: #d8d8d8;
+src/components/Blog/Blog.css:1062:  background: #1e1e1e;
+src/components/Blog/Blog.css:1074:  background: #252526;
+src/components/Blog/Blog.css:1090:  color: #d0d0d0;
+src/components/Blog/Blog.css:1100:  color: #ffffff;
+src/components/Blog/BlogCodeBlock.jsx:65:          background: '#1e1e1e',
+src/styles/variables.css:6:  --bg: #f7f7f4;
+src/styles/variables.css:7:  --bg-elevated: #ffffff;
+src/styles/variables.css:8:  --surface: #ffffff;
+src/styles/variables.css:9:  --surface-soft: #f0f0ec;
+src/styles/variables.css:30:  --bg-elevated: #111111;
+src/styles/variables.css:31:  --text: #ffffff;
+src/styles/variables.css:35:  --surface: #111111;
+src/styles/variables.css:37:  --accent: #dddddd;

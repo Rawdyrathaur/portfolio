@@ -7,6 +7,12 @@ body,
   background: #070707;
 }
 
+html[data-theme='light'],
+html[data-theme='light'] body,
+html[data-theme='light'] #root {
+  background: var(--bg);
+}
+
 body {
   margin: 0;
   overscroll-behavior: none;
@@ -30,6 +36,183 @@ body {
     radial-gradient(circle at top left, rgba(0, 177, 201, 0.11), transparent 34rem),
     radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.035), transparent 28rem),
     #070707;
+}
+
+html[data-theme='light'] .blog-page {
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(0, 124, 137, 0.08), transparent 30rem),
+    radial-gradient(circle at bottom right, rgba(31, 35, 40, 0.04), transparent 26rem),
+    var(--bg);
+}
+
+html[data-theme='light'] .blog-sidebar {
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--surface), var(--surface-soft));
+  box-shadow: 0 18px 55px rgba(31, 35, 40, 0.08);
+}
+
+html[data-theme='light'] .blog-sidebar__eyebrow,
+html[data-theme='light'] .blog-hero__eyebrow,
+html[data-theme='light'] .blog-section-label {
+  color: var(--accent);
+}
+
+html[data-theme='light'] .blog-sidebar__title,
+html[data-theme='light'] .blog-sidebar__panel h3,
+html[data-theme='light'] .blog-hero h1,
+html[data-theme='light'] .blog-card h2,
+html[data-theme='light'] .blog-article__header h1,
+html[data-theme='light'] .blog-article__content h2,
+html[data-theme='light'] .blog-post-header h1,
+html[data-theme='light'] .blog-markdown h1,
+html[data-theme='light'] .blog-markdown h2,
+html[data-theme='light'] .blog-markdown h3,
+html[data-theme='light'] .blog-markdown h4,
+html[data-theme='light'] .blog-empty-state h2 {
+  color: var(--text);
+}
+
+html[data-theme='light'] .blog-sidebar__panel p,
+html[data-theme='light'] .blog-hero p,
+html[data-theme='light'] .blog-card p,
+html[data-theme='light'] .blog-article__content,
+html[data-theme='light'] .blog-article__header p:last-child,
+html[data-theme='light'] .blog-post-header__subtitle,
+html[data-theme='light'] .blog-markdown,
+html[data-theme='light'] .blog-empty-state p,
+html[data-theme='light'] .blog-markdown blockquote,
+html[data-theme='light'] .blog-markdown figcaption {
+  color: var(--text-muted);
+}
+
+html[data-theme='light'] .blog-sidebar__panel a,
+html[data-theme='light'] .blog-back,
+html[data-theme='light'] .blog-card__meta,
+html[data-theme='light'] .blog-card__date,
+html[data-theme='light'] .blog-article__meta,
+html[data-theme='light'] .blog-section-label,
+html[data-theme='light'] .blog-sidebar__eyebrow,
+html[data-theme='light'] .blog-post-header__meta,
+html[data-theme='light'] .blog-post-header__updated,
+html[data-theme='light'] .blog-post-footer a,
+html[data-theme='light'] .blog-markdown a,
+html[data-theme='light'] .blog-card__readtime {
+  color: var(--accent);
+}
+
+html[data-theme='light'] .blog-mini-button {
+  border: 1px solid rgba(0, 124, 137, 0.18);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+html[data-theme='light'] .blog-mini-button:hover,
+html[data-theme='light'] .blog-mini-button[aria-expanded='true'] {
+  border-color: rgba(0, 124, 137, 0.35);
+  background: rgba(0, 124, 137, 0.12);
+}
+
+html[data-theme='light'] .blog-sidebar__panel,
+html[data-theme='light'] .blog-hero,
+html[data-theme='light'] .blog-article__header,
+html[data-theme='light'] .blog-post-header {
+  border-color: var(--border);
+}
+
+html[data-theme='light'] .blog-card,
+html[data-theme='light'] .blog-empty-state {
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--surface), var(--surface-soft));
+  box-shadow: 0 14px 42px rgba(31, 35, 40, 0.06);
+}
+
+html[data-theme='light'] .blog-card:hover {
+  border-color: rgba(0, 124, 137, 0.3);
+  background: linear-gradient(180deg, rgba(0, 124, 137, 0.07), var(--surface));
+}
+
+html[data-theme='light'] .blog-card__category,
+html[data-theme='light'] .blog-post-header__tags span,
+html[data-theme='light'] .blog-post-footer__tags span {
+  border-color: rgba(0, 124, 137, 0.18);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+html[data-theme='light'] .blog-markdown blockquote {
+  border-left-color: rgba(0, 124, 137, 0.35);
+  background: var(--surface-soft);
+}
+
+html[data-theme='light'] .blog-markdown :not(pre) > code {
+  background: rgba(0, 124, 137, 0.08);
+  color: var(--text);
+}
+
+html[data-theme='light'] .blog-markdown__pre,
+html[data-theme='light'] .blog-code-block,
+html[data-theme='light'] .blog-code-block__header,
+html[data-theme='light'] .blog-code-block__copy {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+html[data-theme='light'] .blog-markdown__pre,
+html[data-theme='light'] .blog-code-block {
+  box-shadow: 0 18px 45px rgba(31, 35, 40, 0.08);
+}
+
+html[data-theme='light'] .blog-markdown th,
+html[data-theme='light'] .blog-markdown td,
+html[data-theme='light'] .blog-markdown__figure img {
+  border-color: var(--border);
+}
+
+html[data-theme='light'] .blog-markdown th {
+  background: var(--surface-soft);
+  color: var(--text);
+}
+
+html[data-theme='light'] .blog-code-block__language,
+html[data-theme='light'] .blog-code-block__copy,
+html[data-theme='light'] .blog-markdown__figure figcaption,
+html[data-theme='light'] .blog-post-header__updated,
+html[data-theme='light'] .blog-card__readtime,
+html[data-theme='light'] .blog-card__date {
+  color: var(--text-muted);
+}
+
+html[data-theme='light'] .blog-code-block__copy:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: rgba(0, 124, 137, 0.35);
+}
+
+html[data-theme='light'] .blog-post-footer {
+  border-top-color: var(--border);
+}
+
+html[data-theme='light'] .blog-post-header {
+  border-bottom-color: var(--border);
+}
+
+html[data-theme='light'] .blog-card:hover h2 {
+  color: var(--text);
+}
+
+html[data-theme='light'] .blog-markdown h1,
+html[data-theme='light'] .blog-markdown h2,
+html[data-theme='light'] .blog-markdown h3,
+html[data-theme='light'] .blog-markdown h4 {
+  color: var(--text);
+}
+
+html[data-theme='light'] .blog-markdown a:hover,
+html[data-theme='light'] .blog-post-footer a:hover,
+html[data-theme='light'] .blog-sidebar__panel a:hover,
+html[data-theme='light'] .blog-back:hover {
+  text-decoration: underline;
 }
 
 .blog-sidebar {
@@ -946,128 +1129,113 @@ body {
 }
 
 
-/* Blog light theme: clean professional palette */
-html[data-theme="light"] body,
-html[data-theme="light"] #root {
-  background: #f7f4ee;
-}
-
-html[data-theme="light"] .blog-page {
-  --blog-light-bg: #f7f4ee;
-  --blog-light-bg-soft: #fbfaf7;
-  --blog-light-surface: #ffffff;
-  --blog-light-surface-soft: #f1eee7;
+/* Professional light theme for blog only */
+:where([data-theme="light"], .light, .light-theme) .blog-page {
+  --blog-light-bg: #f6f4ef;
+  --blog-light-surface: #fffdf8;
+  --blog-light-surface-soft: #f0ede5;
   --blog-light-text: #1f2933;
-  --blog-light-text-soft: #46515f;
+  --blog-light-text-soft: #4b5563;
   --blog-light-muted: #6b7280;
   --blog-light-border: rgba(31, 41, 51, 0.12);
   --blog-light-accent: #006b75;
   --blog-light-accent-soft: rgba(0, 107, 117, 0.08);
+  --blog-light-code-bg: #f3f4f6;
 
   background:
-    radial-gradient(circle at top left, rgba(0, 107, 117, 0.08), transparent 34rem),
-    linear-gradient(180deg, var(--blog-light-bg-soft) 0%, var(--blog-light-bg) 100%);
+    radial-gradient(circle at top left, rgba(0, 107, 117, 0.08), transparent 32rem),
+    linear-gradient(180deg, #f9f7f2 0%, var(--blog-light-bg) 100%);
   color: var(--blog-light-text);
 }
 
-
-html[data-theme="light"] .blog-sidebar,
-html[data-theme="light"] .blog-card--featured,
-html[data-theme="light"] .blog-empty-state {
+:where([data-theme="light"], .light, .light-theme) .blog-sidebar,
+:where([data-theme="light"], .light, .light-theme) .blog-card--featured,
+:where([data-theme="light"], .light, .light-theme) .blog-empty-state {
   background: var(--blog-light-surface);
   border-color: var(--blog-light-border);
   box-shadow: 0 18px 45px rgba(31, 41, 51, 0.08);
 }
 
-html[data-theme="light"] .blog-card {
+:where([data-theme="light"], .light, .light-theme) .blog-card {
   border-color: var(--blog-light-border);
 }
 
-html[data-theme="light"] .blog-card:hover {
-  background: var(--blog-light-accent-soft);
+:where([data-theme="light"], .light, .light-theme) .blog-card:hover {
   border-color: rgba(0, 107, 117, 0.35);
+  background: var(--blog-light-accent-soft);
 }
 
-html[data-theme="light"] .blog-hero,
-html[data-theme="light"] .blog-post-header,
-html[data-theme="light"] .blog-post-footer,
-html[data-theme="light"] .blog-sidebar__panel {
+:where([data-theme="light"], .light, .light-theme) .blog-hero,
+:where([data-theme="light"], .light, .light-theme) .blog-post-header,
+:where([data-theme="light"], .light, .light-theme) .blog-post-footer {
   border-color: var(--blog-light-border);
 }
 
-html[data-theme="light"] .blog-hero h1,
-html[data-theme="light"] .blog-sidebar__title,
-html[data-theme="light"] .blog-card h2,
-html[data-theme="light"] .blog-post-header h1,
-html[data-theme="light"] .blog-markdown h1,
-html[data-theme="light"] .blog-markdown h2,
-html[data-theme="light"] .blog-markdown h3,
-html[data-theme="light"] .blog-empty-state h2 {
+:where([data-theme="light"], .light, .light-theme) .blog-hero h1,
+:where([data-theme="light"], .light, .light-theme) .blog-sidebar__title,
+:where([data-theme="light"], .light, .light-theme) .blog-card h2,
+:where([data-theme="light"], .light, .light-theme) .blog-post-header h1,
+:where([data-theme="light"], .light, .light-theme) .blog-markdown h1,
+:where([data-theme="light"], .light, .light-theme) .blog-markdown h2,
+:where([data-theme="light"], .light, .light-theme) .blog-markdown h3,
+:where([data-theme="light"], .light, .light-theme) .blog-empty-state h2 {
   color: var(--blog-light-text);
 }
 
-html[data-theme="light"] .blog-hero p,
-html[data-theme="light"] .blog-card p,
-html[data-theme="light"] .blog-markdown,
-html[data-theme="light"] .blog-post-header__subtitle,
-html[data-theme="light"] .blog-empty-state p,
-html[data-theme="light"] .blog-sidebar__panel p {
+:where([data-theme="light"], .light, .light-theme) .blog-hero p,
+:where([data-theme="light"], .light, .light-theme) .blog-card p,
+:where([data-theme="light"], .light, .light-theme) .blog-markdown,
+:where([data-theme="light"], .light, .light-theme) .blog-post-header__subtitle,
+:where([data-theme="light"], .light, .light-theme) .blog-empty-state p,
+:where([data-theme="light"], .light, .light-theme) .blog-sidebar__panel p {
   color: var(--blog-light-text-soft);
 }
 
-html[data-theme="light"] .blog-card__date,
-html[data-theme="light"] .blog-card__readtime,
-html[data-theme="light"] .blog-post-header__updated,
-html[data-theme="light"] .blog-markdown__figure figcaption {
+:where([data-theme="light"], .light, .light-theme) .blog-card__date,
+:where([data-theme="light"], .light, .light-theme) .blog-card__readtime,
+:where([data-theme="light"], .light, .light-theme) .blog-post-header__updated {
   color: var(--blog-light-muted);
 }
 
-html[data-theme="light"] .blog-back,
-html[data-theme="light"] .blog-section-label,
-html[data-theme="light"] .blog-hero__eyebrow,
-html[data-theme="light"] .blog-sidebar__eyebrow,
-html[data-theme="light"] .blog-card__category,
-html[data-theme="light"] .blog-card__read,
-html[data-theme="light"] .blog-post-header__meta,
-html[data-theme="light"] .blog-post-footer a,
-html[data-theme="light"] .blog-markdown a,
-html[data-theme="light"] .blog-sidebar__panel a {
+:where([data-theme="light"], .light, .light-theme) .blog-back,
+:where([data-theme="light"], .light, .light-theme) .blog-section-label,
+:where([data-theme="light"], .light, .light-theme) .blog-hero__eyebrow,
+:where([data-theme="light"], .light, .light-theme) .blog-sidebar__eyebrow,
+:where([data-theme="light"], .light, .light-theme) .blog-card__category,
+:where([data-theme="light"], .light, .light-theme) .blog-card__read,
+:where([data-theme="light"], .light, .light-theme) .blog-post-header__meta,
+:where([data-theme="light"], .light, .light-theme) .blog-post-footer a,
+:where([data-theme="light"], .light, .light-theme) .blog-markdown a {
   color: var(--blog-light-accent);
 }
 
-html[data-theme="light"] .blog-card__category,
-html[data-theme="light"] .blog-post-header__tags span,
-html[data-theme="light"] .blog-post-footer__tags span {
+:where([data-theme="light"], .light, .light-theme) .blog-card__category,
+:where([data-theme="light"], .light, .light-theme) .blog-post-header__tags span,
+:where([data-theme="light"], .light, .light-theme) .blog-post-footer__tags span {
   background: var(--blog-light-accent-soft);
   border-color: rgba(0, 107, 117, 0.22);
   color: var(--blog-light-accent);
 }
 
-html[data-theme="light"] .blog-mini-button {
+:where([data-theme="light"], .light, .light-theme) .blog-mini-button {
   background: var(--blog-light-accent-soft);
   border-color: rgba(0, 107, 117, 0.24);
   color: var(--blog-light-accent);
 }
 
-html[data-theme="light"] .blog-mini-button:hover,
-html[data-theme="light"] .blog-mini-button[aria-expanded="true"] {
+:where([data-theme="light"], .light, .light-theme) .blog-mini-button:hover,
+:where([data-theme="light"], .light, .light-theme) .blog-mini-button[aria-expanded="true"] {
   background: rgba(0, 107, 117, 0.14);
   border-color: rgba(0, 107, 117, 0.42);
 }
 
-html[data-theme="light"] .blog-markdown blockquote {
+:where([data-theme="light"], .light, .light-theme) .blog-markdown blockquote {
   background: var(--blog-light-surface-soft);
   border-left-color: var(--blog-light-accent);
   color: var(--blog-light-text-soft);
 }
 
-html[data-theme="light"] .blog-markdown :not(pre) > code {
-  background: #eef1f3;
+:where([data-theme="light"], .light, .light-theme) .blog-markdown :not(pre) > code {
+  background: var(--blog-light-code-bg);
   color: #243447;
 }
-
-
-
-/* Prevent theme control from behaving like a grid item */
-
-/* Mobile safe position */

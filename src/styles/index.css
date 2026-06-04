@@ -34,21 +34,25 @@ img {
   max-width: 100%;
   display: block;
 }
-/* Global softer dark-theme text colors */
+
 html,
 body,
 #root {
-  color: #b9b9b9;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
 }
 
-body,
+body {
+  overscroll-behavior: none;
+}
+
 .app,
 .portfolio,
 .blog-page {
-  color: #b9b9b9;
+  color: var(--text);
 }
 
-/* Dim pure-white headings/buttons/text slightly */
 h1,
 h2,
 h3,
@@ -63,7 +67,6 @@ li {
   color: inherit;
 }
 
-/* Main headings: still visible, but not harsh white */
 .hero__title,
 .section-title,
 .experience__title,
@@ -72,25 +75,49 @@ li {
 .blog-article__header h1,
 .blog-article__content h2,
 .blog-sidebar__title,
-.blog-sidebar__panel h3 {
-  color: #d6d6d6;
+.blog-sidebar__panel h3,
+.blog-empty-state h2,
+.blog-post-header h1,
+.blog-markdown h1,
+.blog-markdown h2,
+.blog-markdown h3,
+.blog-markdown h4 {
+  color: var(--text);
 }
 
-/* Paragraph/readable content */
 .hero__description,
 .experience__description,
 .blog-hero p,
 .blog-card p,
 .blog-article__content,
 .blog-article__header p:last-child,
-.blog-sidebar__panel p {
-  color: #a9a9a9;
+.blog-sidebar__panel p,
+.blog-post-header__subtitle,
+.blog-markdown,
+.blog-empty-state p {
+  color: var(--text-muted);
 }
 
-/* Muted/meta text */
 .blog-card__date,
 .blog-article__meta,
 .blog-section-label,
-.blog-sidebar__eyebrow {
-  color: #8fbbc2;
+.blog-sidebar__eyebrow,
+.blog-card__meta,
+.blog-card__readtime,
+.blog-post-header__meta,
+.blog-post-header__updated,
+.blog-markdown a,
+.blog-back,
+.blog-sidebar__panel a,
+.blog-post-footer a {
+  color: var(--accent);
 }
+
+.blog-markdown :not(pre) > code,
+.blog-post-header__tags span,
+.blog-post-footer__tags span,
+.blog-card__category,
+.blog-mini-button {
+  color: var(--text);
+}
+

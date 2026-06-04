@@ -3,13 +3,16 @@
 ======================== */
 
 :root {
-  --bg: #ffffff;
-  --text: #000000;
-  --text-muted: #555555;
-  --text-secondary: #777777;
-  --border: #e0e0e0;
-  --surface: #f5f5f5;
-  --accent: #222222;
+  --bg: #f7f7f4;
+  --bg-elevated: #ffffff;
+  --surface: #ffffff;
+  --surface-soft: #f0f0ec;
+  --text: #1f2328;
+  --text-muted: #6b7280;
+  --text-secondary: #4b5563;
+  --border: rgba(31, 35, 40, 0.12);
+  --accent: #007c89;
+  --accent-soft: rgba(0, 124, 137, 0.08);
 
   /* TYPOGRAPHY */
   --font-main: 'DM Sans', sans-serif;
@@ -24,12 +27,15 @@
 
 [data-theme="dark"] {
   --bg: #000000;
+  --bg-elevated: #111111;
   --text: #ffffff;
   --text-muted: #999999;        /* ← was #555555, too dark on black bg */
   --text-secondary: #aaaaaa;
   --border: #222222;
   --surface: #111111;
+  --surface-soft: #1a1a1a;
   --accent: #dddddd;
+  --accent-soft: rgba(221, 221, 221, 0.08);
 
   color-scheme: dark;
 }
