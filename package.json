@@ -10,7 +10,9 @@
     "test": "vitest run",
     "preview": "vite preview",
     "validate:blog": "node scripts/validate-blog-content.mjs",
-    "check": "npm run lint && npm run validate:blog && npm run build"
+    "check": "npm run lint && npm run validate:blog && npm run build",
+    "generate:feeds": "node scripts/generate-blog-feeds.mjs",
+    "prebuild": "npm run generate:feeds"
   },
   "dependencies": {
     "@floating-ui/dom": "^1.7.6",

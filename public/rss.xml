@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Manish Rathaur Portfolio</title>
+    <link>https://www.manishrathaur.tech/blog</link>
+    <atom:link href="https://www.manishrathaur.tech/rss.xml" rel="self" type="application/rss+xml" />
+    <description>Portfolio of Manish Rathaur, a software developer focused on AI, open source, React, Android, and production-ready engineering.</description>
+    <language>en</language>
+    <lastBuildDate>Thu, 04 Jun 2026 00:00:00 GMT</lastBuildDate>
+    <managingEditor>Manish Rathaur</managingEditor>
+    <webMaster>Manish Rathaur</webMaster>
+    <item>
+      <title>UI Preview Article</title>
+      <link>https://www.manishrathaur.tech/blog/ui-preview-article</link>
+      <guid isPermaLink="true">https://www.manishrathaur.tech/blog/ui-preview-article</guid>
+      <description>A temporary dummy article used only to test typography, spacing, markdown rendering, tables, quotes, and code blocks.</description>
+      <pubDate>Thu, 04 Jun 2026 00:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>
