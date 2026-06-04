@@ -2,6 +2,7 @@ import BlogArticleLayout from '../components/Blog/BlogArticleLayout'
 import BlogMarkdown from '../components/Blog/BlogMarkdown'
 import BlogPostFooter from '../components/Blog/BlogPostFooter'
 import BlogPostHeader from '../components/Blog/BlogPostHeader'
+import BlogTableOfContents from '../components/Blog/BlogTableOfContents'
 import { getBlogPostBySlug } from '../content/blog/posts'
 import '../components/Blog/Blog.css'
 
@@ -23,7 +24,7 @@ function BlogPost() {
   }
 
   return (
-    <BlogArticleLayout>
+    <BlogArticleLayout aside={<BlogTableOfContents content={post.body} />}>
       <BlogPostHeader post={post} />
       <BlogMarkdown content={post.body} />
       <BlogPostFooter post={post} />
