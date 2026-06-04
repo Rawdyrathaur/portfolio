@@ -1,4 +1,5 @@
 import { useCallback, useState, useRef, useEffect } from "react";
+import ChatMessage from "./ChatMessage";
 import "./ChatWidget.css";
 
 const BACKEND = "https://msrathaur-manish-portfolio-api.hf.space";
@@ -68,6 +69,7 @@ export default function ChatWidget({ currentPath = window.location.pathname }) {
   const animFrameRef = useRef(null);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+  const externalSendRef = useRef(null);
 
   /* ── Auto-scroll to bottom on new messages ── */
   useEffect(() => {
@@ -202,6 +204,27 @@ ${question}`;
 
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    externalSendRef.current = handleSend;
+  });
+
+  useEffect(() => {
+    const handleExternalAsk = (event) => {
+      const prompt = event.detail?.prompt?.trim();
+
+      if (!prompt) return;
+
+      setIsOpen(true);
+      externalSendRef.current?.(prompt);
+    };
+
+    window.addEventListener("portfolio:chat-ask", handleExternalAsk);
+
+    return () => {
+      window.removeEventListener("portfolio:chat-ask", handleExternalAsk);
+    };
+  }, []);
 
   const handleArticleQuickPrompt = (prompt) => {
     setIsOpen(true);
@@ -362,7 +385,9 @@ ${question}`;
             {messages.map((m, i) => (
               <div key={i} className={`cw-msg-row cw-msg-row--${m.role}`}>
                 <div className="cw-msg-col">
-                  <div className={`cw-bubble cw-bubble--${m.role}`}>{m.text}</div>
+                  <div className={`cw-bubble cw-bubble--${m.role}`}>
+                    <ChatMessage role={m.role} text={m.text} />
+                  </div>
                   <span className="cw-time">{formatTime(m.time)}</span>
                 </div>
               </div>

@@ -5,6 +5,7 @@ import BlogPostHeader from '../components/Blog/BlogPostHeader'
 import BlogTableOfContents from '../components/Blog/BlogTableOfContents'
 import BlogReadingProgress from '../components/Blog/BlogReadingProgress'
 import BlogShareActions from '../components/Blog/BlogShareActions'
+import BlogSelectionAsk from '../components/Blog/BlogSelectionAsk'
 import SEO from '../components/SEO/SEO'
 import { getBlogPostBySlug } from '../content/blog/posts'
 import '../components/Blog/Blog.css'
@@ -48,6 +49,7 @@ function BlogPost() {
 
         <BlogPostHeader post={post} />
         <BlogMarkdown content={post.body} />
+        <BlogSelectionAsk />
         <BlogPostFooter post={post} />
       </BlogArticleLayout>
     </>
