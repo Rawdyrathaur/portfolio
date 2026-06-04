@@ -48,7 +48,7 @@ export default function ChatWidget({ currentPath = window.location.pathname }) {
       ? "· Article mode"
       : assistantMode === "blog"
         ? "· Blog mode"
-        : "· Online";
+        : "· Ready";
 
   const getWelcomeMessage = useCallback(() => {
     if (assistantMode === "article") {

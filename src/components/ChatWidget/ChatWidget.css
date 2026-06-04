@@ -832,3 +832,85 @@ html[data-theme="light"] .cw-answer td {
     font-size: 0.78rem;
   }
 }
+
+/* Production fix: chatbot header contrast and real status wording */
+.cw-header {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(18, 22, 26, 0.94),
+      rgba(12, 15, 18, 0.86)
+    ) !important;
+  border-bottom: 1px solid rgba(143, 214, 221, 0.14) !important;
+  color: #d7e4e6 !important;
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+}
+
+.cw-title {
+  color: #e3eeee !important;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+
+.cw-status-text {
+  color: #8ea3a7 !important;
+  font-size: 0.78rem;
+}
+
+.cw-dot {
+  background: #8fd6dd !important;
+  box-shadow: 0 0 0 3px rgba(143, 214, 221, 0.12) !important;
+}
+
+.cw-header-actions .cw-icon-btn,
+.cw-header .cw-icon-btn {
+  color: #c9d7d9 !important;
+  background: rgba(255, 255, 255, 0.045) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.cw-header-actions .cw-icon-btn:hover,
+.cw-header .cw-icon-btn:hover {
+  color: #ffffff !important;
+  background: rgba(143, 214, 221, 0.12) !important;
+  border-color: rgba(143, 214, 221, 0.28) !important;
+}
+
+html[data-theme="light"] .cw-header {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.94),
+      rgba(242, 248, 249, 0.86)
+    ) !important;
+  border-bottom-color: rgba(0, 107, 117, 0.14) !important;
+  color: #1f2933 !important;
+}
+
+html[data-theme="light"] .cw-title {
+  color: #1f2933 !important;
+}
+
+html[data-theme="light"] .cw-status-text {
+  color: #667085 !important;
+}
+
+html[data-theme="light"] .cw-dot {
+  background: #006b75 !important;
+  box-shadow: 0 0 0 3px rgba(0, 107, 117, 0.1) !important;
+}
+
+html[data-theme="light"] .cw-header-actions .cw-icon-btn,
+html[data-theme="light"] .cw-header .cw-icon-btn {
+  color: #334155 !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  border-color: rgba(31, 41, 51, 0.1) !important;
+}
+
+html[data-theme="light"] .cw-header-actions .cw-icon-btn:hover,
+html[data-theme="light"] .cw-header .cw-icon-btn:hover {
+  color: #006b75 !important;
+  background: rgba(0, 107, 117, 0.08) !important;
+  border-color: rgba(0, 107, 117, 0.22) !important;
+}
