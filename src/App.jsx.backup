@@ -10,20 +10,8 @@ import ThemeToggle from './components/ThemeToggle/ThemeToggle'
 import ReadMode from './components/ReadMode/ReadMode'
 import Experience from './components/Experience/Experience'
 import ChatWidget from './components/ChatWidget/ChatWidget'
-import Blog from './pages/Blog'
-import BlogPost from './pages/BlogPost'
 
 function App() {
-  const currentPath = window.location.pathname
-
-  if (currentPath === '/blog') {
-    return <Blog />
-  }
-
-  if (currentPath.startsWith('/blog/')) {
-    return <BlogPost />
-  }
-
   return (
     <ReadModeProvider>
       <main>
