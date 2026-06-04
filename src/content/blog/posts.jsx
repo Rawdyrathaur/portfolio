@@ -53,3 +53,43 @@ export function getSortedBlogPosts() {
 export function getBlogPostBySlug(slug) {
   return getPublishedBlogPosts().find((post) => post.slug === slug)
 }
+
+
+export function getAdjacentBlogPosts(slug) {
+  const posts = getSortedBlogPosts()
+  const currentIndex = posts.findIndex((post) => post.slug === slug)
+
+  if (currentIndex === -1) {
+    return {
+      previousPost: null,
+      nextPost: null,
+    }
+  }
+
+  return {
+    previousPost: posts[currentIndex + 1] || null,
+    nextPost: posts[currentIndex - 1] || null,
+  }
+}
+
+export function getRelatedBlogPosts(currentPost, limit = 3) {
+  if (!currentPost) return []
+
+  const currentTags = new Set(currentPost.tags || [])
+
+  return getSortedBlogPosts()
+    .filter((post) => post.slug !== currentPost.slug)
+    .map((post) => {
+      const tagScore = (post.tags || []).filter((tag) => currentTags.has(tag)).length
+      const categoryScore = post.category === currentPost.category ? 2 : 0
+
+      return {
+        post,
+        score: tagScore + categoryScore,
+      }
+    })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((item) => item.post)
+}
