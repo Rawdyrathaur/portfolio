@@ -1,7 +1,29 @@
-import { useState } from 'react'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { useEffect, useRef, useState } from 'react'
+import Prism from 'prismjs/components/prism-core'
+import 'prismjs/components/prism-clike'
+import 'prismjs/components/prism-javascript'
+import 'prismjs/components/prism-jsx'
+import 'prismjs/components/prism-typescript'
+import 'prismjs/components/prism-tsx'
+import 'prismjs/components/prism-python'
+import 'prismjs/components/prism-bash'
+import 'prismjs/components/prism-css'
+import 'prismjs/components/prism-json'
 import './Blog.css'
+
+const LANGUAGE_ALIASES = {
+  js: 'javascript',
+  jsx: 'jsx',
+  ts: 'typescript',
+  tsx: 'tsx',
+  py: 'python',
+  python: 'python',
+  bash: 'bash',
+  sh: 'bash',
+  shell: 'bash',
+  css: 'css',
+  json: 'json',
+}
 
 function copyTextToClipboard(text) {
   if (navigator.clipboard && window.isSecureContext) {
@@ -23,17 +45,21 @@ function copyTextToClipboard(text) {
 
 function BlogCodeBlock({ language = 'text', code = '' }) {
   const [copied, setCopied] = useState(false)
-  const normalizedLanguage = language || 'text'
+  const codeRef = useRef(null)
   const cleanCode = code.replace(/\n$/, '')
+  const normalizedLanguage = LANGUAGE_ALIASES[language] || 'text'
+
+  useEffect(() => {
+    if (codeRef.current && Prism.languages[normalizedLanguage]) {
+      Prism.highlightElement(codeRef.current)
+    }
+  }, [cleanCode, normalizedLanguage])
 
   const handleCopy = async () => {
     try {
       await copyTextToClipboard(cleanCode)
       setCopied(true)
-
-      window.setTimeout(() => {
-        setCopied(false)
-      }, 1600)
+      window.setTimeout(() => setCopied(false), 1600)
     } catch {
       setCopied(false)
     }
@@ -42,7 +68,7 @@ function BlogCodeBlock({ language = 'text', code = '' }) {
   return (
     <figure className="blog-code-block">
       <figcaption className="blog-code-block__header">
-        <span className="blog-code-block__language">{normalizedLanguage}</span>
+        <span className="blog-code-block__language">{language || 'text'}</span>
 
         <button
           className="blog-code-block__copy"
@@ -54,28 +80,14 @@ function BlogCodeBlock({ language = 'text', code = '' }) {
         </button>
       </figcaption>
 
-      <SyntaxHighlighter
-        language={normalizedLanguage}
-        style={vscDarkPlus}
-        wrapLongLines={false}
-        PreTag="div"
-        customStyle={{
-          margin: 0,
-          padding: '1.1rem 0',
-          background: '#1e1e1e',
-          fontSize: '0.95rem',
-          lineHeight: '1.7',
-          borderRadius: '0 0 16px 16px',
-        }}
-        codeTagProps={{
-          style: {
-            fontFamily:
-              '"Cascadia Code", "Fira Code", "Inconsolata", Consolas, monospace',
-          },
-        }}
-      >
-        {cleanCode}
-      </SyntaxHighlighter>
+      <pre className="blog-code-block__fallback">
+        <code
+          ref={codeRef}
+          className={`language-${normalizedLanguage}`}
+        >
+          {cleanCode}
+        </code>
+      </pre>
     </figure>
   )
 }

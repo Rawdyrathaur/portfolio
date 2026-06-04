@@ -225,3 +225,13 @@ html[data-theme="dark"] .blog-post-header__updated,
 html[data-theme="dark"] .blog-markdown__figure figcaption {
   color: var(--soft-muted-text);
 }
+
+/* Lightweight route fallback */
+.page-loading {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  color: #b8b8b8;
+  background: transparent;
+  font-family: "Inconsolata", monospace;
+}
