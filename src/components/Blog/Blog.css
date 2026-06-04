@@ -2012,3 +2012,27 @@ html[data-theme="light"] .blog-selection-ask {
     display: none;
   }
 }
+
+/* Code block AI actions */
+.blog-code-block__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.blog-code-block__actions .blog-code-block__copy {
+  white-space: nowrap;
+}
+
+@media (max-width: 520px) {
+  .blog-code-block__header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .blog-code-block__actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
