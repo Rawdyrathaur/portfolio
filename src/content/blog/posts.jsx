@@ -10,7 +10,7 @@ export const blogPosts = [
     category: 'UI Preview',
     tags: ['Markdown', 'Design', 'Preview'],
     featured: true,
-    status: 'published',
+    status: 'draft',
     summary:
       'A temporary dummy article used only to test typography, spacing, markdown rendering, tables, quotes, and code blocks.',
     body: uiPreviewArticle,
