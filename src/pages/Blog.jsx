@@ -1,6 +1,6 @@
 import BlogSidebar from '../components/Blog/BlogSidebar'
 import BlogCard from '../components/Blog/BlogCard'
-import { getSortedBlogPosts } from '../content/blogPosts'
+import { getSortedBlogPosts } from '../content/blog/posts'
 import '../components/Blog/Blog.css'
 
 function Blog() {
