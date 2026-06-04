@@ -12,6 +12,7 @@ import Experience from './components/Experience/Experience'
 import ChatWidget from './components/ChatWidget/ChatWidget'
 import Blog from './pages/Blog'
 import BlogPost from './pages/BlogPost'
+import SEO from './components/SEO/SEO'
 
 function App() {
   const currentPath = window.location.pathname
@@ -29,6 +30,7 @@ function App() {
 
       {!isBlogPage && !isBlogPostPage && (
         <main>
+          <SEO />
           <Hero />
           <ReadMode />
           <Experience />

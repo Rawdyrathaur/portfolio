@@ -3,6 +3,7 @@ import BlogMarkdown from '../components/Blog/BlogMarkdown'
 import BlogPostFooter from '../components/Blog/BlogPostFooter'
 import BlogPostHeader from '../components/Blog/BlogPostHeader'
 import BlogTableOfContents from '../components/Blog/BlogTableOfContents'
+import SEO from '../components/SEO/SEO'
 import { getBlogPostBySlug } from '../content/blog/posts'
 import '../components/Blog/Blog.css'
 
@@ -25,6 +26,15 @@ function BlogPost() {
 
   return (
     <BlogArticleLayout aside={<BlogTableOfContents content={post.body} />}>
+      <SEO
+        title={post.title}
+        description={post.summary || post.subtitle}
+        path={`/blog/${post.slug}`}
+        type="article"
+        publishedTime={post.date}
+        modifiedTime={post.updatedAt}
+        tags={post.tags}
+      />
       <BlogPostHeader post={post} />
       <BlogMarkdown content={post.body} />
       <BlogPostFooter post={post} />

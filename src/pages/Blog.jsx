@@ -3,6 +3,7 @@ import Fuse from 'fuse.js'
 import BlogSidebar from '../components/Blog/BlogSidebar'
 import BlogCard from '../components/Blog/BlogCard'
 import BlogSearch from '../components/Blog/BlogSearch'
+import SEO from '../components/SEO/SEO'
 import { getSortedBlogPosts } from '../content/blog/posts'
 import '../components/Blog/Blog.css'
 
@@ -50,6 +51,11 @@ function Blog() {
 
   return (
     <main className="blog-page">
+      <SEO
+        title="Blog"
+        description="Technical articles, project breakdowns, open-source lessons, and AI engineering notes by Manish Rathaur."
+        path="/blog"
+      />
       <BlogSidebar />
 
       <section className="blog-main">
