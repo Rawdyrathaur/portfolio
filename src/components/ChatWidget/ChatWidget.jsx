@@ -1,12 +1,25 @@
 import { useCallback, useState, useRef, useEffect } from "react";
+import ChatMessage from "./ChatMessage";
 import "./ChatWidget.css";
 
 const BACKEND = "https://msrathaur-manish-portfolio-api.hf.space";
 
-export default function ChatWidget() {
+export default function ChatWidget({ currentPath = window.location.pathname }) {
   const [isOpen, setIsOpen] = useState(false);
+  const getInitialWelcome = () => {
+    if (currentPath.startsWith("/blog/")) {
+      return "Hi! I’m your article assistant. Ask me to summarize, simplify, explain code, or extract key ideas from this article.";
+    }
+
+    if (currentPath === "/blog") {
+      return "Hi! I’m your blog assistant. I can help you explore articles, topics, and technical notes from this blog.";
+    }
+
+    return "Hi! I'm Manish's digital brain. Ask me anything about his work, skills, or projects 👋";
+  };
+
   const [messages, setMessages] = useState([
-    { role: "assistant", text: "Hi! I'm Manish's digital brain. Ask me anything about his work, skills, or projects 👋", time: new Date() }
+    { role: "assistant", text: getInitialWelcome(), time: new Date() }
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -14,6 +27,40 @@ export default function ChatWidget() {
   const [hasNewMessage, setHasNewMessage] = useState(false);
   const [hasShownWakeup, setHasShownWakeup] = useState(false);
   const [showNotify, setShowNotify] = useState(false);
+  const [articleContext, setArticleContext] = useState(null);
+
+  const isBlogRoute = currentPath.startsWith("/blog");
+  const assistantMode = articleContext
+    ? "article"
+    : isBlogRoute
+      ? "blog"
+      : "portfolio";
+
+  const assistantTitle =
+    assistantMode === "article"
+      ? "Article Assistant"
+      : assistantMode === "blog"
+        ? "Blog Assistant"
+        : "Portfolio Assistant";
+
+  const assistantStatus =
+    assistantMode === "article"
+      ? "· Article mode"
+      : assistantMode === "blog"
+        ? "· Blog mode"
+        : "· Online";
+
+  const getWelcomeMessage = useCallback(() => {
+    if (assistantMode === "article") {
+      return `Hi! I’m your article assistant for "${articleContext?.title}". Ask me to summarize, simplify, explain code, or extract key ideas from this article.`;
+    }
+
+    if (assistantMode === "blog") {
+      return "Hi! I’m your blog assistant. I can help you explore articles, topics, and technical notes from this blog.";
+    }
+
+    return "Hi! I'm Manish's digital brain. Ask me anything about his work, skills, or projects 👋";
+  }, [assistantMode, articleContext]);
   const hasShownNotify = useRef(false);
   const notifyTimeoutRef = useRef(null);
   const mediaRecorderRef = useRef(null);
@@ -22,6 +69,7 @@ export default function ChatWidget() {
   const animFrameRef = useRef(null);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+  const externalSendRef = useRef(null);
 
   /* ── Auto-scroll to bottom on new messages ── */
   useEffect(() => {
@@ -36,6 +84,18 @@ export default function ChatWidget() {
   }, [isOpen]);
   useEffect(() => {
     fetch(`${BACKEND}/health`).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const handleArticleContext = (event) => {
+      setArticleContext(event.detail || null);
+    };
+
+    window.addEventListener("portfolio:article-context", handleArticleContext);
+
+    return () => {
+      window.removeEventListener("portfolio:article-context", handleArticleContext);
+    };
   }, []);
   const handleScrollNotify = useCallback(() => {
     if (window.scrollY <= 200 || isOpen || hasShownNotify.current) {
@@ -70,9 +130,41 @@ export default function ChatWidget() {
       }
     };
   }, []);
+
+
+
   /* ── Format timestamp ── */
   const formatTime = (date) =>
     date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+  const buildArticleAwareMessage = (question) => {
+    if (articleContext) {
+      return `You are Manish's article assistant. The user is reading a blog article and is asking about it.
+
+Article title:
+${articleContext.title}
+
+Article summary:
+${articleContext.summary}
+
+Article content:
+${articleContext.body}
+
+User question:
+${question}
+
+Answer using the article context first. Be clear, practical, and technical when needed. If the question is outside the article, briefly say that and answer as Manish's blog assistant.`;
+    }
+
+    if (isBlogRoute) {
+      return `You are Manish's blog assistant. Help the user explore blog topics, article ideas, technical writing, AI notes, code explanations, and learning paths.
+
+User question:
+${question}`;
+    }
+
+    return question;
+  };
 
   /* ── Send message to backend ── */
   const handleSend = async (text) => {
@@ -89,7 +181,7 @@ export default function ChatWidget() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          message: trimmed,
+          message: buildArticleAwareMessage(trimmed),
           history: messages.map((m) => ({
             role: m.role,
             content: m.text,
@@ -111,6 +203,32 @@ export default function ChatWidget() {
     }
 
     setIsLoading(false);
+  };
+
+  useEffect(() => {
+    externalSendRef.current = handleSend;
+  });
+
+  useEffect(() => {
+    const handleExternalAsk = (event) => {
+      const prompt = event.detail?.prompt?.trim();
+
+      if (!prompt) return;
+
+      setIsOpen(true);
+      externalSendRef.current?.(prompt);
+    };
+
+    window.addEventListener("portfolio:chat-ask", handleExternalAsk);
+
+    return () => {
+      window.removeEventListener("portfolio:chat-ask", handleExternalAsk);
+    };
+  }, []);
+
+  const handleArticleQuickPrompt = (prompt) => {
+    setIsOpen(true);
+    handleSend(prompt);
   };
 
   const handleKey = (e) => {
@@ -205,7 +323,13 @@ export default function ChatWidget() {
 
   /* ── Clear chat ── */
   const clearChat = () => {
-    setMessages([{ role: "assistant", text: "Hi! I'm Manish's digital brain. Ask me anything about his work, skills, or projects 👋", time: new Date() }]);
+    setMessages([
+      {
+        role: "assistant",
+        text: getWelcomeMessage(),
+        time: new Date(),
+      },
+    ]);
   };
 
   return (
@@ -221,8 +345,8 @@ export default function ChatWidget() {
           <div className="cw-header">
             <div className="cw-header-left">
               <span className="cw-dot" />
-              <span className="cw-title">Portfolio Assistant</span>
-              <span className="cw-status-text">· Online</span>
+              <span className="cw-title">{assistantTitle}</span>
+              <span className="cw-status-text">{assistantStatus}</span>
             </div>
             <div className="cw-header-actions">
               <button className="cw-icon-btn" onClick={clearChat} title="Clear chat" aria-label="Clear chat">
@@ -238,12 +362,32 @@ export default function ChatWidget() {
             </div>
           </div>
 
+          {articleContext && (
+            <div className="cw-article-mode">
+              <div className="cw-article-mode__label">Article mode</div>
+              <div className="cw-article-mode__title">{articleContext.title}</div>
+              <div className="cw-article-mode__actions">
+                <button type="button" onClick={() => handleArticleQuickPrompt("Summarize this article in simple words.")}>
+                  Summarize
+                </button>
+                <button type="button" onClick={() => handleArticleQuickPrompt("Give me the key takeaways from this article.")}>
+                  Key points
+                </button>
+                <button type="button" onClick={() => handleArticleQuickPrompt("Explain the technical parts of this article like I am a beginner.")}>
+                  Explain simply
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Messages */}
           <div className="cw-messages" role="log" aria-live="polite">
             {messages.map((m, i) => (
               <div key={i} className={`cw-msg-row cw-msg-row--${m.role}`}>
                 <div className="cw-msg-col">
-                  <div className={`cw-bubble cw-bubble--${m.role}`}>{m.text}</div>
+                  <div className={`cw-bubble cw-bubble--${m.role}`}>
+                    <ChatMessage role={m.role} text={m.text} />
+                  </div>
                   <span className="cw-time">{formatTime(m.time)}</span>
                 </div>
               </div>

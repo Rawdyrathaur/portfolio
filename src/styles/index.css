@@ -53,19 +53,6 @@ body {
   color: var(--text);
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-span,
-a,
-button,
-li {
-  color: inherit;
-}
 
 .hero__title,
 .section-title,
@@ -121,3 +108,130 @@ li {
   color: var(--text);
 }
 
+
+
+/* Headings only */
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,
+html[data-theme="dark"] h5,
+html[data-theme="dark"] h6 {
+  color: var(--text-heading-soft) !important;
+}
+
+/* Paragraph/readable text only */
+html[data-theme="dark"] p,
+html[data-theme="dark"] li,
+html[data-theme="dark"] label,
+html[data-theme="dark"] .hero__description,
+html[data-theme="dark"] .experience__description,
+html[data-theme="dark"] .blog-hero p,
+html[data-theme="dark"] .blog-card p,
+html[data-theme="dark"] .blog-markdown,
+html[data-theme="dark"] .blog-post-header__subtitle,
+html[data-theme="dark"] .blog-empty-state p {
+  color: var(--text-body-soft) !important;
+}
+
+/* Metadata/read-time/date text only */
+html[data-theme="dark"] .blog-card__date,
+html[data-theme="dark"] .blog-card__readtime,
+html[data-theme="dark"] .blog-post-header__meta,
+html[data-theme="dark"] .blog-post-header__updated,
+html[data-theme="dark"] .blog-toc__link,
+html[data-theme="dark"] .blog-markdown__figure figcaption {
+  color: var(--text-muted-soft) !important;
+}
+
+/* Safe dark-theme readable text softening only.
+*/
+html[data-theme="dark"] {
+  --soft-heading-text: #d4d4d4;
+  --soft-body-text: #b3b3b3;
+  --soft-muted-text: #8c8c8c;
+}
+
+/* Main readable headings only */
+html[data-theme="dark"] .hero__title,
+html[data-theme="dark"] .section-title,
+html[data-theme="dark"] .experience__title,
+html[data-theme="dark"] .blog-hero h1,
+html[data-theme="dark"] .blog-card h2,
+html[data-theme="dark"] .blog-post-header h1,
+html[data-theme="dark"] .blog-markdown h1,
+html[data-theme="dark"] .blog-markdown h2,
+html[data-theme="dark"] .blog-markdown h3,
+html[data-theme="dark"] .blog-empty-state h2 {
+  color: var(--soft-heading-text);
+}
+
+/* Main readable paragraph/body text only */
+html[data-theme="dark"] .hero__description,
+html[data-theme="dark"] .experience__description,
+html[data-theme="dark"] .blog-hero p,
+html[data-theme="dark"] .blog-card p,
+html[data-theme="dark"] .blog-post-header__subtitle,
+html[data-theme="dark"] .blog-markdown,
+html[data-theme="dark"] .blog-markdown p,
+html[data-theme="dark"] .blog-markdown li,
+html[data-theme="dark"] .blog-empty-state p {
+  color: var(--soft-body-text);
+}
+
+/* Muted article metadata only */
+html[data-theme="dark"] .blog-card__date,
+html[data-theme="dark"] .blog-card__readtime,
+html[data-theme="dark"] .blog-post-header__updated,
+html[data-theme="dark"] .blog-markdown__figure figcaption {
+  color: var(--soft-muted-text);
+}
+
+/* Safe dark-theme readable text softening only */
+html[data-theme="dark"] {
+  --soft-heading-text: #d4d4d4;
+  --soft-body-text: #b3b3b3;
+  --soft-muted-text: #8c8c8c;
+}
+
+html[data-theme="dark"] .hero__title,
+html[data-theme="dark"] .section-title,
+html[data-theme="dark"] .experience__title,
+html[data-theme="dark"] .blog-hero h1,
+html[data-theme="dark"] .blog-card h2,
+html[data-theme="dark"] .blog-post-header h1,
+html[data-theme="dark"] .blog-markdown h1,
+html[data-theme="dark"] .blog-markdown h2,
+html[data-theme="dark"] .blog-markdown h3,
+html[data-theme="dark"] .blog-empty-state h2 {
+  color: var(--soft-heading-text);
+}
+
+html[data-theme="dark"] .hero__description,
+html[data-theme="dark"] .experience__description,
+html[data-theme="dark"] .blog-hero p,
+html[data-theme="dark"] .blog-card p,
+html[data-theme="dark"] .blog-post-header__subtitle,
+html[data-theme="dark"] .blog-markdown,
+html[data-theme="dark"] .blog-markdown p,
+html[data-theme="dark"] .blog-markdown li,
+html[data-theme="dark"] .blog-empty-state p {
+  color: var(--soft-body-text);
+}
+
+html[data-theme="dark"] .blog-card__date,
+html[data-theme="dark"] .blog-card__readtime,
+html[data-theme="dark"] .blog-post-header__updated,
+html[data-theme="dark"] .blog-markdown__figure figcaption {
+  color: var(--soft-muted-text);
+}
+
+/* Lightweight route fallback */
+.page-loading {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  color: #b8b8b8;
+  background: transparent;
+  font-family: "Inconsolata", monospace;
+}

@@ -2,15 +2,42 @@
    THEME TOGGLE COMPONENT
 ======================== */
 
+import { useEffect, useRef, useState } from 'react'
 import { useTheme } from '../../context/useTheme'
 import './ThemeToggle.css'
 
 function ThemeToggle() {
   const { isDark, toggleTheme } = useTheme()
+  const [visible, setVisible] = useState(true)
+  const lastScrollY = useRef(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+
+      if (currentScrollY < 10) {
+        setVisible(true)
+      } else if (currentScrollY > lastScrollY.current) {
+        setVisible(false)
+      } else {
+        setVisible(true)
+      }
+
+      lastScrollY.current = currentScrollY
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   return (
     <button
-      className={`theme-toggle ${isDark ? 'theme-toggle--dark' : ''}`}
+      className={`theme-toggle ${isDark ? 'theme-toggle--dark' : ''} ${
+        visible ? 'theme-toggle--visible' : 'theme-toggle--hidden'
+      }`}
       onClick={toggleTheme}
       title="Toggle Theme"
       aria-label="Toggle Theme"
