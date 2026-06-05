@@ -18,12 +18,12 @@ const profile = {
   ],
 
   links: {
-    github: "https://github.com/Rawdyrathaur",
-    linkedin: "https://www.linkedin.com/in/manish-rathaur-80b40b24a/",
-    twitter: "https://x.com/mrathaur704",
-    kaggle: "https://www.kaggle.com/manishrathaur",
+    github: "https://github.com/your-username",
+    linkedin: "https://www.linkedin.com/in/your-profile/",
+    twitter: "https://x.com/your-handle",
+    kaggle: "https://www.kaggle.com/your-username",
     blog: "/blog",
-    email: "mrathaur704@gmail.com",
+    email: "you@example.com",
   },
 }
 
