@@ -6,5 +6,5 @@ export const siteMetadata = {
   defaultDescription:
     'Portfolio of Manish Rathaur, a software developer focused on AI, open source, React, Android, and production-ready engineering.',
   defaultImage: '/og-image.png',
-  twitterHandle: '@mrathaur704',
+  twitterHandle: '@your-handle',
 }

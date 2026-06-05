@@ -1,8 +1,9 @@
 import { useCallback, useState, useRef, useEffect } from "react";
 import ChatMessage from "./ChatMessage";
+import { chatbotConfig } from "../../config/chatbot";
 import "./ChatWidget.css";
 
-const BACKEND = "https://msrathaur-manish-portfolio-api.hf.space";
+const BACKEND = chatbotConfig.backendUrl;
 
 export default function ChatWidget({ currentPath = window.location.pathname }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -83,6 +84,8 @@ export default function ChatWidget({ currentPath = window.location.pathname }) {
     }
   }, [isOpen]);
   useEffect(() => {
+    if (!BACKEND) return;
+
     fetch(`${BACKEND}/health`).catch(() => {});
   }, []);
 
@@ -175,6 +178,19 @@ ${question}`;
     setInput("");
     setIsLoading(true);
     setHasShownWakeup(true);
+
+    if (!BACKEND) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          text: "Chatbot backend is not configured yet. Add VITE_CHATBOT_BACKEND_URL in your .env file.",
+          time: new Date(),
+        },
+      ]);
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const res = await fetch(`${BACKEND}/chat`, {

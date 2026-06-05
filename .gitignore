@@ -30,3 +30,32 @@ node_modules/
 .env
 __pycache__/
 *.pyc
+
+# Local audit / generated reports
+reports/
+repo_context.txt
+
+# Python virtual environments
+backend/venv/
+backend/.venv/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+!backend/tests/.env.test.example
+
+# Template/local-only files
+reports/
+repo_context.txt
+
+# Python virtual environments
+backend/venv/
+backend/.venv/
+
+# Environment files
+.env
+.env.*
+!.env.example
+!backend/.env.example
+!backend/tests/.env.test.example
