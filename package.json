@@ -1,7 +1,7 @@
 {
-  "name": "portfolio",
+  "name": "@manishrathaur/ai-portfolio-starter",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -43,5 +43,44 @@
     "sharp": "^0.34.5",
     "vite": "^8.0.4",
     "vitest": "^4.1.5"
-  }
+  },
+  "description": "AI-powered developer portfolio starter with React, Vite, blog system, chatbot UI, RSS/sitemap, and configurable backend integration.",
+  "license": "MIT",
+  "bin": {
+    "ai-portfolio-starter": "./bin/create-ai-portfolio-starter.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "public",
+    "backend",
+    "scripts",
+    ".github",
+    ".env.example",
+    "backend/.env.example",
+    "backend/tests/.env.test.example",
+    "README.md",
+    "TEMPLATE_SETUP.md",
+    "TEMPLATE_RELEASE_CHECKLIST.md",
+    "index.html",
+    "vite.config.*",
+    "eslint.config.*",
+    "package.json",
+    "package-lock.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "portfolio",
+    "react",
+    "vite",
+    "ai",
+    "chatbot",
+    "developer-portfolio",
+    "blog",
+    "starter",
+    "template",
+    "fastapi"
+  ]
 }
