@@ -205,32 +205,3 @@ None of this is complicated in hindsight. But when you're building something for
 ## 8. Version Control — The Painful Lesson
 
 We used Google Drive for version control. I'll give you a moment to appreciate how bad that idea was.
-
-## Quick Answers From This Project
-
-### What was the hardest part of building our first Unity game?
-
-The hardest part was not writing one single script. The hardest part was making physics, movement, AI navigation, assets, level design, optimization, and teamwork connect together without breaking the game.
-
-### What did we learn from Rigidbody?
-
-We learned that Rigidbody movement should respect Unity's physics loop. Moving a physics object directly with `transform.position` created unstable behavior, while moving through physics-aware logic helped us make the controller more stable.
-
-### Why did we use ProBuilder?
-
-We used ProBuilder because it helped us build and adjust the level directly inside Unity. It made greyboxing faster and allowed us to test scale, corridors, rooms, and movement flow without switching repeatedly between tools.
-
-### Why did we use NavMesh AI?
-
-We used NavMesh AI because our game needed intelligent characters that could move through the environment, follow paths, avoid obstacles, and react to targets instead of moving in a simple straight line.
-
-### Why did we use Meshy AI?
-
-We used Meshy AI because we needed 3D assets but were not trained 3D modelers. It helped us generate base meshes quickly, but we still had to clean, optimize, and prepare those assets before using them properly inside Unity.
-
-### What is the biggest lesson from this Unity project?
-
-The biggest lesson is that game development is not only about writing code. It is about connecting design, physics, assets, AI, performance, testing, teamwork, and iteration into one playable experience.
-
----
-

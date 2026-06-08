@@ -44,38 +44,6 @@ export const blogPosts = [
         uploadDate: '2026-06-08',
       },
     ],
-    faq: [
-      {
-        question: 'What was the hardest part of building our first Unity game?',
-        answer:
-          'The hardest part was making physics, movement, AI navigation, assets, level design, optimization, and teamwork connect together without breaking the game.',
-      },
-      {
-        question: 'What did we learn from Rigidbody?',
-        answer:
-          'We learned that Rigidbody movement should respect Unity physics timing. Moving a physics object directly with transform.position created unstable behavior, while physics-aware movement made the controller more stable.',
-      },
-      {
-        question: 'Why did we use ProBuilder?',
-        answer:
-          'We used ProBuilder because it helped us build and adjust the level directly inside Unity, making greyboxing, scale testing, rooms, corridors, and movement flow easier to iterate.',
-      },
-      {
-        question: 'Why did we use NavMesh AI?',
-        answer:
-          'We used NavMesh AI because our game needed intelligent characters that could move through the environment, follow paths, avoid obstacles, and react to targets instead of moving in a straight line.',
-      },
-      {
-        question: 'Why did we use Meshy AI?',
-        answer:
-          'We used Meshy AI because we needed 3D assets but were not trained 3D modelers. It helped us generate base meshes quickly, but the assets still needed cleanup, optimization, and Unity integration.',
-      },
-      {
-        question: 'What is the biggest lesson from this Unity project?',
-        answer:
-          'The biggest lesson is that game development is not only about writing code. It is about connecting design, physics, assets, AI, performance, testing, teamwork, and iteration into one playable experience.',
-      },
-    ],
     summary:
       'A personal Unity FPS game development journey about building a first-person controller, learning Rigidbody physics, designing levels with ProBuilder, creating NavMesh AI, using Meshy AI assets, optimizing performance, and handling version-control problems as a student team.',
     body: unityGameJourneyArticle,

@@ -41,19 +41,6 @@ function BlogPost() {
     embedUrl: video.url,
   }))
 
-  const faqStructuredData = post.faq?.length
-    ? {
-        '@type': 'FAQPage',
-        mainEntity: post.faq.map((item) => ({
-          '@type': 'Question',
-          name: item.question,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: item.answer,
-          },
-        })),
-      }
-    : null
 
   const articleStructuredData = {
     '@context': 'https://schema.org',
@@ -84,7 +71,6 @@ function BlogPost() {
         url: pageUrl,
       },
       ...videoStructuredData,
-      ...(faqStructuredData ? [faqStructuredData] : []),
     ],
   }
 
