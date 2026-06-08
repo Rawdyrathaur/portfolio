@@ -8,6 +8,12 @@ import './Navbar.css'
 function Navbar() {
   const [visible, setVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
+  const contactEmail = ['manish.rathaur.dev', 'gmail.com'].join('@')
+  const contactSubject = encodeURIComponent('Ask Anything')
+  const contactBody = encodeURIComponent(
+    'Hi Manish,\n\nI have some ideas, suggestions, or need help with something.\n\nPlease contact me only for legitimate enquiries.\n\nThanks!'
+  )
+  const contactHref = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(contactEmail)}&su=${contactSubject}&body=${contactBody}`
 
   useEffect(() => {
     const handleScroll = () => {
@@ -65,7 +71,7 @@ function Navbar() {
         </svg>
       </a>
 
-      <a className="navbar__icon" title="Contact" href="https://mail.google.com/mail/?view=cm&fs=1&to=mrathaur704@gmail.com&su=Ask%20Anything&body=Hi%20Manish,%0D%0A%0D%0AI%20have%20some%20ideas,%20suggestions,%20or%20need%20help%20with%20something.%0D%0A%0D%0AThanks!" target="_blank" rel="noopener noreferrer">
+      <a className="navbar__icon" title="Contact for legitimate enquiries only" aria-label="Contact for legitimate enquiries only" href={contactHref} target="_blank" rel="noopener noreferrer">
       
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
           <path

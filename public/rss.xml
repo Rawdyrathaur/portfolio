@@ -6,9 +6,15 @@
     <atom:link href="https://www.manishrathaur.tech/rss.xml" rel="self" type="application/rss+xml" />
     <description>Portfolio of Manish Rathaur, a software developer focused on AI, open source, React, Android, and production-ready engineering.</description>
     <language>en</language>
-    <lastBuildDate>Fri, 05 Jun 2026 06:23:43 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 06 Jun 2026 00:00:00 GMT</lastBuildDate>
     <managingEditor>Manish Rathaur</managingEditor>
     <webMaster>Manish Rathaur</webMaster>
-
+    <item>
+      <title>From Playing Games to Building One: Our First Unity Game Development Journey</title>
+      <link>https://www.manishrathaur.tech/blog/from-playing-games-to-building-one</link>
+      <guid isPermaLink="true">https://www.manishrathaur.tech/blog/from-playing-games-to-building-one</guid>
+      <description>How our team started building a Unity game, moved from a 2D idea to Unity, used AI-assisted 3D assets, faced debugging and optimization problems, and learned how complex game development can become.</description>
+      <pubDate>Sat, 06 Jun 2026 00:00:00 GMT</pubDate>
+    </item>
   </channel>
 </rss>

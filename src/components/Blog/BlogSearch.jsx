@@ -1,3 +1,4 @@
+import { TagIcon } from './BlogTagIcon'
 import './Blog.css'
 
 function BlogSearch({
@@ -46,7 +47,7 @@ function BlogSearch({
               type="button"
               onClick={() => onTagChange(tag)}
             >
-              {tag}
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}><TagIcon tag={tag} />{tag}</span>
             </button>
           ))}
         </div>

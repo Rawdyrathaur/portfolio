@@ -3,11 +3,24 @@ import remarkGfm from 'remark-gfm'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import BlogCodeBlock from './BlogCodeBlock'
+import BlogVideo from './BlogVideo'
+import BlogImage from './BlogImage'
+import { stripTableOfContentsSection } from './blogMarkdownUtils'
 import './Blog.css'
 
 const markdownComponents = {
   a({ href = '', children, ...props }) {
     const isExternalLink = href.startsWith('http')
+    const isVideoLink = /\.(mp4|webm|mov)(\?.*)?$/i.test(href)
+
+    if (isVideoLink) {
+      return (
+        <BlogVideo
+          src={href}
+          title={String(children)}
+        />
+      )
+    }
 
     return (
       <a
@@ -21,12 +34,14 @@ const markdownComponents = {
     )
   },
 
-  img({ alt = '', ...props }) {
+  img({ alt = '', src = '', title = '', node, ...props }) {
     return (
-      <figure className="blog-markdown__figure">
-        <img loading="lazy" alt={alt} {...props} />
-        {alt && <figcaption>{alt}</figcaption>}
-      </figure>
+      <BlogImage
+        src={src}
+        alt={alt}
+        title={title}
+        {...props}
+      />
     )
   },
 
@@ -63,8 +78,20 @@ const markdownComponents = {
   },
 }
 
+function renderVideoShortcodes(markdown = '') {
+  return markdown.replace(
+    /^::video\{src="([^"]+)"(?:\s+title="([^"]*)")?\}\s*$/gm,
+    (_, src, title = 'Video preview') => {
+      const label = title || 'Video preview'
+      return `[${label}](${src})`
+    },
+  )
+}
+
 function BlogMarkdown({ content = '' }) {
-  if (!content.trim()) {
+  const sanitizedContent = renderVideoShortcodes(stripTableOfContentsSection(content))
+
+  if (!sanitizedContent.trim()) {
     return (
       <div className="blog-empty-state">
         <h2>No article content yet.</h2>
@@ -86,7 +113,7 @@ function BlogMarkdown({ content = '' }) {
         ]}
         components={markdownComponents}
       >
-        {content}
+        {sanitizedContent}
       </ReactMarkdown>
     </div>
   )
