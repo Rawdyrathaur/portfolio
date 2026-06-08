@@ -19,3 +19,7 @@ Use this section to tell people how to report a vulnerability.
 Tell them where to go, how often they can expect to get an update on a
 reported vulnerability, what to expect if the vulnerability is accepted or
 declined, etc.
+
+## Personal Data
+
+This project may include personal portfolio information. Please do not reuse or republish personal details without permission. For legitimate contact, use the public contact channel shown on the site.

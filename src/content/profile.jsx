@@ -23,7 +23,7 @@ const profile = {
     twitter: "https://x.com/mrathaur704",
     kaggle: "https://www.kaggle.com/manishrathaur",
     blog: "/blog",
-    email: "mrathaur704@gmail.com",
+    email: "manish.rathaur.dev@gmail.com",
   },
 }
 

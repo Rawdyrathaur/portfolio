@@ -50,6 +50,19 @@ function App() {
       }
 
       const nextPath = `${url.pathname}${url.search}${url.hash}`
+      const rawHref = link.getAttribute('href') || ''
+
+      const isSamePageHashLink =
+        rawHref.startsWith('#') ||
+        (
+          url.pathname === window.location.pathname &&
+          url.search === window.location.search &&
+          url.hash
+        )
+
+      if (isSamePageHashLink) {
+        return
+      }
 
       event.preventDefault()
       window.history.pushState({}, '', nextPath)

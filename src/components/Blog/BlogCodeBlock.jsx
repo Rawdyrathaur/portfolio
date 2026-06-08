@@ -3,6 +3,7 @@ import Prism from 'prismjs'
 import 'prismjs/components/prism-markup'
 import 'prismjs/components/prism-css'
 import 'prismjs/components/prism-clike'
+import 'prismjs/components/prism-csharp'
 import 'prismjs/components/prism-javascript'
 import 'prismjs/components/prism-jsx'
 import 'prismjs/components/prism-typescript'
@@ -24,6 +25,9 @@ const LANGUAGE_ALIASES = {
   shell: 'bash',
   css: 'css',
   json: 'json',
+  cs: 'csharp',
+  csharp: 'csharp',
+  'c#': 'csharp',
 }
 
 function copyTextToClipboard(text) {
@@ -48,7 +52,7 @@ function BlogCodeBlock({ language = 'text', code = '' }) {
   const [copied, setCopied] = useState(false)
   const codeRef = useRef(null)
   const cleanCode = code.replace(/\n$/, '')
-  const normalizedLanguage = LANGUAGE_ALIASES[language] || 'text'
+  const normalizedLanguage = LANGUAGE_ALIASES[language] || language || 'text'
 
   useEffect(() => {
     if (codeRef.current && Prism.languages[normalizedLanguage]) {

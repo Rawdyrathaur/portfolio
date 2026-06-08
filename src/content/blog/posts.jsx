@@ -1,6 +1,21 @@
+import unityGameJourneyArticle from './articles/from-playing-games-to-building-one.md?raw'
 import uiPreviewArticle from './articles/ui-preview-article.md?raw'
 
 export const blogPosts = [
+  {
+    slug: 'from-playing-games-to-building-one',
+    title: 'From Playing Games to Building One: Our First Unity Game Development Journey',
+    subtitle: 'A student-led Unity learning journey about games, teamwork, AI-assisted assets, debugging, and what we learned while building our first game.',
+    date: '2026-06-06',
+    updatedAt: '2026-06-06',
+    category: 'Game Development',
+    tags: ['Unity', 'Game Development', 'AI Assets', 'Teamwork', 'Debugging'],
+    featured: true,
+    status: 'published',
+    summary:
+      'How our team started building a Unity game, moved from a 2D idea to Unity, used AI-assisted 3D assets, faced debugging and optimization problems, and learned how complex game development can become.',
+    body: unityGameJourneyArticle,
+  },
   {
     slug: 'ui-preview-article',
     title: 'UI Preview Article',
@@ -26,7 +41,11 @@ function calculateReadingTime(markdown = '') {
 }
 
 function withComputedFields(post) {
-  const body = post.body || ''
+  let body = post.body || ''
+  if (body.startsWith('---')) {
+    const end = body.indexOf('---', 3)
+    if (end !== -1) body = body.slice(end + 3).trimStart()
+  }
 
   return {
     status: 'draft',

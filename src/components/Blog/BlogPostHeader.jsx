@@ -1,3 +1,4 @@
+import { TagIcon } from './BlogTagIcon'
 function formatDate(date) {
   if (!date) return null
 
@@ -33,7 +34,7 @@ function BlogPostHeader({ post }) {
       {post.tags?.length > 0 && (
         <div className="blog-post-header__tags" aria-label="Article tags">
           {post.tags.map((tag) => (
-            <span key={tag}>{tag}</span>
+            <span key={tag} style={{ display: "inline-flex", alignItems: "center" }}><TagIcon tag={tag} />{tag}</span>
           ))}
         </div>
       )}
