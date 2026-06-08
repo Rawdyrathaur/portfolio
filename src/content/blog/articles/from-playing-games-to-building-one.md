@@ -33,7 +33,7 @@ The team was four of us. We split the work honestly — I handled scene architec
 
 ## 2. Getting the Environment Right — ProBuilder
 
-![ProBuilder environment layout preview](https://res.cloudinary.com/dxclnybhc/image/upload/v1780926497/Screenshot_2026-06-08_at_4.05.42_PM_gssf22.png)
+![Unity ProBuilder greybox environment layout showing early level design and scale testing](https://res.cloudinary.com/dxclnybhc/image/upload/f_auto,q_auto,w_1200/v1780926497/Screenshot_2026-06-08_at_4.05.42_PM_gssf22.png "Unity ProBuilder greybox environment layout")
 
 Before writing a single script, we needed a space to move around in. Early on we tried using default Unity primitives — cubes, planes, cylinders — just to rough out the layout. It worked, barely. The problem was every time the scale felt wrong or a corridor was too narrow, we had to delete objects and start over. That gets old fast.
 
@@ -47,7 +47,7 @@ The greyboxing phase — building rough geometry to test layout before worrying 
 
 ## 3. Physics Almost Broke Us — Rigidbody Lessons
 
-![Blender rigid body physics reference GIF](https://i.sstatic.net/o41bV7A4.gif)
+![Blender rigid body physics reference GIF showing collision and gravity behavior](https://i.sstatic.net/o41bV7A4.gif "Blender rigid body physics reference")
 
 
 This is where we suffered the most.
@@ -111,7 +111,7 @@ Getting the movement to feel good took longer. Speed, acceleration, the way mome
 
 ## 5. The Part I'm Most Proud Of — NavMesh AI
 
-![NavMesh AI setup and pathfinding preview](https://res.cloudinary.com/dxclnybhc/image/upload/v1780927988/Screenshot_2026-06-08_at_7.43.00_PM_szaccn.png)
+![Unity NavMesh AI pathfinding setup showing navigation mesh and enemy movement logic](https://res.cloudinary.com/dxclnybhc/image/upload/f_auto,q_auto,w_1200/v1780927988/Screenshot_2026-06-08_at_7.43.00_PM_szaccn.png "Unity NavMesh AI pathfinding setup")
 
 
 This is the system I spent the most time on, and honestly the part I'm most proud of getting to work.
@@ -205,3 +205,32 @@ None of this is complicated in hindsight. But when you're building something for
 ## 8. Version Control — The Painful Lesson
 
 We used Google Drive for version control. I'll give you a moment to appreciate how bad that idea was.
+
+## Quick Answers From This Project
+
+### What was the hardest part of building our first Unity game?
+
+The hardest part was not writing one single script. The hardest part was making physics, movement, AI navigation, assets, level design, optimization, and teamwork connect together without breaking the game.
+
+### What did we learn from Rigidbody?
+
+We learned that Rigidbody movement should respect Unity's physics loop. Moving a physics object directly with `transform.position` created unstable behavior, while moving through physics-aware logic helped us make the controller more stable.
+
+### Why did we use ProBuilder?
+
+We used ProBuilder because it helped us build and adjust the level directly inside Unity. It made greyboxing faster and allowed us to test scale, corridors, rooms, and movement flow without switching repeatedly between tools.
+
+### Why did we use NavMesh AI?
+
+We used NavMesh AI because our game needed intelligent characters that could move through the environment, follow paths, avoid obstacles, and react to targets instead of moving in a simple straight line.
+
+### Why did we use Meshy AI?
+
+We used Meshy AI because we needed 3D assets but were not trained 3D modelers. It helped us generate base meshes quickly, but we still had to clean, optimize, and prepare those assets before using them properly inside Unity.
+
+### What is the biggest lesson from this Unity project?
+
+The biggest lesson is that game development is not only about writing code. It is about connecting design, physics, assets, AI, performance, testing, teamwork, and iteration into one playable experience.
+
+---
+

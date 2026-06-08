@@ -8,6 +8,7 @@ import BlogShareActions from '../components/Blog/BlogShareActions'
 import BlogSelectionAsk from '../components/Blog/BlogSelectionAsk'
 import SEO from '../components/SEO/SEO'
 import { getBlogPostBySlug } from '../content/blog/posts'
+import { siteMetadata } from '../content/site/metadata'
 import '../components/Blog/Blog.css'
 
 function BlogPost() {
@@ -23,6 +24,68 @@ function BlogPost() {
         </div>
       </BlogArticleLayout>
     )
+  }
+
+  const pageUrl = `${siteMetadata.baseUrl}/blog/${post.slug}`
+  const imageUrl = post.image?.startsWith('http')
+    ? post.image
+    : `${siteMetadata.baseUrl}${post.image || siteMetadata.defaultImage}`
+
+  const videoStructuredData = (post.videos || []).map((video) => ({
+    '@type': 'VideoObject',
+    name: video.title,
+    description: video.description,
+    thumbnailUrl: [video.thumbnail || imageUrl],
+    uploadDate: video.uploadDate || post.date,
+    contentUrl: video.url,
+    embedUrl: video.url,
+  }))
+
+  const faqStructuredData = post.faq?.length
+    ? {
+        '@type': 'FAQPage',
+        mainEntity: post.faq.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      }
+    : null
+
+  const articleStructuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BlogPosting',
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': pageUrl,
+        },
+        headline: post.title,
+        description: post.summary || post.subtitle,
+        image: [imageUrl],
+        author: {
+          '@type': 'Person',
+          name: siteMetadata.author,
+          url: siteMetadata.baseUrl,
+        },
+        publisher: {
+          '@type': 'Person',
+          name: siteMetadata.author,
+          url: siteMetadata.baseUrl,
+        },
+        datePublished: post.date,
+        dateModified: post.updatedAt || post.date,
+        articleSection: post.category,
+        keywords: (post.tags || []).join(', '),
+        url: pageUrl,
+      },
+      ...videoStructuredData,
+      ...(faqStructuredData ? [faqStructuredData] : []),
+    ],
   }
 
   return (
@@ -41,10 +104,12 @@ function BlogPost() {
           title={post.title}
           description={post.summary || post.subtitle}
           path={`/blog/${post.slug}`}
+          image={post.image}
           type="article"
           publishedTime={post.date}
           modifiedTime={post.updatedAt}
           tags={post.tags}
+          structuredData={articleStructuredData}
         />
 
         <BlogPostHeader post={post} />

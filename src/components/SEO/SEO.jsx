@@ -10,8 +10,13 @@ function SEO({
   publishedTime,
   modifiedTime,
   tags = [],
+  structuredData = null,
 }) {
   const pageUrl = `${siteMetadata.baseUrl}${path}`
+  const imageUrl = image?.startsWith('http')
+    ? image
+    : `${siteMetadata.baseUrl}${image}`
+
   const fullTitle =
     title === siteMetadata.defaultTitle
       ? title
@@ -29,12 +34,12 @@ function SEO({
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:url" content={pageUrl} />
-      <meta property="og:image" content={`${siteMetadata.baseUrl}${image}`} />
+      <meta property="og:image" content={imageUrl} />
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={`${siteMetadata.baseUrl}${image}`} />
+      <meta name="twitter:image" content={imageUrl} />
       <meta name="twitter:creator" content={siteMetadata.twitterHandle} />
 
       {publishedTime && (
@@ -48,6 +53,12 @@ function SEO({
       {tags.map((tag) => (
         <meta key={tag} property="article:tag" content={tag} />
       ))}
+
+      {structuredData && (
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      )}
     </Helmet>
   )
 }

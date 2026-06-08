@@ -5,15 +5,79 @@ export const blogPosts = [
   {
     slug: 'from-playing-games-to-building-one',
     title: 'From Playing Games to Building One: Our First Unity Game Development Journey',
-    subtitle: 'A student-led Unity learning journey about games, teamwork, AI-assisted assets, debugging, and what we learned while building our first game.',
-    date: '2026-06-06',
-    updatedAt: '2026-06-06',
+    subtitle: 'A student-led Unity FPS game journey covering ProBuilder level design, Rigidbody physics, FPS controller movement, NavMesh AI, Meshy AI assets, optimization, and version-control lessons.',
+    date: '2026-06-08',
+    updatedAt: '2026-06-08',
     category: 'Game Development',
-    tags: ['Unity', 'Game Development', 'AI Assets', 'Teamwork', 'Debugging'],
+    tags: [
+      'Unity',
+      'Game Development',
+      'FPS Controller',
+      'Rigidbody',
+      'NavMesh AI',
+      'ProBuilder',
+      'Meshy AI',
+      'Optimization',
+      'Student Project',
+    ],
     featured: true,
     status: 'published',
+    image:
+      'https://res.cloudinary.com/dxclnybhc/image/upload/f_auto,q_auto,w_1200/v1780926497/Screenshot_2026-06-08_at_4.05.42_PM_gssf22.png',
+    videos: [
+      {
+        title: 'Game concept and first playable idea preview',
+        description:
+          'A short gameplay preview showing the core idea of the Unity FPS game project.',
+        url: 'https://res.cloudinary.com/dxclnybhc/video/upload/v1780927692/WhatsApp_Video_2026-05-23_at_13.36.37_1_mdwhxx.mp4',
+        thumbnail:
+          'https://res.cloudinary.com/dxclnybhc/image/upload/f_auto,q_auto,w_1200/v1780926497/Screenshot_2026-06-08_at_4.05.42_PM_gssf22.png',
+        uploadDate: '2026-06-08',
+      },
+      {
+        title: 'FPS controller movement preview',
+        description:
+          'A short video preview of the first-person controller movement inside the Unity project.',
+        url: 'https://res.cloudinary.com/dxclnybhc/video/upload/v1780925758/Convert_to_MP4_project_-_June_08_2026_at_18.59.12_nylls5.mp4',
+        thumbnail:
+          'https://res.cloudinary.com/dxclnybhc/image/upload/f_auto,q_auto,w_1200/v1780926497/Screenshot_2026-06-08_at_4.05.42_PM_gssf22.png',
+        uploadDate: '2026-06-08',
+      },
+    ],
+    faq: [
+      {
+        question: 'What was the hardest part of building our first Unity game?',
+        answer:
+          'The hardest part was making physics, movement, AI navigation, assets, level design, optimization, and teamwork connect together without breaking the game.',
+      },
+      {
+        question: 'What did we learn from Rigidbody?',
+        answer:
+          'We learned that Rigidbody movement should respect Unity physics timing. Moving a physics object directly with transform.position created unstable behavior, while physics-aware movement made the controller more stable.',
+      },
+      {
+        question: 'Why did we use ProBuilder?',
+        answer:
+          'We used ProBuilder because it helped us build and adjust the level directly inside Unity, making greyboxing, scale testing, rooms, corridors, and movement flow easier to iterate.',
+      },
+      {
+        question: 'Why did we use NavMesh AI?',
+        answer:
+          'We used NavMesh AI because our game needed intelligent characters that could move through the environment, follow paths, avoid obstacles, and react to targets instead of moving in a straight line.',
+      },
+      {
+        question: 'Why did we use Meshy AI?',
+        answer:
+          'We used Meshy AI because we needed 3D assets but were not trained 3D modelers. It helped us generate base meshes quickly, but the assets still needed cleanup, optimization, and Unity integration.',
+      },
+      {
+        question: 'What is the biggest lesson from this Unity project?',
+        answer:
+          'The biggest lesson is that game development is not only about writing code. It is about connecting design, physics, assets, AI, performance, testing, teamwork, and iteration into one playable experience.',
+      },
+    ],
     summary:
-      'How our team started building a Unity game, moved from a 2D idea to Unity, used AI-assisted 3D assets, faced debugging and optimization problems, and learned how complex game development can become.',
+      'A personal Unity FPS game development journey about building a first-person controller, learning Rigidbody physics, designing levels with ProBuilder, creating NavMesh AI, using Meshy AI assets, optimizing performance, and handling version-control problems as a student team.',
     body: unityGameJourneyArticle,
   },
   {
