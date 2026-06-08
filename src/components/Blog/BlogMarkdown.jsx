@@ -34,7 +34,7 @@ const markdownComponents = {
     )
   },
 
-  img({ alt = '', src = '', title = '', node, ...props }) {
+  img({ alt = '', src = '', title = '', ...props }) {
     return (
       <BlogImage
         src={src}

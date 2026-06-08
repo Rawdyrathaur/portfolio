@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { SiUnity, SiReact, SiJavascript, SiPython, SiGit, SiBlender, SiDotnet } from 'react-icons/si'
 import { FaUsers, FaBug, FaGamepad, FaRobot, FaCube, FaCode } from 'react-icons/fa'
 
