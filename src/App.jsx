@@ -11,6 +11,7 @@ import ThemeToggle from './components/ThemeToggle/ThemeToggle'
 import ReadMode from './components/ReadMode/ReadMode'
 import Projects from './components/Projects/Projects'
 import Experience from './components/Experience/Experience'
+import BlogTeaser from './components/BlogTeaser/BlogTeaser'
 import ChatWidget from './components/ChatWidget/ChatWidget'
 
 const Blog = lazy(() => import('./pages/Blog'))
@@ -94,10 +95,11 @@ function App() {
         {isBlogPostPage && <BlogPost />}
 
         {!isBlogPage && !isBlogPostPage && (
-          <main>
+          <main className="portfolio">
             <Hero />
             <ReadMode />
             <Experience />
+            <BlogTeaser />
             <Projects />
           </main>
         )}
