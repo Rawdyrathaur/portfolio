@@ -33,7 +33,7 @@ The team was four of us. We split the work honestly — I handled scene architec
 
 ## 2. Getting the Environment Right — ProBuilder
 
-![ProBuilder environment layout preview](https://res.cloudinary.com/dxclnybhc/image/upload/v1780926497/Screenshot_2026-06-08_at_4.05.42_PM_gssf22.png)
+![Unity ProBuilder greybox environment layout showing early level design and scale testing](https://res.cloudinary.com/dxclnybhc/image/upload/f_auto,q_auto,w_1200/v1780926497/Screenshot_2026-06-08_at_4.05.42_PM_gssf22.png "Unity ProBuilder greybox environment layout")
 
 Before writing a single script, we needed a space to move around in. Early on we tried using default Unity primitives — cubes, planes, cylinders — just to rough out the layout. It worked, barely. The problem was every time the scale felt wrong or a corridor was too narrow, we had to delete objects and start over. That gets old fast.
 
@@ -47,7 +47,7 @@ The greyboxing phase — building rough geometry to test layout before worrying 
 
 ## 3. Physics Almost Broke Us — Rigidbody Lessons
 
-![Blender rigid body physics reference GIF](https://i.sstatic.net/o41bV7A4.gif)
+![Blender rigid body physics reference GIF showing collision and gravity behavior](https://i.sstatic.net/o41bV7A4.gif "Blender rigid body physics reference")
 
 
 This is where we suffered the most.
@@ -111,7 +111,7 @@ Getting the movement to feel good took longer. Speed, acceleration, the way mome
 
 ## 5. The Part I'm Most Proud Of — NavMesh AI
 
-![NavMesh AI setup and pathfinding preview](https://res.cloudinary.com/dxclnybhc/image/upload/v1780927988/Screenshot_2026-06-08_at_7.43.00_PM_szaccn.png)
+![Unity NavMesh AI pathfinding setup showing navigation mesh and enemy movement logic](https://res.cloudinary.com/dxclnybhc/image/upload/f_auto,q_auto,w_1200/v1780927988/Screenshot_2026-06-08_at_7.43.00_PM_szaccn.png "Unity NavMesh AI pathfinding setup")
 
 
 This is the system I spent the most time on, and honestly the part I'm most proud of getting to work.

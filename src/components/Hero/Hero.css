@@ -38,6 +38,103 @@
   letter-spacing: -3px;
 }
 
+.hero__tagline {
+  margin-top: 0.65rem;
+  margin-bottom: 0;
+  max-width: 760px;
+  text-align: center;
+  font-family: "DM Sans", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 1.45;
+  letter-spacing: 0.4px;
+  color: #666666;
+}
+
+html[data-theme="dark"] .hero .hero__tagline {
+  color: #666666 !important;
+}
+
+.hero__meta-row {
+  margin-top: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.hero__status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 0.83rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.hero__status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #3fb950;
+  box-shadow: 0 0 0 2px color-mix(in srgb, #3fb950 25%, transparent);
+}
+
+.hero__location {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #a0a0a0;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 300;
+  letter-spacing: 0.4px;
+  line-height: 1;
+}
+
+html[data-theme="dark"] .hero .hero__location {
+  color: #a0a0a0 !important;
+}
+
+.hero__location-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.hero__work-pref {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: #a0a0a0;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.83rem;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+  line-height: 1;
+}
+
+html[data-theme="dark"] .hero .hero__work-pref {
+  color: #a0a0a0 !important;
+}
+
+.hero__work-pref-icon {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
 /* ========================
    RESPONSIVE BREAKPOINTS
 ======================== */
@@ -51,6 +148,11 @@
   .hero__name {
     font-size: 3.5rem;
     letter-spacing: -2.5px;
+  }
+
+  .hero__tagline {
+    max-width: 700px;
+    font-size: 20px;
   }
 }
 
@@ -68,6 +170,11 @@
     font-size: 2.75rem;
     letter-spacing: -2px;
   }
+
+  .hero__tagline {
+    max-width: 620px;
+    font-size: 20px;
+  }
 }
 
 /* Mobile (≤480px) */
@@ -84,6 +191,11 @@
     font-size: 2.25rem;
     letter-spacing: -1.5px;
   }
+
+  .hero__tagline {
+    max-width: 100%;
+    line-height: 1.6;
+  }
 }
 
 /* Small mobile (≤360px) */
@@ -99,5 +211,23 @@
   .hero__name {
     font-size: 1.75rem;
     letter-spacing: -1px;
+  }
+
+  .hero__tagline {
+    font-size: 20px;
+  }
+
+  .hero__status-badge {
+    font-size: 0.78rem;
+    padding: 0.28rem 0.65rem;
+  }
+
+  .hero__work-pref {
+    font-size: 0.78rem;
+    padding: 0.28rem 0.62rem;
+  }
+
+  .hero__location {
+    font-size: 0.84rem;
   }
 }
