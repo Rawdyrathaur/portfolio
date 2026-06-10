@@ -1,0 +1,97 @@
+.skills {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+.skills__label {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: var(--text);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.skills__subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.skills__groups {
+  display: flex;
+  flex-direction: column;
+}
+
+.skills__row {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.skills__row:last-child {
+  border-bottom: 1px solid var(--border);
+}
+
+.skills__category {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  min-width: 110px;
+}
+
+.skills__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skills__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.35rem 0.75rem;
+  transition: border-color 0.15s ease;
+}
+
+.skills__chip:hover {
+  border-color: var(--text-muted);
+}
+
+.skills__chip-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.skills__chip-icon[alt='GitHub'] {
+  filter: invert(1) opacity(0.8);
+}
+
+@media (max-width: 768px) {
+  .skills__row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .skills__category {
+    min-width: unset;
+  }
+}
