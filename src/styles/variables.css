@@ -28,7 +28,7 @@
 [data-theme="dark"] {
   --bg: #000000;
   --bg-elevated: #111111;
-  --text: #ffffff;
+  --text: #e0e0e0;
   --text-muted: #999999;        /* ← was #555555, too dark on black bg */
   --text-secondary: #aaaaaa;
   --border: #222222;
