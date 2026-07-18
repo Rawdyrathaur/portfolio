@@ -259,8 +259,30 @@ PROVIDERS = [
     ("Together", try_together),
 ]
 
+
+def configured_providers() -> list[str]:
+    return [
+        name for name, _ in PROVIDERS
+        if os.getenv(f"{name.upper()}_API_KEY")
+    ]
+
+
+def configured_provider_hint() -> str:
+    return ", ".join(configured_providers()) or "none"
+
 def route_llm(msgs: list[dict]) -> tuple[str, str]:
     route_start = time.perf_counter()
+    configured = configured_providers()
+
+    if not configured:
+        raise HTTPException(
+            status_code=503,
+            detail=(
+                "No LLM provider API keys are configured. Set at least one of: "
+                "GROQ_API_KEY, GEMINI_API_KEY, COHERE_API_KEY, MISTRAL_API_KEY, TOGETHER_API_KEY."
+            ),
+        )
+
     for name, fn in PROVIDERS:
         logger.info(f"Trying provider: {name}")
         reply = fn(msgs)
@@ -271,7 +293,11 @@ def route_llm(msgs: list[dict]) -> tuple[str, str]:
     logger.info("route_llm() finished in %.3fs with no provider success.", time.perf_counter() - route_start)
     raise HTTPException(
         status_code=503,
-        detail="All LLM providers failed. Check your .env API keys.",
+        detail=(
+            "Configured LLM providers failed. "
+            f"Configured: {configured_provider_hint()}. "
+            "Check provider credentials, quotas, and upstream service status."
+        ),
     )
 
 
@@ -286,10 +312,7 @@ def ping():
 
 @app.get("/health")
 def health():
-    configured = [
-        name for name, _ in PROVIDERS
-        if os.getenv(f"{name.upper()}_API_KEY")
-    ]
+    configured = configured_providers()
     return {
         "status": "ok" if configured else "degraded",
         "providers_ready": configured,
@@ -306,7 +329,7 @@ def health_head():
 @app.get("/providers")
 def providers():
     return {
-        name: bool(os.getenv(f"{name.upper()}_API_KEY"))
+        name: name in configured_providers()
         for name, _ in PROVIDERS
     }
 

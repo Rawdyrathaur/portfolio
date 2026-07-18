@@ -142,6 +142,7 @@ def test_chat_all_providers_fail_returns_503(client, monkeypatch):
     })
     
     assert response.status_code == 503
+    assert "Configured LLM providers failed" in response.json()["detail"]
 
 
 def test_chat_extracts_rag_context(client, monkeypatch):
