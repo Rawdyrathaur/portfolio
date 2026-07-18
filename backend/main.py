@@ -219,11 +219,13 @@ def try_mistral(msgs: list[dict]) -> str | None:
         api_key = os.getenv("MISTRAL_API_KEY")
         if not api_key:
             return None
-        from mistralai import Mistral
-        client = Mistral(api_key=api_key)
-        res = client.chat.complete(
+        from openai import OpenAI
+
+        client = OpenAI(api_key=api_key, base_url="https://api.mistral.ai/v1")
+        res = client.chat.completions.create(
             model="mistral-small-latest",
             messages=msgs,
+            max_tokens=512,
         )
         return res.choices[0].message.content
     except Exception as e:
@@ -237,10 +239,11 @@ def try_together(msgs: list[dict]) -> str | None:
         api_key = os.getenv("TOGETHER_API_KEY")
         if not api_key:
             return None
-        from together import Together
-        client = Together(api_key=api_key)
+        from openai import OpenAI
+
+        client = OpenAI(api_key=api_key, base_url="https://api.together.ai/v1")
         res = client.chat.completions.create(
-            model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
+            model="meta-llama/Llama-3.3-70B-Instruct-Turbo",
             messages=msgs,
             max_tokens=512,
         )
