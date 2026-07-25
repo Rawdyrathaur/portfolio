@@ -44,7 +44,7 @@ def _current_manifest() -> dict:
             "mtime_ns": stat.st_mtime_ns,
         })
     return {
-        "schema_version": 2,
+        "schema_version": 3,
         "collection_name": COLLECTION_NAME,
         "embed_model": EMBED_MODEL,
         "files": files,
@@ -66,57 +66,72 @@ def _save_manifest(manifest: dict) -> None:
 
 
 # ══════════════════════════════════════════════════════════
-#  CHUNKING — splits .md file by ## AND ### headings
-#  Each chunk carries source file + heading label for citation
+#  CHUNKING — parses YAML frontmatter and splits
 # ══════════════════════════════════════════════════════════
 
 def _chunk_markdown(text: str, source: str) -> list[dict]:
-    """
-    Splits markdown content into chunks at every ## or ### heading.
-    Each chunk = { id, text, source, heading }
-    This means Tab Story's overview, tech stack, and features are
-    separate retrievable chunks — not one giant blob.
-    """
-    chunks   = []
-    current  = []
-    heading  = "intro"
-    h_level  = 1
+    lines = text.splitlines()
+    title = "Unknown"
+    m_type = "unknown"
+    url = "/"
+    timestamp = ""
+    last_updated = ""
+    
+    body_lines = []
+    in_frontmatter = False
+    
+    # Parse frontmatter
+    if lines and lines[0].strip() == "---":
+        in_frontmatter = True
+        for i in range(1, len(lines)):
+            if lines[i].strip() == "---":
+                in_frontmatter = False
+                body_lines = lines[i+1:]
+                break
+            if ":" in lines[i]:
+                key, val = lines[i].split(":", 1)
+                key = key.strip()
+                val = val.strip().strip('"').strip("'")
+                if key == "title": title = val
+                elif key == "type": m_type = val
+                elif key == "url": url = val
+                elif key == "timestamp": timestamp = val
+                elif key == "last_updated": last_updated = val
+    else:
+        body_lines = lines
 
-    for line in text.splitlines():
-        if line.startswith("### "):
-            if current:
-                chunks.append({
-                    "id":      f"{source}::{heading}",
-                    "text":    "\n".join(current).strip(),
-                    "source":  source,
-                    "heading": heading,
-                })
-            heading = line[4:].strip().lower().replace(" ", "_")
-            h_level = 3
-            current = [line]
-        elif line.startswith("## "):
-            if current:
-                chunks.append({
-                    "id":      f"{source}::{heading}",
-                    "text":    "\n".join(current).strip(),
-                    "source":  source,
-                    "heading": heading,
-                })
-            heading = line[3:].strip().lower().replace(" ", "_")
-            h_level = 2
+    chunks = []
+    current = []
+    heading = "Intro"
+    
+    def add_chunk(text_block, current_heading):
+        if text_block:
+            chunks.append({
+                "id": f"{source}::{current_heading.lower().replace(' ', '_')}",
+                "text": text_block.strip(),
+                "source": source,
+                "heading": current_heading,
+                "title": title,
+                "type": m_type,
+                "url": url,
+                "source_type": "portfolio",
+                "content_type": m_type,
+                "visibility": "public",
+                "trust_level": "verified",
+                "timestamp": timestamp,
+                "last_updated": last_updated
+            })
+    
+    for line in body_lines:
+        if line.startswith("## ") or line.startswith("### "):
+            add_chunk("\n".join(current), heading)
+            heading = line.lstrip("#").strip()
             current = [line]
         else:
             current.append(line)
-
-    # Last chunk
-    if current:
-        chunks.append({
-            "id":      f"{source}::{heading}",
-            "text":    "\n".join(current).strip(),
-            "source":  source,
-            "heading": heading,
-        })
-
+            
+    add_chunk("\n".join(current), heading)
+        
     return [c for c in chunks if c["text"].strip()]
 
 
@@ -125,11 +140,6 @@ def _chunk_markdown(text: str, source: str) -> list[dict]:
 # ══════════════════════════════════════════════════════════
 
 def load_knowledge() -> int:
-    """
-    Reads every .md file in knowledge/ folder,
-    chunks and embeds them, stores in ChromaDB.
-    Returns total number of chunks loaded.
-    """
     global _collection
     load_start = time.perf_counter()
     manifest       = _current_manifest()
@@ -139,44 +149,60 @@ def load_knowledge() -> int:
         existing_count = _collection.count()
         if existing_count > 0:
             logger.info("[RAG] Cache HIT - using existing Chroma collection")
-            logger.info("load_knowledge() finished in %.3fs with %d chunks.", time.perf_counter() - load_start, existing_count)
             return existing_count
 
     md_files = sorted(str(path) for path in KNOWLEDGE_DIR.glob("*.md"))
 
-    if not md_files:
-        logger.warning(f"No .md files found in '{KNOWLEDGE_DIR}/' folder.")
-        logger.info("load_knowledge() finished in %.3fs with 0 chunks.", time.perf_counter() - load_start)
-        return 0
-
     all_chunks = []
+    
+    # 1. Local Markdown Files
     for filepath in md_files:
         source = os.path.basename(filepath)
         with open(filepath, "r", encoding="utf-8") as f:
             text = f.read()
         chunks = _chunk_markdown(text, source)
         all_chunks.extend(chunks)
-        logger.info(f"Loaded {len(chunks)} chunks from {source}")
+
+    # 2. External Connectors
+    try:
+        from connectors.github import get_github_chunks
+        from connectors.linkedin import get_linkedin_chunks
+        
+        logger.info("[RAG] Fetching GitHub chunks...")
+        all_chunks.extend(get_github_chunks())
+        
+        logger.info("[RAG] Fetching LinkedIn chunks...")
+        all_chunks.extend(get_linkedin_chunks(KNOWLEDGE_DIR))
+    except Exception as e:
+        logger.warning(f"Error loading connectors: {e}")
 
     if not all_chunks:
-        logger.warning("No chunks found after parsing.")
-        logger.info("load_knowledge() finished in %.3fs with 0 chunks.", time.perf_counter() - load_start)
         return 0
 
-    # Clear old data before reloading
     try:
         _client.delete_collection(COLLECTION_NAME)
     except Exception:
         pass
     _collection = _client.get_or_create_collection(COLLECTION_NAME)
 
-    # Embed all chunks
     texts     = [c["text"]    for c in all_chunks]
     ids       = [c["id"]      for c in all_chunks]
-    metadatas = [{"source": c["source"], "heading": c["heading"]} for c in all_chunks]
+    # Add our new rich metadata
+    metadatas = [{
+        "source": c.get("source", "unknown"), 
+        "heading": c.get("heading", ""),
+        "title": c.get("title", "Unknown"),
+        "type": c.get("type", "unknown"),
+        "url": c.get("url", "/"),
+        "source_type": c.get("source_type", "portfolio"),
+        "content_type": c.get("content_type", "unknown"),
+        "visibility": c.get("visibility", "public"),
+        "trust_level": c.get("trust_level", "verified"),
+        "timestamp": c.get("timestamp", ""),
+        "last_updated": c.get("last_updated", "")
+    } for c in all_chunks]
 
     logger.info("[RAG] Cache MISS - rebuilding embeddings")
-    logger.info(f"Embedding {len(texts)} chunks...")
     embeddings = _embedder.encode(texts, show_progress_bar=False).tolist()
 
     _collection.add(
@@ -187,13 +213,11 @@ def load_knowledge() -> int:
     )
 
     _save_manifest(manifest)
-    logger.info(f"Knowledge base ready — {len(all_chunks)} chunks indexed.")
-    logger.info("load_knowledge() finished in %.3fs with %d chunks.", time.perf_counter() - load_start, len(all_chunks))
     return len(all_chunks)
 
 
 # ══════════════════════════════════════════════════════════
-#  ADAPTIVE TOP_K — broad questions get more chunks
+#  ADAPTIVE TOP_K
 # ══════════════════════════════════════════════════════════
 
 _BROAD_KEYWORDS = {
@@ -203,7 +227,6 @@ _BROAD_KEYWORDS = {
 }
 
 def _resolve_top_k(query: str) -> int:
-    """Return more chunks for broad questions, fewer for specific ones."""
     q_lower = query.lower()
     if any(kw in q_lower for kw in _BROAD_KEYWORDS):
         return TOP_K_MAX
@@ -211,19 +234,18 @@ def _resolve_top_k(query: str) -> int:
 
 
 # ══════════════════════════════════════════════════════════
-#  RETRIEVE — main function called by main.py
+#  RETRIEVE
 # ══════════════════════════════════════════════════════════
 
-def get_relevant_context(query: str, top_k: int | None = None) -> str:
+def get_relevant_context(query: str, top_k: int | None = None) -> tuple[str, list[dict], float]:
     """
-    Embeds the query, searches ChromaDB, returns
-    the top_k most relevant chunks as a single string
-    with source labels for grounded answers.
-    Returns empty string only if knowledge base is truly empty.
+    Returns:
+      1. Formatted context string for LLM
+      2. List of source dictionaries for UI
+      3. Best (lowest) L2 distance score
     """
     if _collection.count() == 0:
-        logger.warning("Knowledge base is empty. Run load_knowledge() first.")
-        return ""
+        return "", [], 999.0
 
     k = top_k if top_k is not None else _resolve_top_k(query)
     k = min(k, _collection.count())
@@ -233,48 +255,74 @@ def get_relevant_context(query: str, top_k: int | None = None) -> str:
     results = _collection.query(
         query_embeddings = query_embedding,
         n_results        = k,
-        include          = ["documents", "metadatas"],
+        include          = ["documents", "metadatas", "distances"],
     )
 
     docs      = results.get("documents", [[]])[0]
     metadatas = results.get("metadatas", [[]])[0]
+    distances = results.get("distances", [[]])[0]
 
     if not docs:
-        return ""
+        return "", [], 999.0
 
-    # Build context with source labels so the LLM can ground answers
     labeled_chunks = []
-    for doc, meta in zip(docs, metadatas):
+    sources_map = {}
+    
+    best_distance = distances[0] if distances else 999.0
+
+    for doc, meta, dist in zip(docs, metadatas, distances):
+        # Hard cutoff for complete garbage
+        if dist > 1.6:
+            continue
+            
         source  = meta.get("source", "unknown")
         heading = meta.get("heading", "")
-        label   = f"[Source: {source}" + (f" — {heading}]" if heading and heading != "intro" else "]")
+        title   = meta.get("title", source)
+        m_type  = meta.get("type", "unknown")
+        url     = meta.get("url", "/")
+        source_type = meta.get("source_type", "portfolio")
+        content_type = meta.get("content_type", m_type)
+        visibility = meta.get("visibility", "public")
+        trust_level = meta.get("trust_level", "verified")
+        timestamp = meta.get("timestamp", "")
+        last_updated = meta.get("last_updated", "")
+        
+        label   = f"[Source: {title} ({source_type}) — {heading}]"
         labeled_chunks.append(f"{label}\n{doc}")
+        
+        if title not in sources_map:
+            sources_map[title] = {
+                "title": title,
+                "type": m_type,
+                "url": url,
+                "source_type": source_type,
+                "content_type": content_type,
+                "visibility": visibility,
+                "trust_level": trust_level,
+                "timestamp": timestamp,
+                "last_updated": last_updated
+            }
 
     context = "\n\n---\n\n".join(labeled_chunks)
-    logger.info(f"Retrieved {len(docs)} chunks (top_k={k}) for query: '{query[:60]}'")
-    return context
-
-
-# ══════════════════════════════════════════════════════════
-#  QUICK TEST  — run: python rag.py
-# ══════════════════════════════════════════════════════════
+    sources = list(sources_map.values())
+    
+    return context, sources, best_distance
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-
     total = load_knowledge()
     print(f"\n✅ Loaded {total} chunks\n")
-
-    test_queries = [
-        "Who is Manish?",
-        "What technologies does Manish know?",
-        "What projects has Manish built?",
-        "How can I contact Manish?",
-        "What did Manish do at KubeStellar?",
+    
+    queries = [
+        "what projects has he built",
+        "who is his gf",
+        "what is 5+5",
+        "how did he contribute to kubestellar"
     ]
-
-    for q in test_queries:
-        print(f"Query: {q}")
-        ctx = get_relevant_context(q)
-        print(f"Context:\n{ctx[:400]}...")
-        print("-" * 60)
+    
+    for q in queries:
+        print(f"\nQuery: '{q}'")
+        ctx, srcs, dist = get_relevant_context(q)
+        print(f"Distance: {dist:.3f}")
+        for s in srcs:
+            print(f"Source: {s['title']} ({s['type']})")

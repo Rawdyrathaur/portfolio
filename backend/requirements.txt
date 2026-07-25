@@ -62,7 +62,7 @@ kubernetes==35.0.0
 markdown-it-py==4.0.0
 MarkupSafe==3.0.3
 mdurl==0.1.2
-mistralai==2.4.2
+mistralai
 mmh3==5.2.1
 mpmath==1.3.0
 multidict==6.7.1
@@ -70,12 +70,12 @@ networkx==3.6.1
 numpy==2.4.4
 oauthlib==3.3.1
 onnxruntime==1.25.0
-opentelemetry-api==1.41.0
-opentelemetry-exporter-otlp-proto-common==1.41.0
-opentelemetry-exporter-otlp-proto-grpc==1.41.0
-opentelemetry-proto==1.41.0
-opentelemetry-sdk==1.41.0
-opentelemetry-semantic-conventions==0.62b0
+opentelemetry-api
+opentelemetry-exporter-otlp-proto-common
+opentelemetry-exporter-otlp-proto-grpc
+opentelemetry-proto
+opentelemetry-sdk
+opentelemetry-semantic-conventions
 orjson==3.11.8
 overrides==7.7.0
 openai==1.109.1

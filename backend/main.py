@@ -91,6 +91,21 @@ def check_rate_limit(ip: str) -> None:
 #  REQUEST / RESPONSE SCHEMAS
 # ══════════════════════════════════════════════════════════
 
+class Source(BaseModel):
+    title: str
+    type: str
+    url: str
+    source_type: str = "portfolio"
+    content_type: str = "unknown"
+    visibility: str = "public"
+    trust_level: str = "verified"
+    timestamp: Optional[str] = None
+    last_updated: Optional[str] = None
+
+class RelatedLink(BaseModel):
+    title: str
+    url: str
+
 class ChatMessage(BaseModel):
     role: str        # "user" or "assistant"
     content: str
@@ -103,6 +118,9 @@ class ChatResponse(BaseModel):
     reply:       str
     provider:    str
     chunks_used: int
+    sources:     List[Source] = []
+    related:     List[RelatedLink] = []
+    confidence:  str = "high"
 
 
 # ══════════════════════════════════════════════════════════
@@ -354,15 +372,46 @@ def chat(req: ChatRequest, request: Request):
     check_rate_limit(client_ip)
 
     logger.info(f"RAG query: '{req.message[:60]}'")
-    rag_context = get_relevant_context(req.message)
+    rag_context, sources, best_distance = get_relevant_context(req.message)
     chunks_used = len(rag_context.split("---")) if rag_context else 0
-    logger.info(f"RAG returned {chunks_used} chunk(s)")
+    
+    logger.info(f"RAG returned {chunks_used} chunk(s) with best_distance={best_distance:.3f}")
+
+    if best_distance > 1.2 or not rag_context:
+        logger.info("Refusing query due to low confidence (distance > 1.2 or no chunks).")
+        reply = "I could not find verified information about that in the connected portfolio sources 🙂"
+        return ChatResponse(
+            reply=reply, 
+            provider="RAG_GATING", 
+            chunks_used=0,
+            sources=[],
+            confidence="low"
+        )
 
     system = build_system_prompt(rag_context)
     msgs   = build_messages(system, req.history or [], req.message)
     reply, provider = route_llm(msgs)
 
-    return ChatResponse(reply=reply, provider=provider, chunks_used=chunks_used)
+    structured_sources = [Source(**s) for s in sources]
+    
+    unique_links = []
+    seen_urls = set()
+    for s in sources:
+        url = s.get("url", "/")
+        if url != "/" and url not in seen_urls:
+            seen_urls.add(url)
+            unique_links.append({"title": s.get("title", "Link"), "url": url})
+            
+    structured_related = [RelatedLink(**r) for r in unique_links]
+
+    return ChatResponse(
+        reply=reply, 
+        provider=provider, 
+        chunks_used=chunks_used,
+        sources=structured_sources,
+        related=structured_related,
+        confidence="high"
+    )
 
 
 # ══════════════════════════════════════════════════════════

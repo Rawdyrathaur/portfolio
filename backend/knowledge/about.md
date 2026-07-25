@@ -1,3 +1,8 @@
+---
+title: "About"
+type: "about"
+url: "/"
+---
 # About Manish Singh Rathaur
 
 ## Who is Manish

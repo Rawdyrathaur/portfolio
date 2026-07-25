@@ -1,3 +1,8 @@
+---
+title: "Blogs"
+type: "blog"
+url: "/blog"
+---
 # Manish's Blog
 
 ## Blog Status

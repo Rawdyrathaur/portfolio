@@ -3,7 +3,7 @@ import remarkGfm from 'remark-gfm'
 import rehypeSanitize from 'rehype-sanitize'
 import './ChatWidget.css'
 
-function ChatAnswer({ text }) {
+function ChatAnswer({ text, sources = [], related = [] }) {
   return (
     <div className="cw-answer">
       <ReactMarkdown
@@ -39,6 +39,43 @@ function ChatAnswer({ text }) {
       >
         {text}
       </ReactMarkdown>
+      {sources && sources.length > 0 && (
+        <div className="cw-sources">
+          <div className="cw-sources-title">Sources</div>
+          <div className="cw-sources-list">
+            {sources.map((source, index) => (
+              <a 
+                key={index} 
+                href={source.url} 
+                className="cw-source-pill" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                {source.title}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+      
+      {related && related.length > 0 && (
+        <div className="cw-related">
+          <div className="cw-related-title">Related</div>
+          <div className="cw-related-list">
+            {related.map((link, index) => (
+              <a 
+                key={`related-${index}`} 
+                href={link.url} 
+                className="cw-related-pill" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                {link.title}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

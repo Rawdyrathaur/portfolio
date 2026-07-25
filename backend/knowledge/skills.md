@@ -1,3 +1,8 @@
+---
+title: "Skills"
+type: "skill"
+url: "/"
+---
 # Skills of Manish Singh Rathaur
 
 ## Quick Skills Summary

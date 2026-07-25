@@ -1,3 +1,8 @@
+---
+title: "Contact"
+type: "contact"
+url: "/"
+---
 # Contact Information for Manish Singh Rathaur
 
 ## How to Reach Manish

@@ -1,3 +1,8 @@
+---
+title: "Experience"
+type: "experience"
+url: "/"
+---
 # Experience of Manish Singh Rathaur
 
 ## Quick Experience Summary

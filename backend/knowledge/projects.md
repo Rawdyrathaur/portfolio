@@ -1,3 +1,8 @@
+---
+title: "Projects"
+type: "project"
+url: "/"
+---
 # Projects Built by Manish Singh Rathaur
 
 ## Project: Tab Story
