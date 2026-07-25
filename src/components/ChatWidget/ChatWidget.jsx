@@ -6,6 +6,8 @@ const BACKEND = "https://msrathaur-manish-portfolio-api.hf.space";
 
 export default function ChatWidget({ currentPath = window.location.pathname }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(true);
   const getInitialWelcome = () => {
     if (currentPath.startsWith("/blog/")) {
       return "Hi! I’m your article assistant. Ask me to summarize, simplify, explain code, or extract key ideas from this article.";
@@ -48,7 +50,28 @@ export default function ChatWidget({ currentPath = window.location.pathname }) {
       ? "· Article mode"
       : assistantMode === "blog"
         ? "· Blog mode"
-        : "· Ready";
+        : "· Ready to help";
+
+  // Suggested questions shown before the user has typed anything
+  const suggestedQuestions =
+    assistantMode === "article"
+      ? [
+          "Summarize this article",
+          "What are the key takeaways?",
+          "Explain the technical parts simply",
+        ]
+      : assistantMode === "blog"
+        ? [
+            "What topics does Manish write about?",
+            "What's the latest article?",
+            "Recommend something to read",
+          ]
+        : [
+            "What projects has Manish built?",
+            "What is Manish's strongest skill?",
+            "Is Manish open to full-time roles?",
+            "How can I contact Manish?",
+          ];
 
   const getWelcomeMessage = useCallback(() => {
     if (assistantMode === "article") {
@@ -98,22 +121,8 @@ export default function ChatWidget({ currentPath = window.location.pathname }) {
     };
   }, []);
   const handleScrollNotify = useCallback(() => {
-    if (window.scrollY <= 200 || isOpen || hasShownNotify.current) {
-      return;
-    }
-
-    hasShownNotify.current = true;
-    setShowNotify(true);
-
-    if (notifyTimeoutRef.current) {
-      clearTimeout(notifyTimeoutRef.current);
-    }
-
-    notifyTimeoutRef.current = setTimeout(() => {
-      setShowNotify(false);
-      notifyTimeoutRef.current = null;
-    }, 3000);
-  }, [isOpen, setShowNotify]);
+    // Removed: patronising popup on scroll was annoying and added no value
+  }, []);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScrollNotify, { passive: true });
@@ -174,6 +183,8 @@ ${question}`;
     setMessages((prev) => [...prev, { role: "user", text: trimmed, time: new Date() }]);
     setInput("");
     setIsLoading(true);
+    setHasInteracted(true);
+    setShowSuggestions(false);  // hide suggestions once user sends
     setHasShownWakeup(true);
 
     try {
@@ -198,7 +209,7 @@ ${question}`;
     } catch {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", text: "⚠️ Could not reach backend. Is the server running?", time: new Date() },
+        { role: "assistant", text: "⚠️ Could not reach the server. Please try again in a moment.", time: new Date() },
       ]);
     }
 
@@ -226,9 +237,9 @@ ${question}`;
     };
   }, []);
 
-  const handleArticleQuickPrompt = (prompt) => {
-    setIsOpen(true);
-    handleSend(prompt);
+  const handleSuggestedQuestion = (q) => {
+    setShowSuggestions(false);
+    handleSend(q);
   };
 
   const handleKey = (e) => {
@@ -305,7 +316,7 @@ ${question}`;
         } catch {
           setMessages((prev) => [
             ...prev,
-            { role: "assistant", text: "🎤 Voice received but Whisper endpoint not connected yet.", time: new Date() },
+            { role: "assistant", text: "🎤 Voice transcription failed. Please check your microphone and try again.", time: new Date() },
           ]);
           setIsLoading(false);
         }
@@ -330,14 +341,12 @@ ${question}`;
         time: new Date(),
       },
     ]);
+    setShowSuggestions(true);
+    setHasInteracted(false);
   };
 
   return (
     <div className="cw-root">
-      {showNotify && !isOpen && (
-        <div className="cw-notify">I’m here if you need help.</div>
-      )}
-
       {isOpen && (
         <div className="cw-card" role="dialog" aria-label="Portfolio chat assistant">
 
@@ -349,6 +358,9 @@ ${question}`;
               <span className="cw-status-text">{assistantStatus}</span>
             </div>
             <div className="cw-header-actions">
+              {!hasInteracted && (
+                <span className="cw-wakeup-hint">First reply may take a few seconds</span>
+              )}
               <button className="cw-icon-btn" onClick={clearChat} title="Clear chat" aria-label="Clear chat">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
@@ -367,13 +379,13 @@ ${question}`;
               <div className="cw-article-mode__label">Article mode</div>
               <div className="cw-article-mode__title">{articleContext.title}</div>
               <div className="cw-article-mode__actions">
-                <button type="button" onClick={() => handleArticleQuickPrompt("Summarize this article in simple words.")}>
+                <button type="button" onClick={() => handleSuggestedQuestion("Summarize this article in simple words.")}>
                   Summarize
                 </button>
-                <button type="button" onClick={() => handleArticleQuickPrompt("Give me the key takeaways from this article.")}>
+                <button type="button" onClick={() => handleSuggestedQuestion("Give me the key takeaways from this article.")}>
                   Key points
                 </button>
-                <button type="button" onClick={() => handleArticleQuickPrompt("Explain the technical parts of this article like I am a beginner.")}>
+                <button type="button" onClick={() => handleSuggestedQuestion("Explain the technical parts of this article like I am a beginner.")}>
                   Explain simply
                 </button>
               </div>
@@ -399,9 +411,6 @@ ${question}`;
                   <div className="cw-bubble cw-bubble--assistant">
                     <span className="cw-typing"><span /><span /><span /></span>
                   </div>
-                  {hasShownWakeup && (
-                    <span className="cw-time">AI is waking up. First message may take a few seconds.</span>
-                  )}
                 </div>
               </div>
             )}
@@ -409,6 +418,22 @@ ${question}`;
             {isRecording && (
               <div className="cw-recording-hint">
                 <span className="cw-rec-dot" /> Listening… pause to send
+              </div>
+            )}
+
+            {/* Suggested questions — shown only before user interacts */}
+            {showSuggestions && !isLoading && !isRecording && (
+              <div className="cw-suggestions">
+                {suggestedQuestions.map((q) => (
+                  <button
+                    key={q}
+                    className="cw-suggestion-chip"
+                    onClick={() => handleSuggestedQuestion(q)}
+                    type="button"
+                  >
+                    {q}
+                  </button>
+                ))}
               </div>
             )}
 

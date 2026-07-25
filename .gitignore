@@ -11,11 +11,6 @@ node_modules
 dist
 dist-ssr
 *.local
-.venv/
-htmlcov/
-coverage/
-dist/
-node_modules/
 
 # Editor directories and files
 .vscode/*
@@ -28,5 +23,21 @@ node_modules/
 *.sln
 *.sw?
 .env
+.env*
+.vercel
+
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+backend/venv/
+backend/.cache/
+backend/__pycache__/
+backend/htmlcov/
+backend/.coverage
+backend/coverage.xml
+backend/.pytest_cache/
+*.egg-info/

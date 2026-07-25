@@ -1,4 +1,3 @@
-import glob
 import json
 import logging
 import os
@@ -12,13 +11,16 @@ logger = logging.getLogger(__name__)
 
 # ── Config ────────────────────────────────────────────────
 BASE_DIR        = Path(__file__).resolve().parent
-KNOWLEDGE_DIR   = BASE_DIR / "knowledge"  # folder with all .md files
-EMBED_MODEL     = "all-MiniLM-L6-v2"      # small, fast, local — no API needed
-TOP_K           = 3                       # how many chunks to retrieve per query
+KNOWLEDGE_DIR   = BASE_DIR / "knowledge"
+EMBED_MODEL     = "all-MiniLM-L6-v2"
 COLLECTION_NAME = "manish_portfolio"
 CACHE_DIR       = Path(os.getenv("RAG_CACHE_DIR", "backend/.cache/rag"))
 PERSIST_DIR     = CACHE_DIR / "chroma"
 MANIFEST_PATH   = CACHE_DIR / "manifest.json"
+
+# TOP_K is adaptive — simple questions get 3, broad questions get 7
+TOP_K_DEFAULT = 5
+TOP_K_MAX     = 8
 
 # ── Load model once at startup ────────────────────────────
 logger.info("Loading embedding model...")
@@ -42,7 +44,7 @@ def _current_manifest() -> dict:
             "mtime_ns": stat.st_mtime_ns,
         })
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "collection_name": COLLECTION_NAME,
         "embed_model": EMBED_MODEL,
         "files": files,
@@ -64,44 +66,62 @@ def _save_manifest(manifest: dict) -> None:
 
 
 # ══════════════════════════════════════════════════════════
-#  CHUNKING  — splits .md file by ## headings
+#  CHUNKING — splits .md file by ## AND ### headings
+#  Each chunk carries source file + heading label for citation
 # ══════════════════════════════════════════════════════════
 
 def _chunk_markdown(text: str, source: str) -> list[dict]:
     """
-    Splits markdown content into chunks at every ## heading.
-    Each chunk = { id, text, source }
+    Splits markdown content into chunks at every ## or ### heading.
+    Each chunk = { id, text, source, heading }
+    This means Tab Story's overview, tech stack, and features are
+    separate retrievable chunks — not one giant blob.
     """
-    chunks  = []
-    current = []
-    heading = "intro"
+    chunks   = []
+    current  = []
+    heading  = "intro"
+    h_level  = 1
 
     for line in text.splitlines():
-        if line.startswith("## "):
+        if line.startswith("### "):
             if current:
                 chunks.append({
-                    "id":     f"{source}::{heading}",
-                    "text":   "\n".join(current).strip(),
-                    "source": source,
+                    "id":      f"{source}::{heading}",
+                    "text":    "\n".join(current).strip(),
+                    "source":  source,
+                    "heading": heading,
+                })
+            heading = line[4:].strip().lower().replace(" ", "_")
+            h_level = 3
+            current = [line]
+        elif line.startswith("## "):
+            if current:
+                chunks.append({
+                    "id":      f"{source}::{heading}",
+                    "text":    "\n".join(current).strip(),
+                    "source":  source,
+                    "heading": heading,
                 })
             heading = line[3:].strip().lower().replace(" ", "_")
+            h_level = 2
             current = [line]
         else:
             current.append(line)
 
-    # last chunk
+    # Last chunk
     if current:
         chunks.append({
-            "id":     f"{source}::{heading}",
-            "text":   "\n".join(current).strip(),
-            "source": source,
+            "id":      f"{source}::{heading}",
+            "text":    "\n".join(current).strip(),
+            "source":  source,
+            "heading": heading,
         })
 
-    return [c for c in chunks if c["text"]]
+    return [c for c in chunks if c["text"].strip()]
 
 
 # ══════════════════════════════════════════════════════════
-#  LOAD & EMBED — reads all .md files and stores in Chroma
+#  LOAD & EMBED
 # ══════════════════════════════════════════════════════════
 
 def load_knowledge() -> int:
@@ -112,7 +132,7 @@ def load_knowledge() -> int:
     """
     global _collection
     load_start = time.perf_counter()
-    manifest = _current_manifest()
+    manifest       = _current_manifest()
     saved_manifest = _load_saved_manifest()
 
     if saved_manifest == manifest:
@@ -151,10 +171,9 @@ def load_knowledge() -> int:
     _collection = _client.get_or_create_collection(COLLECTION_NAME)
 
     # Embed all chunks
-    texts     = [c["text"] for c in all_chunks]
-    ids       = [c["id"]   for c in all_chunks]
-    sources   = [c["source"] for c in all_chunks]
-    metadatas = [{"source": s} for s in sources]
+    texts     = [c["text"]    for c in all_chunks]
+    ids       = [c["id"]      for c in all_chunks]
+    metadatas = [{"source": c["source"], "heading": c["heading"]} for c in all_chunks]
 
     logger.info("[RAG] Cache MISS - rebuilding embeddings")
     logger.info(f"Embedding {len(texts)} chunks...")
@@ -168,39 +187,71 @@ def load_knowledge() -> int:
     )
 
     _save_manifest(manifest)
-
     logger.info(f"Knowledge base ready — {len(all_chunks)} chunks indexed.")
     logger.info("load_knowledge() finished in %.3fs with %d chunks.", time.perf_counter() - load_start, len(all_chunks))
     return len(all_chunks)
 
 
 # ══════════════════════════════════════════════════════════
+#  ADAPTIVE TOP_K — broad questions get more chunks
+# ══════════════════════════════════════════════════════════
+
+_BROAD_KEYWORDS = {
+    "everything", "all", "tell me about", "overview", "summary",
+    "who is", "what does", "background", "skills", "experience",
+    "projects", "work", "journey", "full", "complete",
+}
+
+def _resolve_top_k(query: str) -> int:
+    """Return more chunks for broad questions, fewer for specific ones."""
+    q_lower = query.lower()
+    if any(kw in q_lower for kw in _BROAD_KEYWORDS):
+        return TOP_K_MAX
+    return TOP_K_DEFAULT
+
+
+# ══════════════════════════════════════════════════════════
 #  RETRIEVE — main function called by main.py
 # ══════════════════════════════════════════════════════════
 
-def get_relevant_context(query: str, top_k: int = TOP_K) -> str:
+def get_relevant_context(query: str, top_k: int | None = None) -> str:
     """
     Embeds the query, searches ChromaDB, returns
-    the top_k most relevant chunks as a single string.
+    the top_k most relevant chunks as a single string
+    with source labels for grounded answers.
+    Returns empty string only if knowledge base is truly empty.
     """
     if _collection.count() == 0:
         logger.warning("Knowledge base is empty. Run load_knowledge() first.")
         return ""
 
+    k = top_k if top_k is not None else _resolve_top_k(query)
+    k = min(k, _collection.count())
+
     query_embedding = _embedder.encode([query]).tolist()
 
     results = _collection.query(
         query_embeddings = query_embedding,
-        n_results        = min(top_k, _collection.count()),
+        n_results        = k,
         include          = ["documents", "metadatas"],
     )
 
-    docs = results.get("documents", [[]])[0]
+    docs      = results.get("documents", [[]])[0]
+    metadatas = results.get("metadatas", [[]])[0]
+
     if not docs:
         return ""
 
-    context = "\n\n---\n\n".join(docs)
-    logger.info(f"Retrieved {len(docs)} chunks for query: '{query[:50]}...'")
+    # Build context with source labels so the LLM can ground answers
+    labeled_chunks = []
+    for doc, meta in zip(docs, metadatas):
+        source  = meta.get("source", "unknown")
+        heading = meta.get("heading", "")
+        label   = f"[Source: {source}" + (f" — {heading}]" if heading and heading != "intro" else "]")
+        labeled_chunks.append(f"{label}\n{doc}")
+
+    context = "\n\n---\n\n".join(labeled_chunks)
+    logger.info(f"Retrieved {len(docs)} chunks (top_k={k}) for query: '{query[:60]}'")
     return context
 
 
@@ -218,10 +269,12 @@ if __name__ == "__main__":
         "Who is Manish?",
         "What technologies does Manish know?",
         "What projects has Manish built?",
+        "How can I contact Manish?",
+        "What did Manish do at KubeStellar?",
     ]
 
     for q in test_queries:
         print(f"Query: {q}")
         ctx = get_relevant_context(q)
-        print(f"Context:\n{ctx[:300]}...")
+        print(f"Context:\n{ctx[:400]}...")
         print("-" * 60)

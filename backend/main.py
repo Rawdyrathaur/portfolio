@@ -53,6 +53,8 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "https://www.manishrathaur.tech",
+        "https://manishrathaur.tech",
         "http://localhost:5173",
         "http://localhost:5174",
         "http://localhost:5175",
@@ -159,7 +161,7 @@ def try_groq(msgs: list[dict]) -> str | None:
         res = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=msgs,
-            max_tokens=512,
+            max_tokens=800,
         )
         return res.choices[0].message.content
     except Exception as e:
@@ -225,7 +227,7 @@ def try_mistral(msgs: list[dict]) -> str | None:
         res = client.chat.completions.create(
             model="mistral-small-latest",
             messages=msgs,
-            max_tokens=512,
+            max_tokens=800,
         )
         return res.choices[0].message.content
     except Exception as e:
@@ -245,7 +247,7 @@ def try_together(msgs: list[dict]) -> str | None:
         res = client.chat.completions.create(
             model="meta-llama/Llama-3.3-70B-Instruct-Turbo",
             messages=msgs,
-            max_tokens=512,
+            max_tokens=800,
         )
         return res.choices[0].message.content
     except Exception as e:
