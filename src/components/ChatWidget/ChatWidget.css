@@ -187,8 +187,8 @@
 .cw-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 10px 14px;
+  justify-content: flex-end;
+  padding: 6px 10px;
   background: var(--accent);
   position: relative;
   flex-shrink: 0;
@@ -202,15 +202,14 @@
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
 }
 
-.cw-header-left {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
 .cw-header-actions {
   display: flex;
   align-items: center;
   gap: 2px;
+}
+.cw-header-actions--full {
+  width: 100%;
+  justify-content: flex-end;
 }
 
 .cw-title {
