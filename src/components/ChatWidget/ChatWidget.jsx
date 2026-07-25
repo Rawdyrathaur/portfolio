@@ -203,7 +203,7 @@ ${question}`;
       if (!res.ok) throw new Error("Server error");
       const data = await res.json();
 
-      setMessages((prev) => [...prev, { role: "assistant", text: data.reply, time: new Date() }]);
+      setMessages((prev) => [...prev, { role: "assistant", text: data.reply, sources: data.sources || [], time: new Date() }]);
 
       if (!isOpen) setHasNewMessage(true);
     } catch {
@@ -352,7 +352,13 @@ ${question}`;
 
           {/* Header */}
           <div className="cw-header">
-            <div className="cw-header-actions cw-header-actions--full">
+            <div className="cw-header-title">
+              <div className="cw-title">Manish AI</div>
+              <div className="cw-status-text">
+                <span className="cw-dot" /> {assistantStatus.replace('· ', '')}
+              </div>
+            </div>
+            <div className="cw-header-actions">
               <button className="cw-icon-btn" onClick={clearChat} title="Clear chat" aria-label="Clear chat">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
@@ -390,7 +396,7 @@ ${question}`;
               <div key={i} className={`cw-msg-row cw-msg-row--${m.role}`}>
                 <div className="cw-msg-col">
                   <div className={`cw-bubble cw-bubble--${m.role}`}>
-                    <ChatMessage role={m.role} text={m.text} />
+                    <ChatMessage role={m.role} text={m.text} sources={m.sources} />
                   </div>
                   <span className="cw-time">{formatTime(m.time)}</span>
                 </div>
