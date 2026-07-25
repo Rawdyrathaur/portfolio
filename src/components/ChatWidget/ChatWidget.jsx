@@ -203,7 +203,13 @@ ${question}`;
       if (!res.ok) throw new Error("Server error");
       const data = await res.json();
 
-      setMessages((prev) => [...prev, { role: "assistant", text: data.reply, sources: data.sources || [], time: new Date() }]);
+      setMessages((prev) => [...prev, { 
+        role: "assistant", 
+        text: data.reply, 
+        sources: data.sources || [], 
+        related: data.related || [], 
+        time: new Date() 
+      }]);
 
       if (!isOpen) setHasNewMessage(true);
     } catch {
@@ -396,7 +402,7 @@ ${question}`;
               <div key={i} className={`cw-msg-row cw-msg-row--${m.role}`}>
                 <div className="cw-msg-col">
                   <div className={`cw-bubble cw-bubble--${m.role}`}>
-                    <ChatMessage role={m.role} text={m.text} sources={m.sources} />
+                    <ChatMessage role={m.role} text={m.text} sources={m.sources} related={m.related} />
                   </div>
                   <span className="cw-time">{formatTime(m.time)}</span>
                 </div>
@@ -406,8 +412,16 @@ ${question}`;
             {isLoading && (
               <div className="cw-msg-row cw-msg-row--assistant">
                 <div className="cw-msg-col">
-                  <div className="cw-bubble cw-bubble--assistant">
-                    <span className="cw-typing"><span /><span /><span /></span>
+                  <div className="cw-bubble cw-bubble--assistant cw-bubble--loading">
+                    <div className="cw-searching">
+                      <span className="cw-searching-icon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                      </span>
+                      Searching portfolio...
+                      <span className="cw-typing"><span /><span /><span /></span>
+                    </div>
                   </div>
                 </div>
               </div>
