@@ -224,6 +224,7 @@ _BROAD_KEYWORDS = {
     "everything", "all", "tell me about", "overview", "summary",
     "who is", "what does", "background", "skills", "experience",
     "projects", "work", "journey", "full", "complete",
+    "github", "repos", "repositories", "list",
 }
 
 def _resolve_top_k(query: str) -> int:
@@ -284,6 +285,11 @@ def get_relevant_context(query: str, top_k: int | None = None) -> tuple[str, lis
         content_type = meta.get("content_type", m_type)
         visibility = meta.get("visibility", "public")
         trust_level = meta.get("trust_level", "verified")
+        
+        # Hard grounding constraint: Only allow verified or public sources
+        if trust_level not in ("verified", "public"):
+            continue
+            
         timestamp = meta.get("timestamp", "")
         last_updated = meta.get("last_updated", "")
         
@@ -307,6 +313,64 @@ def get_relevant_context(query: str, top_k: int | None = None) -> tuple[str, lis
     sources = list(sources_map.values())
     
     return context, sources, best_distance
+
+
+# ══════════════════════════════════════════════════════════
+#  DYNAMIC UPSERT (WEBHOOKS)
+# ══════════════════════════════════════════════════════════
+
+def upsert_github_repo(repo_data: dict) -> bool:
+    """Upserts a single repository chunk into ChromaDB."""
+    try:
+        from connectors.github import format_repo_chunk
+        chunk = format_repo_chunk(repo_data)
+        
+        text = chunk["text"]
+        chunk_id = chunk["id"]
+        meta = {
+            "source": chunk.get("source", "unknown"),
+            "heading": chunk.get("heading", ""),
+            "title": chunk.get("title", "Unknown"),
+            "type": chunk.get("type", "unknown"),
+            "url": chunk.get("url", "/"),
+            "source_type": chunk.get("source_type", "portfolio"),
+            "content_type": chunk.get("content_type", "unknown"),
+            "visibility": chunk.get("visibility", "public"),
+            "trust_level": chunk.get("trust_level", "verified"),
+            "timestamp": chunk.get("timestamp", ""),
+            "last_updated": chunk.get("last_updated", "")
+        }
+        
+        embedding = _embedder.encode([text], show_progress_bar=False).tolist()[0]
+        
+        # Delete if exists to update
+        try:
+            _collection.delete(ids=[chunk_id])
+        except Exception:
+            pass
+            
+        _collection.add(
+            ids=[chunk_id],
+            documents=[text],
+            embeddings=[embedding],
+            metadatas=[meta]
+        )
+        logger.info(f"[RAG] Upserted GitHub repo: {chunk['title']}")
+        return True
+    except Exception as e:
+        logger.error(f"[RAG] Failed to upsert GitHub repo: {e}")
+        return False
+
+def delete_github_repo(repo_name: str) -> bool:
+    """Deletes a single repository chunk from ChromaDB."""
+    try:
+        chunk_id = f"github_repo::{repo_name}"
+        _collection.delete(ids=[chunk_id])
+        logger.info(f"[RAG] Deleted GitHub repo: {repo_name}")
+        return True
+    except Exception as e:
+        logger.error(f"[RAG] Failed to delete GitHub repo {repo_name}: {e}")
+        return False
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)

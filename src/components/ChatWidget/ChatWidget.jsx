@@ -205,7 +205,7 @@ ${question}`;
 
       setMessages((prev) => [...prev, { 
         role: "assistant", 
-        text: data.reply, 
+        text: data.answer, 
         sources: data.sources || [], 
         related: data.related || [], 
         time: new Date() 

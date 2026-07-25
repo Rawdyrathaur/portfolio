@@ -4,7 +4,8 @@ import time
 import logging
 import tempfile
 import asyncio
-import unicodedata
+import hmac
+import hashlib
 from collections import defaultdict
 from contextlib import asynccontextmanager
 from typing import List, Optional
@@ -16,7 +17,7 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 
 # ── Local modules ─────────────────────────────────────────
-from rag import load_knowledge, get_relevant_context
+from rag import load_knowledge, get_relevant_context, upsert_github_repo, delete_github_repo
 from system_prompt import build_system_prompt
 
 load_dotenv()
@@ -115,7 +116,7 @@ class ChatRequest(BaseModel):
     history: Optional[List[ChatMessage]] = []
 
 class ChatResponse(BaseModel):
-    reply:       str
+    answer:      str
     provider:    str
     chunks_used: int
     sources:     List[Source] = []
@@ -363,6 +364,48 @@ def reload():
     return {"status": "reloaded", "chunks": total}
 
 
+@app.post("/webhook/github")
+async def github_webhook(request: Request):
+    """Handles GitHub App webhook events to keep the RAG index fresh."""
+    secret = os.getenv("GITHUB_WEBHOOK_SECRET")
+    if not secret:
+        raise HTTPException(status_code=500, detail="Webhook secret not configured")
+        
+    signature = request.headers.get("X-Hub-Signature-256")
+    if not signature:
+        raise HTTPException(status_code=400, detail="Missing signature")
+        
+    body = await request.body()
+    
+    # Verify HMAC signature
+    expected_mac = hmac.new(secret.encode(), body, hashlib.sha256).hexdigest()
+    expected_sig = f"sha256={expected_mac}"
+    if not hmac.compare_digest(signature, expected_sig):
+        raise HTTPException(status_code=401, detail="Invalid signature")
+        
+    event = request.headers.get("X-GitHub-Event")
+    payload = await request.json()
+    
+    if event == "repository":
+        action = payload.get("action")
+        repo_data = payload.get("repository", {})
+        repo_name = repo_data.get("name")
+        
+        if action in ["created", "edited", "publicized", "unarchived"]:
+            success = upsert_github_repo(repo_data)
+            return {"status": "upserted" if success else "failed", "repo": repo_name}
+            
+        elif action in ["deleted", "archived", "privatized"]:
+            success = delete_github_repo(repo_name)
+            return {"status": "deleted" if success else "failed", "repo": repo_name}
+            
+    elif event == "ping":
+        return {"status": "pong"}
+        
+    return {"status": "ignored", "event": event}
+
+
+
 @app.post("/chat", response_model=ChatResponse)
 def chat(req: ChatRequest, request: Request):
     if not req.message.strip():
@@ -381,7 +424,7 @@ def chat(req: ChatRequest, request: Request):
         logger.info("Refusing query due to low confidence (distance > 1.2 or no chunks).")
         reply = "I could not find verified GitHub project data in the connected sources 🙂\n\nTry asking about Organic Maps or the RAG portfolio project."
         return ChatResponse(
-            reply=reply, 
+            answer=reply, 
             provider="RAG_GATING", 
             chunks_used=0,
             sources=[],
@@ -405,7 +448,7 @@ def chat(req: ChatRequest, request: Request):
     structured_related = [RelatedLink(**r) for r in unique_links]
 
     return ChatResponse(
-        reply=reply, 
+        answer=reply, 
         provider=provider, 
         chunks_used=chunks_used,
         sources=structured_sources,
