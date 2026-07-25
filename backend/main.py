@@ -379,7 +379,7 @@ def chat(req: ChatRequest, request: Request):
 
     if best_distance > 1.2 or not rag_context:
         logger.info("Refusing query due to low confidence (distance > 1.2 or no chunks).")
-        reply = "I could not find verified information about that in the connected portfolio sources 🙂"
+        reply = "I could not find verified GitHub project data in the connected sources 🙂\n\nTry asking about Organic Maps or the RAG portfolio project."
         return ChatResponse(
             reply=reply, 
             provider="RAG_GATING", 

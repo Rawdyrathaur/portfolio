@@ -17,7 +17,7 @@ export default function ChatWidget({ currentPath = window.location.pathname }) {
       return "Hi! I’m your blog assistant. I can help you explore articles, topics, and technical notes from this blog.";
     }
 
-    return "Hi! I'm Manish's digital brain. Ask me anything about his work, skills, or projects 👋";
+    return "Portfolio Assistant. Ask about projects, skills, experience, and GitHub work 👋";
   };
 
   const [messages, setMessages] = useState([
@@ -68,9 +68,9 @@ export default function ChatWidget({ currentPath = window.location.pathname }) {
           ]
         : [
             "What projects has Manish built?",
-            "What is Manish's strongest skill?",
-            "Is Manish open to full-time roles?",
-            "How can I contact Manish?",
+            "What technologies does he use?",
+            "Tell me about his open-source work",
+            "What work is on his GitHub?",
           ];
 
   const getWelcomeMessage = useCallback(() => {
@@ -82,7 +82,7 @@ export default function ChatWidget({ currentPath = window.location.pathname }) {
       return "Hi! I’m your blog assistant. I can help you explore articles, topics, and technical notes from this blog.";
     }
 
-    return "Hi! I'm Manish's digital brain. Ask me anything about his work, skills, or projects 👋";
+    return "Portfolio Assistant. Ask about projects, skills, experience, and GitHub work 👋";
   }, [assistantMode, articleContext]);
   const hasShownNotify = useRef(false);
   const notifyTimeoutRef = useRef(null);
