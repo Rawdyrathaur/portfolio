@@ -320,53 +320,72 @@ def get_relevant_context(query: str, top_k: int | None = None) -> tuple[str, lis
 # ══════════════════════════════════════════════════════════
 
 def upsert_github_repo(repo_data: dict) -> bool:
-    """Upserts a single repository chunk into ChromaDB."""
+    """Upserts a repository's deep chunks into ChromaDB."""
     try:
-        from connectors.github import format_repo_chunk
-        chunk = format_repo_chunk(repo_data)
+        from connectors.github import format_repo_chunks, get_repo_details, GITHUB_USERNAME
         
-        text = chunk["text"]
-        chunk_id = chunk["id"]
-        meta = {
-            "source": chunk.get("source", "unknown"),
-            "heading": chunk.get("heading", ""),
-            "title": chunk.get("title", "Unknown"),
-            "type": chunk.get("type", "unknown"),
-            "url": chunk.get("url", "/"),
-            "source_type": chunk.get("source_type", "portfolio"),
-            "content_type": chunk.get("content_type", "unknown"),
-            "visibility": chunk.get("visibility", "public"),
-            "trust_level": chunk.get("trust_level", "verified"),
-            "timestamp": chunk.get("timestamp", ""),
-            "last_updated": chunk.get("last_updated", "")
-        }
+        repo_name = repo_data.get("name")
+        owner = repo_data.get("owner", {}).get("login", GITHUB_USERNAME)
         
-        embedding = _embedder.encode([text], show_progress_bar=False).tolist()[0]
+        # Need to fetch details since we're doing a deep sync
+        # Note: In a real webhook, we might want to pass the token in headers, but for now we'll fetch basic if public.
+        # To keep it simple, we just pass empty headers (works for public repos).
+        details = get_repo_details(repo_name, owner, headers={})
         
-        # Delete if exists to update
-        try:
-            _collection.delete(ids=[chunk_id])
-        except Exception:
-            pass
+        chunks = format_repo_chunks(repo_data, details)
+        
+        # Delete existing chunks for this repo to avoid duplicates
+        delete_github_repo(repo_name)
+        
+        for chunk in chunks:
+            text = chunk["text"]
+            chunk_id = chunk["id"]
+            meta = {
+                "source": chunk.get("source", "unknown"),
+                "heading": chunk.get("heading", ""),
+                "title": chunk.get("title", "Unknown"),
+                "type": chunk.get("type", "unknown"),
+                "url": chunk.get("url", "/"),
+                "source_type": chunk.get("source_type", "portfolio"),
+                "content_type": chunk.get("content_type", "unknown"),
+                "visibility": chunk.get("visibility", "public"),
+                "trust_level": chunk.get("trust_level", "verified"),
+                "timestamp": chunk.get("timestamp", ""),
+                "last_updated": chunk.get("last_updated", "")
+            }
             
-        _collection.add(
-            ids=[chunk_id],
-            documents=[text],
-            embeddings=[embedding],
-            metadatas=[meta]
-        )
-        logger.info(f"[RAG] Upserted GitHub repo: {chunk['title']}")
+            embedding = _embedder.encode([text], show_progress_bar=False).tolist()[0]
+                
+            _collection.add(
+                ids=[chunk_id],
+                documents=[text],
+                embeddings=[embedding],
+                metadatas=[meta]
+            )
+            
+        logger.info(f"[RAG] Upserted deep GitHub repo: {repo_name}")
         return True
     except Exception as e:
         logger.error(f"[RAG] Failed to upsert GitHub repo: {e}")
         return False
 
 def delete_github_repo(repo_name: str) -> bool:
-    """Deletes a single repository chunk from ChromaDB."""
+    """Deletes all chunks for a repository from ChromaDB."""
     try:
-        chunk_id = f"github_repo::{repo_name}"
-        _collection.delete(ids=[chunk_id])
-        logger.info(f"[RAG] Deleted GitHub repo: {repo_name}")
+        # Delete by iterating over potential chunk IDs
+        ids_to_delete = [
+            f"github_repo::{repo_name}::overview",
+            f"github_repo::{repo_name}::readme",
+            f"github_repo::{repo_name}::tree"
+        ]
+        
+        for chunk_id in ids_to_delete:
+            try:
+                _collection.delete(ids=[chunk_id])
+            except Exception:
+                pass
+                
+        logger.info(f"[RAG] Deleted GitHub repo chunks: {repo_name}")
         return True
     except Exception as e:
         logger.error(f"[RAG] Failed to delete GitHub repo {repo_name}: {e}")
