@@ -11,6 +11,13 @@
   font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
+@media (max-width: 400px) {
+  .cw-root {
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
 /* ══════════════════════════════
    BUBBLE TOGGLE BUTTON
 ══════════════════════════════ */
@@ -136,7 +143,9 @@
 ══════════════════════════════ */
 .cw-card {
   width: 340px;
+  max-width: calc(100vw - 32px);
   height: 460px;
+  max-height: calc(100vh - 100px);
   background: var(--surface);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
