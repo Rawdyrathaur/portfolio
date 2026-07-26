@@ -41,3 +41,4 @@ backend/.coverage
 backend/coverage.xml
 backend/.pytest_cache/
 *.egg-info/
+*.pem

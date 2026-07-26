@@ -29,20 +29,7 @@ PERSONALITY:
 - Only state facts.
 """.strip()
 
-EDGE_CASES = """
-HANDLING EDGE CASES:
-- Information you don't have → "I do not have verified information about that in the portfolio knowledge base 🙂"
-- Completely off-topic → "I do not have verified information about that in the portfolio knowledge base 🙂"
-- Personal/private info (phone, address) → "I do not have verified information about that in the portfolio knowledge base 🙂"
-- Adult/18+ content → Decline cleanly, do not answer.
-""".strip()
-
 def build_system_prompt(rag_context: str = "") -> str:
-    if rag_context:
-        context_block = f"KNOWLEDGE BASE (Verified & Public Only):\n{rag_context}"
-    else:
-        context_block = "No verified sources retrieved. You must refuse the query."
-
     return f"""
 {IDENTITY}
 
@@ -52,9 +39,8 @@ def build_system_prompt(rag_context: str = "") -> str:
 
 {PERSONALITY}
 
-{EDGE_CASES}
-
-{context_block}
+KNOWLEDGE BASE (Verified & Public Only):
+{rag_context}
 """.strip()
 
 if __name__ == "__main__":

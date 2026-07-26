@@ -44,7 +44,7 @@ def _current_manifest() -> dict:
             "mtime_ns": stat.st_mtime_ns,
         })
     return {
-        "schema_version": 3,
+        "schema_version": 4,  # Bumping to 4 to force cache invalidation for the new Deep Sync
         "collection_name": COLLECTION_NAME,
         "embed_model": EMBED_MODEL,
         "files": files,

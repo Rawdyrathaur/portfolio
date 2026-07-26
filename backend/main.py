@@ -16,11 +16,30 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
+load_dotenv()
+
+# ── Env Var Validation ────────────────────────────────────
+import sys
+
+REQUIRED_ENV_VARS = [
+    "GROQ_API_KEY",
+    "GITHUB_APP_ID",
+    "GITHUB_INSTALLATION_ID",
+    "GITHUB_WEBHOOK_SECRET",
+    "GITHUB_PRIVATE_KEY"
+]
+
+missing_vars = [var for var in REQUIRED_ENV_VARS if not os.getenv(var)]
+if missing_vars:
+    print(f"\n❌ CRITICAL ERROR: Missing required environment variables: {', '.join(missing_vars)}", file=sys.stderr)
+    print("Please create a .env file based on .env.example before running the application.\n", file=sys.stderr)
+    sys.exit(1)
+
 # ── Local modules ─────────────────────────────────────────
 from rag import load_knowledge, get_relevant_context, upsert_github_repo, delete_github_repo
 from system_prompt import build_system_prompt
+from intent_router import classify_intent
 
-load_dotenv()
 
 # ── Logging ───────────────────────────────────────────────
 logging.basicConfig(level=logging.INFO)
@@ -414,20 +433,49 @@ def chat(req: ChatRequest, request: Request):
     client_ip = request.client.host if request.client else "unknown"
     check_rate_limit(client_ip)
 
-    logger.info(f"RAG query: '{req.message[:60]}'")
+    logger.info(f"Chat query: '{req.message[:60]}'")
+    
+    # ── 1. Intent Classification ──
+    intent = classify_intent(req.message, req.history)
+    
+    # ── 2. Static Responses for Fluff ──
+    if intent == "GREETING":
+        reply = "Hi! I'm Manish Rathaur's AI portfolio assistant. I can answer questions about his projects, GitHub repositories, technical skills, experience, and the technologies he has worked with. What would you like to know?"
+        return ChatResponse(
+            answer=reply,
+            provider="ROUTER",
+            chunks_used=0,
+            sources=[],
+            related=[],
+            confidence="high"
+        )
+        
+    if intent == "OFF_TOPIC":
+        reply = "I'm specialized in answering questions about Manish Rathaur's professional portfolio, GitHub projects, technical skills, and experience. I can't reliably answer unrelated topics, but I'd be happy to help you explore his work."
+        return ChatResponse(
+            answer=reply,
+            provider="ROUTER",
+            chunks_used=0,
+            sources=[],
+            related=[],
+            confidence="high"
+        )
+
+    # ── 3. RAG Pipeline for Portfolio Queries & Follow-ups ──
     rag_context, sources, best_distance = get_relevant_context(req.message)
     chunks_used = len(rag_context.split("---")) if rag_context else 0
     
     logger.info(f"RAG returned {chunks_used} chunk(s) with best_distance={best_distance:.3f}")
 
     if best_distance > 1.2 or not rag_context:
-        logger.info("Refusing query due to low confidence (distance > 1.2 or no chunks).")
-        reply = "I could not find verified GitHub project data in the connected sources 🙂\n\nTry asking about Organic Maps or the RAG portfolio project."
+        logger.warning(f"No good matches found for query (best dist: {best_distance})")
+        reply = "I couldn't find verified information about that in Manish's connected GitHub repositories or portfolio data. I prefer not to guess. You can ask me about his projects, technologies, repositories, or experience."
         return ChatResponse(
-            answer=reply, 
-            provider="RAG_GATING", 
+            answer=reply,
+            provider="ROUTER",
             chunks_used=0,
             sources=[],
+            related=[],
             confidence="low"
         )
 
