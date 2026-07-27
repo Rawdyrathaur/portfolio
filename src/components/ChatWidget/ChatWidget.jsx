@@ -42,17 +42,17 @@ export default function ChatWidget({ currentPath = window.location.pathname }) {
 
   const assistantTitle =
     assistantMode === "article"
-      ? "Article Assistant"
+      ? "Article Insights"
       : assistantMode === "blog"
-        ? "Blog Assistant"
-        : "Portfolio Assistant";
+        ? "Blog Explorer"
+        : "Portfolio Copilot";
 
   const assistantStatus =
     assistantMode === "article"
-      ? "· Article mode"
+      ? "· Context-aware reading mode"
       : assistantMode === "blog"
-        ? "· Blog mode"
-        : "· Ready to help";
+        ? "· Ready to explore posts"
+        : "· Ready to assist";
 
   // Suggested questions shown before the user has typed anything
   const suggestedQuestions =
@@ -356,7 +356,7 @@ Answer using the article context first. Be clear, practical, and technical when 
           {/* Header */}
           <div className="cw-header">
             <div className="cw-header-title">
-              <div className="cw-title">Manish AI</div>
+              <div className="cw-title">{assistantTitle}</div>
               <div className="cw-status-text">
                 <span className="cw-dot" /> {assistantStatus.replace('· ', '')}
               </div>
