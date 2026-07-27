@@ -42,17 +42,10 @@ export default function ChatWidget({ currentPath = window.location.pathname }) {
 
   const assistantTitle =
     assistantMode === "article"
-      ? "Article Insights"
+      ? "Ask Article Assistant"
       : assistantMode === "blog"
-        ? "Blog Explorer"
-        : "Portfolio Copilot";
-
-  const assistantStatus =
-    assistantMode === "article"
-      ? "· Context-aware reading mode"
-      : assistantMode === "blog"
-        ? "· Ready to explore posts"
-        : "· Ready to assist";
+        ? "Ask Blog Assistant"
+        : "Ask AI Assistant";
 
   // Suggested questions shown before the user has typed anything
   const suggestedQuestions =
@@ -357,9 +350,6 @@ Answer using the article context first. Be clear, practical, and technical when 
           <div className="cw-header">
             <div className="cw-header-title">
               <div className="cw-title">{assistantTitle}</div>
-              <div className="cw-status-text">
-                <span className="cw-dot" /> {assistantStatus.replace('· ', '')}
-              </div>
             </div>
             <div className="cw-header-actions">
               <button className="cw-icon-btn" onClick={clearChat} title="Clear chat" aria-label="Clear chat">
