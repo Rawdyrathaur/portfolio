@@ -371,9 +371,9 @@
 }
 
 .cw-suggestion-chip:hover {
-  background: var(--surface-hover, rgba(99,102,241,0.08));
-  border-color: var(--accent, #6366f1);
-  color: var(--text-primary);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--text);
 }
 
 @keyframes cw-fade-in {
