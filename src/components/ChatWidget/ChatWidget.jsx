@@ -1,5 +1,7 @@
 import { useCallback, useState, useRef, useEffect } from "react";
 import ChatMessage from "./ChatMessage";
+import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import { MainContainer, ChatContainer, MessageList, Message, TypingIndicator } from "@chatscope/chat-ui-kit-react";
 import "./ChatWidget.css";
 
 const BACKEND = "https://msrathaur-manish-portfolio-api.hf.space";
@@ -393,59 +395,61 @@ Answer using the article context first. Be clear, practical, and technical when 
 
           {/* Messages */}
           <div className="cw-messages" role="log" aria-live="polite">
-            {messages.map((m, i) => (
-              <div key={i} className={`cw-msg-row cw-msg-row--${m.role}`}>
-                <div className="cw-msg-col">
-                  <div className={`cw-bubble cw-bubble--${m.role}`}>
-                    <ChatMessage role={m.role} text={m.text} sources={m.sources} related={m.related} />
-                  </div>
-                  <span className="cw-time">{formatTime(m.time)}</span>
-                </div>
-              </div>
-            ))}
+            <MainContainer style={{ border: "none", background: "transparent", height: "100%" }}>
+              <ChatContainer style={{ background: "transparent" }}>
+                <MessageList 
+                  style={{ background: "transparent", padding: "10px 0" }}
+                  typingIndicator={
+                    isLoading ? <TypingIndicator content="Searching portfolio..." /> : null
+                  }
+                >
+                  {messages.map((m, i) => (
+                    <Message
+                      key={i}
+                      model={{
+                        message: m.role === "user" ? m.text : "",
+                        direction: m.role === "user" ? "outgoing" : "incoming",
+                        position: "single",
+                      }}
+                    >
+                      {m.role === "assistant" && (
+                        <Message.CustomContent>
+                          <ChatMessage role={m.role} text={m.text} sources={m.sources} related={m.related} />
+                        </Message.CustomContent>
+                      )}
+                    </Message>
+                  ))}
 
-            {isLoading && (
-              <div className="cw-msg-row cw-msg-row--assistant">
-                <div className="cw-msg-col">
-                  <div className="cw-bubble cw-bubble--assistant cw-bubble--loading">
-                    <div className="cw-searching">
-                      <span className="cw-searching-icon">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                        </svg>
-                      </span>
-                      Searching portfolio...
-                      <span className="cw-typing"><span /><span /><span /></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+                  {isRecording && (
+                    <Message.CustomContent>
+                      <div className="cw-recording-hint" style={{ margin: "10px 0" }}>
+                        <span className="cw-rec-dot" /> Listening… pause to send
+                      </div>
+                    </Message.CustomContent>
+                  )}
 
-            {isRecording && (
-              <div className="cw-recording-hint">
-                <span className="cw-rec-dot" /> Listening… pause to send
-              </div>
-            )}
-
-            {/* Suggested questions — shown only before user interacts */}
-            {showSuggestions && !isLoading && !isRecording && (
-              <div className="cw-suggestions">
-                {suggestedQuestions.map((q) => (
-                  <button
-                    key={q}
-                    className="cw-suggestion-chip"
-                    onClick={() => handleSuggestedQuestion(q)}
-                    type="button"
-                  >
-                    {q}
-                  </button>
-                ))}
-              </div>
-            )}
-
-            <div ref={messagesEndRef} />
+                  {/* Suggested questions */}
+                  {showSuggestions && !isLoading && !isRecording && (
+                    <Message.CustomContent>
+                      <div className="cw-suggestions">
+                        {suggestedQuestions.map((q) => (
+                          <button
+                            key={q}
+                            className="cw-suggestion-chip"
+                            onClick={() => handleSuggestedQuestion(q)}
+                            type="button"
+                          >
+                            {q}
+                          </button>
+                        ))}
+                      </div>
+                    </Message.CustomContent>
+                  )}
+                </MessageList>
+              </ChatContainer>
+            </MainContainer>
           </div>
+
 
           {/* Input bar */}
           <div className="cw-input-bar">
