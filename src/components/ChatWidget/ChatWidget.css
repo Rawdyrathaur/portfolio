@@ -298,6 +298,8 @@
   border-radius: 16px;
   font-size: 13px;
   line-height: 1.55;
+  width: max-content;
+  max-width: 100%;
   overflow-wrap: break-word;
   word-break: normal;
   white-space: pre-wrap;
