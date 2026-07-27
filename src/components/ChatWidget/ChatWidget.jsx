@@ -146,7 +146,7 @@ export default function ChatWidget({ currentPath = window.location.pathname }) {
   const formatTime = (date) =>
     date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
-  const buildArticleAwareMessage = (question) => {
+  const getContextString = () => {
     if (articleContext) {
       return `You are Manish's article assistant. The user is reading a blog article and is asking about it.
 
@@ -159,20 +159,14 @@ ${articleContext.summary}
 Article content:
 ${articleContext.body}
 
-User question:
-${question}
-
 Answer using the article context first. Be clear, practical, and technical when needed. If the question is outside the article, briefly say that and answer as Manish's blog assistant.`;
     }
 
     if (isBlogRoute) {
-      return `You are Manish's blog assistant. Help the user explore blog topics, article ideas, technical writing, AI notes, code explanations, and learning paths.
-
-User question:
-${question}`;
+      return `You are Manish's blog assistant. Help the user explore blog topics, article ideas, technical writing, AI notes, code explanations, and learning paths.`;
     }
 
-    return question;
+    return null;
   };
 
   /* ── Send message to backend ── */
@@ -192,7 +186,8 @@ ${question}`;
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          message: buildArticleAwareMessage(trimmed),
+          message: trimmed,
+          context: getContextString(),
           history: messages.map((m) => ({
             role: m.role,
             content: m.text,
