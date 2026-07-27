@@ -275,6 +275,44 @@
   border-radius: 4px;
 }
 
+/* ── Chatscope Theme Overrides ── */
+.cs-message--incoming .cs-message__content {
+  background-color: var(--surface) !important;
+  color: var(--text) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border: 1px solid var(--border) !important;
+  border-bottom-left-radius: 4px !important;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+}
+
+.cs-message--outgoing .cs-message__content {
+  background-color: var(--accent) !important;
+  color: #ffffff !important;
+  border-bottom-right-radius: 4px !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Force text colors inside incoming custom content to match theme */
+.cs-message--incoming .cs-message__content,
+.cs-message--incoming .cs-message__content p,
+.cs-message--incoming .cs-message__content h1,
+.cs-message--incoming .cs-message__content h2,
+.cs-message--incoming .cs-message__content h3,
+.cs-message--incoming .cs-message__content li {
+  color: var(--text) !important;
+}
+
+/* Remove weird backgrounds from typing indicator and custom content wrappers if any */
+.cs-message__custom-content {
+  background: transparent !important;
+}
+.cs-typing-indicator {
+  background-color: transparent !important;
+}
+
+
 
 
 /* ── Recording hint ── */
