@@ -942,58 +942,6 @@ html[data-theme="light"] .cw-header .cw-icon-btn:hover {
 }
 
 /* ══════════════════════════════
-   ANSWER AUDIO
-══════════════════════════════ */
-.cw-answer__listen {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 8px;
-  padding: 5px 10px;
-  border: 1px solid rgba(143, 214, 221, 0.24);
-  border-radius: 999px;
-  background: rgba(143, 214, 221, 0.08);
-  color: #b9dfe3;
-  font: inherit;
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.cw-answer__listen:hover {
-  background: rgba(143, 214, 221, 0.15);
-  color: #ffffff;
-}
-
-.cw-answer__listen:focus-visible {
-  outline: 2px solid #8fd6dd;
-  outline-offset: 2px;
-}
-
-.cw-answer__listen-spinner {
-  animation: cw-listen-spin 0.8s linear infinite;
-}
-
-@keyframes cw-listen-spin {
-  to { transform: rotate(360deg); }
-}
-
-html[data-theme="light"] .cw-answer__listen {
-  border-color: rgba(0, 107, 117, 0.24);
-  background: rgba(0, 107, 117, 0.07);
-  color: #006b75;
-}
-
-html[data-theme="light"] .cw-answer__listen:hover {
-  background: rgba(0, 107, 117, 0.13);
-  color: #004c54;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cw-answer__listen-spinner { animation: none; }
-}
-
-/* ══════════════════════════════
    SOURCES LIST
 ══════════════════════════════ */
 .cw-sources {

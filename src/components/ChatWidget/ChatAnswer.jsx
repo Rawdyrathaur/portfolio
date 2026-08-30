@@ -1,55 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeSanitize from 'rehype-sanitize'
-import { FaPlay, FaSpinner, FaStop } from 'react-icons/fa'
 import './ChatWidget.css'
-import { PORTFOLIO_API_URL } from '../../lib/portfolioApi'
 
 function ChatAnswer({ text, sources = [], related = [] }) {
-  const audioRef = useRef(null)
-  const [audioState, setAudioState] = useState('idle')
-
-  const stopAudio = useCallback(() => {
-    if (audioRef.current) {
-      audioRef.current.pause()
-      audioRef.current.currentTime = 0
-      audioRef.current = null
-    }
-    setAudioState('idle')
-  }, [])
-
-  useEffect(() => {
-    const stopOtherAnswer = () => stopAudio()
-    window.addEventListener('portfolio:stop-answer-audio', stopOtherAnswer)
-    return () => {
-      window.removeEventListener('portfolio:stop-answer-audio', stopOtherAnswer)
-      stopAudio()
-    }
-  }, [stopAudio])
-
-  const toggleAudio = async () => {
-    if (audioState === 'loading' || audioState === 'playing') {
-      stopAudio()
-      return
-    }
-
-    window.dispatchEvent(new CustomEvent('portfolio:stop-answer-audio'))
-    const audio = new Audio(`${PORTFOLIO_API_URL}/speak?text=${encodeURIComponent(text)}`)
-    audioRef.current = audio
-    setAudioState('loading')
-
-    audio.addEventListener('playing', () => setAudioState('playing'), { once: true })
-    audio.addEventListener('ended', stopAudio, { once: true })
-    audio.addEventListener('error', stopAudio, { once: true })
-
-    try {
-      await audio.play()
-    } catch {
-      stopAudio()
-    }
-  }
-
   return (
     <div className="cw-answer">
       <ReactMarkdown
@@ -85,17 +39,6 @@ function ChatAnswer({ text, sources = [], related = [] }) {
       >
         {text}
       </ReactMarkdown>
-      <button
-        type="button"
-        className="cw-answer__listen"
-        onClick={toggleAudio}
-        aria-label={audioState === 'playing' ? 'Stop reading answer' : 'Read answer aloud'}
-      >
-        {audioState === 'loading' && <FaSpinner aria-hidden="true" className="cw-answer__listen-spinner" />}
-        {audioState === 'playing' && <FaStop aria-hidden="true" />}
-        {audioState === 'idle' && <FaPlay aria-hidden="true" />}
-        <span>{audioState === 'loading' ? 'Loading' : audioState === 'playing' ? 'Stop' : 'Listen'}</span>
-      </button>
       {sources && sources.length > 0 && (
         <div className="cw-sources">
           <div className="cw-sources-title">Sources</div>
