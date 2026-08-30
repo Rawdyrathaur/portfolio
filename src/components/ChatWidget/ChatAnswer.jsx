@@ -4,8 +4,7 @@ import remarkGfm from 'remark-gfm'
 import rehypeSanitize from 'rehype-sanitize'
 import { FaPlay, FaSpinner, FaStop } from 'react-icons/fa'
 import './ChatWidget.css'
-
-const BACKEND = 'https://msrathaur-manish-portfolio-api.hf.space'
+import { PORTFOLIO_API_URL } from '../../lib/portfolioApi'
 
 function ChatAnswer({ text, sources = [], related = [] }) {
   const audioRef = useRef(null)
@@ -36,7 +35,7 @@ function ChatAnswer({ text, sources = [], related = [] }) {
     }
 
     window.dispatchEvent(new CustomEvent('portfolio:stop-answer-audio'))
-    const audio = new Audio(`${BACKEND}/speak?text=${encodeURIComponent(text)}`)
+    const audio = new Audio(`${PORTFOLIO_API_URL}/speak?text=${encodeURIComponent(text)}`)
     audioRef.current = audio
     setAudioState('loading')
 

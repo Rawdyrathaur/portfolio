@@ -3,8 +3,7 @@ import ChatMessage from "./ChatMessage";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import { MainContainer, ChatContainer, MessageList, Message, TypingIndicator } from "@chatscope/chat-ui-kit-react";
 import "./ChatWidget.css";
-
-const BACKEND = "https://msrathaur-manish-portfolio-api.hf.space";
+import { portfolioApiFetch, warmPortfolioApi } from "../../lib/portfolioApi";
 
 export default function ChatWidget({ currentPath = window.location.pathname }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -101,7 +100,7 @@ export default function ChatWidget({ currentPath = window.location.pathname }) {
     }
   }, [isOpen]);
   useEffect(() => {
-    fetch(`${BACKEND}/health`).catch(() => {});
+    warmPortfolioApi();
   }, []);
 
   useEffect(() => {
@@ -177,13 +176,13 @@ Answer using the article context first. Be clear, practical, and technical when 
     setHasShownWakeup(true);
 
     try {
-      const res = await fetch(`${BACKEND}/chat`, {
+      const res = await portfolioApiFetch("/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: trimmed,
           context: getContextString(),
-          history: messages.map((m) => ({
+          history: messages.slice(-10).map((m) => ({
             role: m.role,
             content: m.text,
           })),
@@ -301,10 +300,10 @@ Answer using the article context first. Be clear, practical, and technical when 
 
         setIsLoading(true);
         try {
-          const res = await fetch(`${BACKEND}/whisper`, {
+          const res = await portfolioApiFetch("/whisper", {
             method: "POST",
             body: formData,
-          });
+          }, 60_000);
           if (!res.ok) throw new Error("Whisper error");
           const data = await res.json();
           // treat transcript like a typed message
