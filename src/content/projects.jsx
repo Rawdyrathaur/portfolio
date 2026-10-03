@@ -9,22 +9,18 @@ const projects = [
     id: 1,
     title: 'Tabrevo',
     tag: 'Chrome Extension · Web App',
-    liveTag: 'Live on Chrome Web Store',
+    liveTag: 'Live Website',
     description:
       'Local-first browser follow-up system with Chrome side-panel and companion web app. Keeps pages, notes, and scheduled reminders together with optional cloud sync.',
     tech: ['TypeScript', 'React', 'Chrome Extension MV3', 'IndexedDB', 'Node.js', 'PostgreSQL'],
     buttons: [
       {
-        label: 'Live Demo',
-        href: 'https://chromewebstore.google.com/detail/tabrevo/hgikoojlccdklfmhcmhgoefjiinffmni',
+        label: 'Live Website',
+        href: 'https://tabrevo.duckdns.org/',
       },
       {
         label: 'GitHub',
         href: 'https://github.com/Rawdyrathaur/Tab_story',
-      },
-      {
-        label: 'Website',
-        href: 'https://tabrevo.duckdns.org/',
       },
     ],
   },

@@ -5,7 +5,7 @@ const projects = [
     id: 1,
     name: 'Tabrevo',
     badge: 'Chrome Extension · Web App',
-    liveLink: 'https://chromewebstore.google.com/detail/tabrevo/hgikoojlccdklfmhcmhgoefjiinffmni',
+    liveLink: 'https://tabrevo.duckdns.org/',
     githubLink: 'https://github.com/Rawdyrathaur/Tab_story',
     description:
       'Local-first browser follow-up system with Chrome side-panel and companion web app. Keeps pages, notes, and scheduled reminders together with optional cloud sync.',
