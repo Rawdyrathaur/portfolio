@@ -3,21 +3,23 @@ import './Projects.css'
 const projects = [
   {
     id: 1,
-    name: 'Tab Story',
-    badge: 'Chrome Extension',
-    liveLink: 'https://chromewebstore.google.com/detail/tab-story/nhjglpjgddjcjafdabmepgalnaejnleb',
+    name: 'Tabrevo',
+    badge: 'Chrome Extension · Web App',
+    liveLink: 'https://chromewebstore.google.com/detail/tabrevo/hgikoojlccdklfmhcmhgoefjiinffmni',
     githubLink: 'https://github.com/Rawdyrathaur/Tab_story',
     description:
-      'AI-powered browser tab manager built with 100% local AI, crash recovery system, and real active users. Zero data leaves the device.',
+      'Local-first browser follow-up system with Chrome side-panel and companion web app. Keeps pages, notes, and scheduled reminders together with optional cloud sync.',
     tags: [
-      { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg' },
+      { name: 'TypeScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg' },
+      { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
       { name: 'Chrome Extension MV3', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/chrome/chrome-original.svg' },
-      { name: 'Chrome AI API', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/chrome/chrome-original.svg' },
+      { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg' },
+      { name: 'PostgreSQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg' },
     ],
     stats: [
-      { value: 'Real', label: 'Active Users' },
-      { value: '100%', label: 'Local AI' },
-      { value: 'Zero', label: 'Data Sent' },
+      { value: 'Local', label: 'First Storage' },
+      { value: 'MV3', label: 'Side Panel' },
+      { value: 'Optional', label: 'Cloud Sync' },
     ],
   },
   {

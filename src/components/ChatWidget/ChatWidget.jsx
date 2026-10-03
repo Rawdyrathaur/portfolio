@@ -189,7 +189,18 @@ Answer using the article context first. Be clear, practical, and technical when 
         }),
       });
 
-      if (!res.ok) throw new Error("Server error");
+      if (!res.ok) {
+        let errorMsg = "⚠️ Could not reach the server. Please try again in a moment.";
+        try {
+          const errorData = await res.json();
+          if (errorData && errorData.detail) {
+            errorMsg = `⚠️ Server error: ${errorData.detail}`;
+          }
+        } catch {
+          // Fallback if parsing fails
+        }
+        throw new Error(errorMsg);
+      }
       const data = await res.json();
 
       setMessages((prev) => [...prev, { 
@@ -201,10 +212,10 @@ Answer using the article context first. Be clear, practical, and technical when 
       }]);
 
       if (!isOpen) setHasNewMessage(true);
-    } catch {
+    } catch (err) {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", text: "⚠️ Could not reach the server. Please try again in a moment.", time: new Date() },
+        { role: "assistant", text: err.message || "⚠️ Could not reach the server. Please try again in a moment.", time: new Date() },
       ]);
     }
 
